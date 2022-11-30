@@ -1,0 +1,22 @@
+resourcePackages:
+  - "de.gematik.ncpeh.api"
+modelConverterClasses:
+  - "de.gematik.ncpeh.util.NcpehApiModelResolver"
+openAPI31: false # there seems to be a bug in Swagger or Jackson, preventing the processing of java.util.Map, when using the 3.1 OpenApi spec version.
+openAPI:
+  info:
+    title: "NCPeH Testinterface"
+    version: ${project.version}
+    description: "Auf der Schnittstelle werden Operationen definiert, \
+      \ um die Ausführung von Usecases des NCPeH-Fachdienstes für das Anwendungsszenario Patient Summary Land A \
+      \ mit den übergebenen Daten am Simulator des NCPeH Land B zu triggern. \
+      \ Hinweis: Sobald die Unterstützung in der Toollandschaft besser ist (siehe https://openapi.tools/), \
+      \ wird die API-Beschreibung auf die OpenApi Version 3.1 angehoben."
+    contact:
+      name: "gematik GmbH"
+      email: "software-development@gematik.de"
+      url: "https://www.gematik.de"
+    license:
+      name: "Apache 2.0"
+      url: "https://www.apache.org/licenses/LICENSE-2.0"
+

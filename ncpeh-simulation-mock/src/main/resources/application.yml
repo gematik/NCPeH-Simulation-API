@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  ssl:
+    enabled: false
+
+cxf:
+  jaxrs:
+    component-scan: true
+    classes-scan-packages: org.apache.cxf.jaxrs.swagger
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "health, info, mappings"
+  endpoint:
+    health:
+      enabled: true
+    mappings:
+      enabled: true
+    info:
+      enabled: true
+
+    #logging:
+    #  level:
+    #org: DEBUG
+
+info:
+  app:
+    name: '@project.name@'
+    version: '@project.version@'
+    description: '@project.description@'
