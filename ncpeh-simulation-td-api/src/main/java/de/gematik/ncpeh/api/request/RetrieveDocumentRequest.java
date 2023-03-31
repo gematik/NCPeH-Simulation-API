@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,12 @@ public record RetrieveDocumentRequest(
                     + "des Elementes 'RetrieveDocumentSetRequest/DocumentRequest/DocumentUniqueId' befüllt. "
                     + "Der Parameter wird vollständig konstruiert übergeben (also UniqueId + '^' + Formattyp).")
         String documentUniqueId,
+    @JsonProperty
+        @Schema(
+            description =
+                "Es gelten die gleichen fachlichen Vorgaben wie zum Parameter documentUniqueId."
+                    + "Der Parameter ist zu nutzen, wenn beide Ausprägungen des Patient Summaries in einem Request abgerufen werden sollen (CDA L1 & CDA L3)")
+        String additionalDocumentUniqueId,
     @JsonProperty(defaultValue = "urn:oid:1.2.276.0.76.4.291")
         @Schema(
             defaultValue = "urn:oid:1.2.276.0.76.4.291",

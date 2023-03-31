@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 gematik GmbH
+  ~ Copyright (c) 2023 gematik GmbH
   ~ 
   ~ Licensed under the Apache License, Version 2.0 (the License);
   ~ you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
     <module>ncpeh-simulation-mock</module>
   </modules>
   <groupId>de.gematik.api</groupId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>API definition for the trigger interface of the NCPeH simulation</description>
   <url>https://github.com/gematik/NCPeH-Simulation-API</url>
 

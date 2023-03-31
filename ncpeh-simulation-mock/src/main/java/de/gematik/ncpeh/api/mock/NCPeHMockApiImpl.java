@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -36,33 +36,33 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
 
   @Override
   public Response identifyPatient(IdentifyPatientRequest request) {
-    return mockIt();
+    return okResponseBuilder()
+        .entity(
+            SimulatorCommunicationDataBuilder.newInstance()
+                .requestMessage(HttpMessageFactory.buildStandardIdentifyPatientRequest())
+                .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse())
+                .build())
+        .build();
   }
 
   @Override
   public Response findDocuments(FindDocumentsRequest request) {
-    return mockIt();
+    return okResponseBuilder()
+        .entity(
+            SimulatorCommunicationDataBuilder.newInstance()
+                .requestMessage(HttpMessageFactory.buildStandardFindDocumentRequest())
+                .responseMessage(HttpMessageFactory.buildStandardFindDocumentResponse())
+                .build())
+        .build();
   }
 
   @Override
   public Response retrieveDocument(RetrieveDocumentRequest request) {
-    return mockIt();
-  }
-
-  /**
-   * Create a good case response to be used in all three operations. Data, which came in the
-   * request, doesn't matter here, it is always the same response, which is created.
-   *
-   * @return {@link Response}
-   */
-  private Response mockIt() {
-    var pseudoSimRequest = HttpMessageFactory.buildStandardRequest();
-
     return okResponseBuilder()
         .entity(
             SimulatorCommunicationDataBuilder.newInstance()
-                .requestMessage(pseudoSimRequest)
-                .responseMessage(pseudoSimRequest.getResponse())
+                .requestMessage(HttpMessageFactory.buildStandardRetrieveDocumentRequest())
+                .responseMessage(HttpMessageFactory.buildStandardRetrieveDocumentResponse())
                 .build())
         .build();
   }

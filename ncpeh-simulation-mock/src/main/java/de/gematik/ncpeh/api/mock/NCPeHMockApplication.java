@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,22 @@
 
 package de.gematik.ncpeh.api.mock;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.cxf.ext.logging.LoggingFeature;
+import org.apache.cxf.ext.logging.event.EventType;
+import org.apache.cxf.ext.logging.event.LogEvent;
+import org.apache.cxf.ext.logging.slf4j.Slf4jEventSender;
+import org.slf4j.event.Level;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 
 /** The main class of the Spring Boot application */
 @Slf4j
@@ -40,13 +47,47 @@ public class NCPeHMockApplication {
   @Bean
   public JacksonJaxbJsonProvider jsonProvider() {
     final ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    objectMapper.setSerializationInclusion(Include.NON_EMPTY);
+    objectMapper.setDefaultPropertyInclusion(Include.NON_DEFAULT);
+    objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     objectMapper.registerModule(new JavaTimeModule());
 
     final JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
     provider.setMapper(objectMapper);
-    provider.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     return provider;
+  }
+
+  @Bean
+  public LoggingFeature loggingFeature() {
+    final var feature = new LoggingFeature();
+    final var sender =
+        new Slf4jEventSender() {
+          @Override
+          protected String getLogMessage(LogEvent event) {
+            StringBuilder buf = new StringBuilder().append("\n");
+            if (List.of(EventType.REQ_IN, EventType.REQ_OUT).contains(event.getType())) {
+              buf.append(event.getHttpMethod()).append(" ").append(event.getAddress()).append("\n");
+            } else {
+              buf.append(event.getResponseCode())
+                  .append(" ")
+                  .append(
+                      HttpStatus.valueOf(Integer.parseInt(event.getResponseCode()))
+                          .getReasonPhrase())
+                  .append("\n");
+            }
+            event
+                .getHeaders()
+                .forEach((key, value) -> buf.append(key).append(": ").append(value).append("\n"));
+            return buf.append("\n").append(event.getPayload()).toString();
+          }
+        };
+    sender.setLoggingLevel(Level.DEBUG);
+    feature.setSender(sender);
+    feature.setPrettyLogging(true);
+    feature.setLogBinary(true);
+    feature.setLogMultipart(true);
+
+    return feature;
   }
 
   public static void main(final String[] args) {

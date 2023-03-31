@@ -1,0 +1,60 @@
+<ns6:PRPA_IN201306UV02 xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns2="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:ns4="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0" xmlns:ns5="urn:ihe:iti:xds-b:2007" xmlns:ns6="urn:hl7-org:v3" ITSVersion="XML_1.0">
+	<ns6:id root="f302e153-f4c3-4586-a003-557b2150e7c2" extension="0903372231150"/>
+	<ns6:creationTime value="20230124085038.622+0000"/>
+	<ns6:versionCode code="V3PR1"/>
+	<ns6:interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201306UV02"/>
+	<ns6:processingCode/>
+	<ns6:processingModeCode/>
+	<ns6:acceptAckCode/>
+	<ns6:acknowledgement>
+		<ns6:typeCode/>
+		<ns6:targetMessage>
+			<ns6:id root="38deb4a3-bc7c-480f-b4e3-6396e19f9416" extension="452fde50-b69b-4424-b22b-6d651d0e04e3"/>
+		</ns6:targetMessage>
+	</ns6:acknowledgement>
+	<ns6:controlActProcess classCode="CACT" moodCode="EVN">
+		<ns6:code code="PRPA_TE201306UV02"/>
+		<ns6:subject typeCode="SUBJ">
+			<ns6:registrationEvent classCode="REG" moodCode="EVN">
+				<ns6:id nullFlavor="NA"/>
+				<ns6:statusCode code="active"/>
+				<ns6:subject1 typeCode="SBJ">
+					<ns6:patient classCode="PAT">
+						<ns6:id extension="X110405394"/>
+						<ns6:statusCode code="active"/>
+						<ns6:patientPerson classCode="PSN" determinerCode="INSTANCE">
+							<ns6:name>
+								<ns6:prefix>Prof. Dr.</ns6:prefix>
+								<ns6:family>ÐoriaTEST-ONLY</ns6:family>
+								<ns6:given>Felicitas Anna Julia</ns6:given>
+							</ns6:name>
+							<ns6:administrativeGenderCode code="UN"/>
+							<ns6:birthTime value="19670630"/>
+							<ns6:addr>
+								<ns6:city>Patientstadt</ns6:city>
+								<ns6:postalCode>12345</ns6:postalCode>
+								<ns6:streetAddressLine>Patientstr. 1</ns6:streetAddressLine>
+								<ns6:country>D</ns6:country>
+							</ns6:addr>
+						</ns6:patientPerson>
+						<ns6:subjectOf1>
+							<ns6:queryMatchObservation classCode="OBS" moodCode="EVN">
+								<ns6:code code="IHE_PDQ" codeSystem="2.16.840.1.113883.1.11.19914"/>
+								<ns6:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns6:INT" value="100"/>
+							</ns6:queryMatchObservation>
+						</ns6:subjectOf1>
+					</ns6:patient>
+				</ns6:subject1>
+				<ns6:custodian typeCode="CST">
+					<ns6:assignedEntity classCode="ASSIGNED">
+						<ns6:id root="HOME_COMM_ID"/>
+						<ns6:code code="NotHealthDataLocator" codeSystem="1.3.6.1.4.1.19376.1.2.27.2"/>
+					</ns6:assignedEntity>
+				</ns6:custodian>
+			</ns6:registrationEvent>
+		</ns6:subject>
+		<ns6:queryAck>
+			<ns6:queryId root="1.263507841149"/>
+		</ns6:queryAck>
+	</ns6:controlActProcess>
+</ns6:PRPA_IN201306UV02>

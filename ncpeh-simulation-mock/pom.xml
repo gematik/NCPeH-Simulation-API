@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 gematik GmbH
+  ~ Copyright (c) 2023 gematik GmbH
   ~ 
   ~ Licensed under the Apache License, Version 2.0 (the License);
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +31,8 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <version.java>17</version.java>
-    <spring.boot.version>2.7.5</spring.boot.version>
+    <spring.boot.version>2.7.8</spring.boot.version>
+    <apache.cxf.version>3.5.3</apache.cxf.version>
   </properties>
 
   <dependencies>
@@ -49,57 +50,29 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <version>${spring.boot.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>jakarta.annotation</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
-      <version>3.5.3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>jakarta.annotation</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.validation</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.xml.bind</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.xml.ws</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.xml.soap</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.jws</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.activation</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.ws.rs</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${apache.cxf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-features-logging</artifactId>
+      <version>${apache.cxf.version}</version>
     </dependency>
 
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <version>${spring.boot.version}</version>
     </dependency>
   </dependencies>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ class SimulatorCommunicationDataBuilderTest {
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.newInstance()
-                    .requestMessage(HttpMessageFactory.buildStandardRequest())
-                    .responseMessage(HttpMessageFactory.buildStandardResponse()),
+                    .requestMessage(HttpMessageFactory.buildStandardIdentifyPatientRequest())
+                    .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse()),
             "Unexpected Exception thrown by SimulatorCommunicationDataBuilder");
 
     var result =
@@ -66,7 +66,7 @@ class SimulatorCommunicationDataBuilderTest {
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpMessage(
-                    HttpMessageFactory.buildStandardRequest()),
+                    HttpMessageFactory.buildStandardIdentifyPatientRequest()),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpMessage");
 
     assertNotNull(
@@ -79,7 +79,7 @@ class SimulatorCommunicationDataBuilderTest {
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpMessage(
-                    HttpMessageFactory.buildStandardResponse()),
+                    HttpMessageFactory.buildStandardIdentifyPatientResponse()),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpMessage");
 
     assertNotNull(
@@ -92,7 +92,7 @@ class SimulatorCommunicationDataBuilderTest {
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpRequest(
-                    HttpMessageFactory.buildStandardRequest()),
+                    HttpMessageFactory.buildStandardIdentifyPatientRequest()),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpRequest");
 
     assertNotNull(
@@ -105,7 +105,7 @@ class SimulatorCommunicationDataBuilderTest {
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpResponse(
-                    HttpMessageFactory.buildStandardResponse()),
+                    HttpMessageFactory.buildStandardIdentifyPatientResponse()),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpResponse");
 
     assertNotNull(

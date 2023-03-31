@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-package de.gematik.ncpeh.api.common;
+package de.gematik.ncpeh.api.mock.integrationtest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-class SlotNameTest {
+@SpringBootTest
+class HttpMessageFactoryIntTest {
 
   @Test
-  void fromValue() {
-    var expected = SlotName.ENTRY_TYPE_CODE;
-
-    var value =
+  void readFileContentFromPathIntTest() {
+    var result =
         assertDoesNotThrow(
-            () -> SlotName.fromValue(expected.getName()),
-            "Method SlotName.fromValue threw unexpected exception");
-    assertEquals(expected, value, "Unexpected value");
+            () ->
+                HttpMessageFactory.readFileContentFromPath(
+                    HttpMessageFactory.MESSAGES_FOLDER
+                        + HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
 
-    value =
-        assertDoesNotThrow(
-            () -> SlotName.fromValue(expected.getName().toUpperCase()),
-            "Method SlotName.fromValue threw unexpected exception");
-    assertEquals(expected, value, "Unexpected value");
-
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> SlotName.fromValue("unknownValue"),
-        "Expected exception was not thrown");
+    assertNotNull(result);
+    assertTrue(result.contains("subjectOf1"));
   }
 }

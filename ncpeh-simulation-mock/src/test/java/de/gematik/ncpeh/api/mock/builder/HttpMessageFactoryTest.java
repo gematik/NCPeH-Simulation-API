@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -18,44 +18,130 @@ package de.gematik.ncpeh.api.mock.builder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
 
 class HttpMessageFactoryTest {
 
   @Test
-  void buildStandardRequest() {
+  void buildStandardIdentifyPatientRequestTest() {
     var httpRequest =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardRequest,
-            "Method HttpMessageFactory.buildStandardRequest threw exception");
+            HttpMessageFactory::buildStandardIdentifyPatientRequest,
+            "Method HttpMessageFactory.buildStandardIdentifyPatientRequest threw exception");
 
-    assertEquals(HttpMethod.POST, httpRequest.getMethod(), "Wrong method in HTTP request");
-    assertEquals(Constants.PSEUDO_URI, httpRequest.getURI(), "Wrong URI in HTTP request");
-    assertNotNull(httpRequest.getRequestBody(), "No body present in HTTP request");
+    assertRequestProps(httpRequest);
   }
 
   @Test
-  void getStandardRequestBody() {
-    var body =
-        assertDoesNotThrow(
-            HttpMessageFactory::getStandardRequestBody,
-            "Method HttpMessageFactory.getStandardRequestBody threw exception");
-
-    assertNotNull(
-        body, "No body was returned from function HttpMessageFactory.getStandardRequestBody");
-  }
-
-  @Test
-  void buildStandardResponse() {
+  void buildStandardIdentifyPatientResponseTest() {
     var httpResponse =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardResponse,
-            "Method HttpMessageFactory.buildStandardResponse threw exception");
+            HttpMessageFactory::buildStandardIdentifyPatientResponse,
+            "Method HttpMessageFactory.buildStandardIdentifyPatientResponse threw exception");
 
+    assertResponseProps(httpResponse);
+  }
+
+  @Test
+  void buildStandardFindDocumentRequestTest() {
+    var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardFindDocumentRequest,
+            "Method HttpMessageFactory.buildStandardFindDocumentRequest threw exception");
+
+    assertRequestProps(httpRequest);
+  }
+
+  @Test
+  void buildStandardFindDocumentResponseTest() {
+    var httpResponse =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardFindDocumentResponse,
+            "Method HttpMessageFactory.buildStandardFindDocumentResponse threw exception");
+
+    assertResponseProps(httpResponse);
+  }
+
+  @Test
+  void buildStandardRetrieveDocumentRequest() {
+    var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardRetrieveDocumentRequest,
+            "Method HttpMessageFactory.buildStandardRetrieveDocumentRequest threw exception");
+
+    assertRequestProps(httpRequest);
+  }
+
+  @Test
+  void buildStandardRetrieveDocumentResponse() {
+    var httpResponse =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardRetrieveDocumentResponse,
+            "Method HttpMessageFactory.buildStandardRetrieveDocumentResponse threw exception");
+
+    assertResponseProps(httpResponse);
+  }
+
+  @Test
+  void readFileContentFromPathTest() {
+    var result =
+        assertDoesNotThrow(
+            () ->
+                HttpMessageFactory.readFileContentFromPath(
+                    HttpMessageFactory.MESSAGES_FOLDER
+                        + HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
+
+    assertNotNull(result);
+    assertTrue(result.contains("subjectOf1"));
+  }
+
+  @Test
+  void readFileContentFromPathNoExistingFileTest() {
+    var expectedException =
+        assertThrows(
+            FileNotFoundException.class,
+            () ->
+                HttpMessageFactory.readFileContentFromPath(
+                    HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME + ".bak"));
+
+    assertTrue(
+        expectedException
+            .getMessage()
+            .contains(HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
+  }
+
+  @Test
+  void findReadableFileResourceNoFileTest() {
+    var packageName = this.getClass().getPackageName();
+    var lowestPackage = packageName.substring(packageName.lastIndexOf(".") + 1);
+    var expectedException =
+        assertThrows(
+            FileNotFoundException.class,
+            () -> HttpMessageFactory.readFileContentFromPath(lowestPackage));
+
+    assertTrue(expectedException.getMessage().contains(lowestPackage));
+  }
+
+  @SneakyThrows
+  private void assertRequestProps(ClientHttpRequest httpRequest) {
+    assertEquals(HttpMethod.POST, httpRequest.getMethod(), "Wrong method in HTTP request");
+    assertEquals(Constants.PSEUDO_URI, httpRequest.getURI(), "Wrong URI in HTTP request");
+    assertNotNull(httpRequest.getHeaders(), "No HTTP headers present in response");
+    assertFalse(httpRequest.getHeaders().isEmpty(), "No HTTP headers present in response");
+    assertNotNull(httpRequest.getBody(), "No body present in HTTP request");
+  }
+
+  @SneakyThrows
+  private void assertResponseProps(ClientHttpResponse httpResponse) {
     assertEquals(HttpStatus.OK, httpResponse.getStatusCode(), "Wrong status in HTTP response");
     assertNotNull(httpResponse.getHeaders(), "No HTTP headers present in response");
     assertFalse(httpResponse.getHeaders().isEmpty(), "No HTTP headers present in response");
+    assertNotNull(httpResponse.getBody());
   }
 }

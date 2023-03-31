@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.AbstractClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.lang.Nullable;
 
 /**
  * Lightweight implementation of an HTTP request with the only purpose to create testdata for the
@@ -41,11 +40,11 @@ public class PseudoHttpRequest extends AbstractClientHttpRequest {
 
   private @NonNull HttpMethod method = HttpMethod.POST;
 
-  private @Nullable ByteArrayOutputStream requestBody;
+  private ByteArrayOutputStream requestBody;
 
-  private @Nullable PseudoHttpResponse response;
+  private PseudoHttpResponse response;
 
-  private @Nullable URI uRI;
+  private URI uRI;
 
   @Override
   protected OutputStream getBodyInternal(HttpHeaders headers) {

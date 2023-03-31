@@ -2,6 +2,20 @@
 
 # Release notes NCPeH-Simulation-API
 
+## Release 1.0.2
+
+### fixed
+- Bug which prevented the ncpeh-simualtion-mock from starting
+- Default value for oidAssigningAuthority in the PatientId
+
+### added
+- additionalDocumentUniqueId in the retrieveDocument request, to be able to retrieve two documents with one request
+- Readme files for the two modules of this project
+
+### changed
+- The mock now contains proper data in the httpBody elements of the responses,
+  which are of correct type, containing plausible data for each operation
+
 ## Release 1.0.1
 
 ### fixed

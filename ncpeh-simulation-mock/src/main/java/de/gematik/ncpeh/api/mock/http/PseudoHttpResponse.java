@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package de.gematik.ncpeh.api.mock.http;
 
+import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
 import java.io.InputStream;
 import lombok.Data;
 import lombok.NonNull;
@@ -23,12 +24,11 @@ import lombok.experimental.Accessors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.AbstractClientHttpResponse;
-import org.springframework.lang.Nullable;
 
 /**
  * Lightweight implementation of an HTTP response with the only purpose to create testdata for the
- * API operations in the form of content for {@link
- * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived} fields.
+ * API operations in the form of content for {@link SimulatorCommunicationData#responseReceived()}
+ * fields.
  */
 @Accessors(chain = true)
 @Data
@@ -36,9 +36,9 @@ public class PseudoHttpResponse extends AbstractClientHttpResponse {
 
   private @NonNull HttpStatus statusCode;
 
-  private @Nullable InputStream body;
+  private InputStream body;
 
-  private @Nullable HttpHeaders headers;
+  private HttpHeaders headers;
 
   @Override
   public int getRawStatusCode() {

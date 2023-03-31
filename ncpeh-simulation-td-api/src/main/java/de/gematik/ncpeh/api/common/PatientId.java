@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 gematik GmbH
+ * Copyright (c) 2023 gematik GmbH
  * 
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ public record PatientId(
     @JsonProperty(required = true)
         @Schema(description = "Der Wert repräsentiert die KVNR des Versicherten", maxLength = 20)
         String kvnr,
-    @JsonProperty(defaultValue = "2.16.17.710.860.1000.990.1")
+    @JsonProperty(defaultValue = "1.2.276.0.76.3.1.580.047")
         @Schema(
-            defaultValue = "2.16.17.710.860.1000.990.1",
+            defaultValue = "1.2.276.0.76.3.1.580.047",
             description = "Der Wert repräsentiert die OID der Assigning Authority zur KVNR",
             maxLength = 50)
         String oidAssigningAuthority) {}

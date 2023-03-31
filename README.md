@@ -16,6 +16,11 @@ but as the intended audience is part of the german eHealth project, it is in ger
 ### Release-Notes
 The Release-Notes can be found in the file [ReleaseNotes.md](./ReleaseNotes.md)
 
+## Modules
+The NCPeH Simulation API project consists of two modules:
+1. ncpeh-simulation-td-api: Contains the actual API definition, see [NCPeH-Simulation-TD-API README](./ncpeh-simulation-td-api/README.md)
+2. ncpeh-simulation-mock: A lightweight mock to illustrate implementation of the API, see [NCPeH-Simulation-Mock README](./ncpeh-simulation-mock/README.md)
+
 ## Getting started
 Clone the project, if you want to, but this is probably not necessary if you just want to integrate the API in your project.
 The easiest way for a maven project is to simply add the dependency:<br/>

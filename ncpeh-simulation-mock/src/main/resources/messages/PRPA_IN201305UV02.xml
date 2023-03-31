@@ -1,0 +1,52 @@
+<ns6:PRPA_IN201305UV02 xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns2="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:ns4="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0" xmlns:ns5="urn:ihe:iti:xds-b:2007" xmlns:ns6="urn:hl7-org:v3" ITSVersion="XML_1.0">
+	<ns6:id root="38deb4a3-bc7c-480f-b4e3-6396e19f9416" extension="452fde50-b69b-4424-b22b-6d651d0e04e3"/>
+	<ns6:creationTime value="20230124085038.235+0000"/>
+	<ns6:versionCode code="V3PR1"/>
+	<ns6:interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201305UV02"/>
+	<ns6:processingCode code="P"/>
+	<ns6:processingModeCode code="T"/>
+	<ns6:acceptAckCode code="AL"/>
+	<ns6:receiver typeCode="RCV">
+		<ns6:device classCode="DEV" determinerCode="INSTANCE">
+			<ns6:id root="101"/>
+			<ns6:asAgent classCode="AGNT">
+				<ns6:representedOrganization classCode="ORG" determinerCode="INSTANCE">
+					<ns6:id root="101"/>
+				</ns6:representedOrganization>
+			</ns6:asAgent>
+		</ns6:device>
+	</ns6:receiver>
+	<ns6:sender typeCode="SND">
+		<ns6:device classCode="DEV" determinerCode="INSTANCE">
+			<ns6:id root="101"/>
+			<ns6:asAgent classCode="AGNT">
+				<ns6:representedOrganization classCode="ORG" determinerCode="INSTANCE">
+					<ns6:id root="101"/>
+				</ns6:representedOrganization>
+			</ns6:asAgent>
+		</ns6:device>
+	</ns6:sender>
+	<ns6:controlActProcess classCode="CACT" moodCode="EVN">
+		<ns6:code code="PRPA_TE201305UV02" codeSystemName="2.16.840.1.113883.1.6"/>
+		<ns6:authorOrPerformer typeCode="AUT">
+			<ns6:assignedPerson classCode="ASSIGNED"/>
+		</ns6:authorOrPerformer>
+		<ns6:queryByParameter>
+			<ns6:queryId root="1.263507841149"/>
+			<ns6:statusCode code="new"/>
+			<ns6:responseModalityCode code="R"/>
+			<ns6:responsePriorityCode code="I"/>
+			<ns6:matchCriterionList/>
+			<ns6:parameterList>
+				<ns6:livingSubjectBirthTime>
+					<ns6:value value="19670630"/>
+					<ns6:semanticsText/>
+				</ns6:livingSubjectBirthTime>
+				<ns6:livingSubjectId>
+					<ns6:value extension="X114428538"/>
+					<ns6:semanticsText/>
+				</ns6:livingSubjectId>
+			</ns6:parameterList>
+		</ns6:queryByParameter>
+	</ns6:controlActProcess>
+</ns6:PRPA_IN201305UV02>
