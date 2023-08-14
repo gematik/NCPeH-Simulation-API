@@ -21,7 +21,7 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,8 +31,10 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <version.java>17</version.java>
-    <spring.boot.version>2.7.8</spring.boot.version>
-    <apache.cxf.version>3.5.3</apache.cxf.version>
+    <spring.boot.version>3.1.1</spring.boot.version>
+    <apache.cxf.version>4.0.2</apache.cxf.version>
+    <jackson.version>2.15.2</jackson.version>
+    <slf4j.version>2.0.7</slf4j.version>
   </properties>
 
   <dependencies>
@@ -41,15 +43,40 @@
       <artifactId>ncpeh-simulation-td-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>de.gematik.api</groupId>
+      <artifactId>ncpeh-simulation-ehdsi-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.gematik.epa</groupId>
+      <artifactId>lib-ihe-xds</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.24</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-websocket</artifactId>
+      <version>10.1.11</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <version>${spring.boot.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -61,8 +88,11 @@
       <artifactId>cxf-rt-features-logging</artifactId>
       <version>${apache.cxf.version}</version>
     </dependency>
-
-
+    <dependency>
+      <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+      <artifactId>jackson-jakarta-rs-json-provider</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

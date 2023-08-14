@@ -20,8 +20,8 @@ import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.Optional;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +35,7 @@ import org.springframework.http.client.ClientHttpResponse;
  * fields.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 public class PseudoHttpRequest extends AbstractClientHttpRequest {
 
@@ -47,17 +48,12 @@ public class PseudoHttpRequest extends AbstractClientHttpRequest {
   private URI uRI;
 
   @Override
-  protected OutputStream getBodyInternal(HttpHeaders headers) {
+  protected OutputStream getBodyInternal(@NonNull HttpHeaders headers) {
     return requestBody;
   }
 
   @Override
-  protected ClientHttpResponse executeInternal(HttpHeaders headers) {
+  protected ClientHttpResponse executeInternal(@NonNull HttpHeaders headers) {
     return response;
-  }
-
-  @Override
-  public String getMethodValue() {
-    return Optional.ofNullable(this.getMethod()).map(Enum::name).orElse("");
   }
 }

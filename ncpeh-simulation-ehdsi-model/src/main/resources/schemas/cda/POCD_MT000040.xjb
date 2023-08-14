@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+  jaxb:extensionBindingPrefixes="xjc"
+  schemaLocation="POCD_MT000040.xsd" node="/xs:schema">
+
+<!--  <jaxb:globalBindings typesafeEnumMaxMembers="1024" generateMixedExtensions="false"/>-->
+
+  <jaxb:bindings node='//xs:element[@name="id"]' multiple="true">
+    <jaxb:property name="elementId"/>
+  </jaxb:bindings>
+
+  <jaxb:bindings node="//xs:complexType[@name='POCD_MT000040.ClinicalDocument']">
+    <jaxb:class name="ClinicalDocument"/>
+  </jaxb:bindings>
+
+</jaxb:bindings>

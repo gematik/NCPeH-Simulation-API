@@ -1,7 +1,7 @@
 resourcePackages:
   - "de.gematik.ncpeh.api"
 modelConverterClasses:
-  - "de.gematik.ncpeh.util.NcpehApiModelResolver"
+  - "de.gematik.ncpeh.build.NcpehApiModelResolver"
 openAPI31: false # there seems to be a bug in Swagger or Jackson, preventing the processing of java.util.Map, when using the 3.1 OpenApi spec version.
 openAPI:
   info:

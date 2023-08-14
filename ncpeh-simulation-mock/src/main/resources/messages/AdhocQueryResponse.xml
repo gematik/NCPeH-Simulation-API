@@ -1,6 +1,6 @@
 <ns3:AdhocQueryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success"	xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"	xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
 	<RegistryObjectList>
-		<ExtrinsicObject home="urn:oid:2.16.17.710.860.1000.990.1" id="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" lid="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1" status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+		<ExtrinsicObject home="urn:oid:1.2.276.0.76.4.291" id="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" lid="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1" status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
 			<Slot name="creationTime">
 				<ValueList>
 					<Value>20170914133309</Value>
@@ -19,6 +19,11 @@
 			<Slot name="languageCode">
 				<ValueList>
 					<Value>de-DE</Value>
+				</ValueList>
+			</Slot>
+			<Slot name="size">
+				<ValueList>
+					<Value>54321</Value>
 				</ValueList>
 			</Slot>
 			<Name>
@@ -88,18 +93,18 @@
 					<LocalizedString value="Not Used"/>
 				</Name>
 			</Classification>
-			<ExternalIdentifier id="urn:uuid:f0eeb7ce-7b37-4e33-954f-2ca7b8072551" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="X114428538^^^&amp;2.16.17.710.860.1000.990.1&amp;ISO">
+			<ExternalIdentifier id="urn:uuid:f0eeb7ce-7b37-4e33-954f-2ca7b8072551" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
 			</ExternalIdentifier>
-			<ExternalIdentifier id="urn:uuid:9b7f4301-9991-4fc7-a7b1-9a3ae59dff11" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.1">
+			<ExternalIdentifier id="urn:uuid:9b7f4301-9991-4fc7-a7b1-9a3ae59dff11" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.2">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.uniqueId"/>
 				</Name>
 			</ExternalIdentifier>
 		</ExtrinsicObject>
-		<ExtrinsicObject home="urn:oid:2.16.17.710.860.1000.990.1" id="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" lid="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1" status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+		<ExtrinsicObject home="urn:oid:1.2.276.0.76.4.291" id="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" lid="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" mimeType="application/pdf" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1" status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
 			<Slot name="creationTime">
 				<ValueList>
 					<Value>20170914133309</Value>
@@ -118,6 +123,11 @@
 			<Slot name="languageCode">
 				<ValueList>
 					<Value>en-GB</Value>
+				</ValueList>
+			</Slot>
+			<Slot name="size">
+				<ValueList>
+					<Value>12345</Value>
 				</ValueList>
 			</Slot>
 			<Name>
@@ -187,12 +197,12 @@
 					<LocalizedString value="Not Used"/>
 				</Name>
 			</Classification>
-			<ExternalIdentifier id="urn:uuid:f7383a55-7aa9-4dec-9b6e-73e72461ee51" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="X114428538^^^&amp;2.16.17.710.860.1000.990.1&amp;ISO">
+			<ExternalIdentifier id="urn:uuid:f7383a55-7aa9-4dec-9b6e-73e72461ee51" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
 			</ExternalIdentifier>
-			<ExternalIdentifier id="urn:uuid:199425df-d4f8-41a1-85a7-e49307c8abe3" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.2">
+			<ExternalIdentifier id="urn:uuid:199425df-d4f8-41a1-85a7-e49307c8abe3" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.1">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.uniqueId"/>
 				</Name>

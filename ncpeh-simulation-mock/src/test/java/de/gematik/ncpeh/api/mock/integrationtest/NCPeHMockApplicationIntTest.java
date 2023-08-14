@@ -18,7 +18,7 @@ package de.gematik.ncpeh.api.mock.integrationtest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +31,7 @@ class NCPeHMockApplicationIntTest {
 
   @Test
   void testMain() {
-    var jsonProvider = assertDoesNotThrow(() -> context.getBean(JacksonJaxbJsonProvider.class));
+    var jsonProvider = assertDoesNotThrow(() -> context.getBean(JacksonJsonProvider.class));
     assertNotNull(jsonProvider);
   }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.gematik.ncpeh.util;
+package de.gematik.ncpeh.build;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

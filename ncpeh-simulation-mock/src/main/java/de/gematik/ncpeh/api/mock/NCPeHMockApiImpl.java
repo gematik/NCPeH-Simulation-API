@@ -18,13 +18,14 @@ package de.gematik.ncpeh.api.mock;
 
 import de.gematik.ncpeh.api.NcpehSimulatorApi;
 import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
+import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder;
 import de.gematik.ncpeh.api.mock.builder.SimulatorCommunicationDataBuilder;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,11 +59,15 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
 
   @Override
   public Response retrieveDocument(RetrieveDocumentRequest request) {
+    var iheMsgBuilder = new RetrieveDocumentMessagesBuilder().useDataFrom(request);
+
     return okResponseBuilder()
         .entity(
             SimulatorCommunicationDataBuilder.newInstance()
-                .requestMessage(HttpMessageFactory.buildStandardRetrieveDocumentRequest())
-                .responseMessage(HttpMessageFactory.buildStandardRetrieveDocumentResponse())
+                .requestMessage(
+                    HttpMessageFactory.buildRetrieveDocumentRequest(iheMsgBuilder.buildRequest()))
+                .responseMessage(
+                    HttpMessageFactory.buildRetrieveDocumentResponse(iheMsgBuilder.buildResponse()))
                 .build())
         .build();
   }

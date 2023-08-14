@@ -30,7 +30,7 @@ class HttpMessageFactoryIntTest {
     var result =
         assertDoesNotThrow(
             () ->
-                HttpMessageFactory.readFileContentFromPath(
+                HttpMessageFactory.readUTF8FileContentFromPath(
                     HttpMessageFactory.MESSAGES_FOLDER
                         + HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
 

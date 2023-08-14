@@ -2,10 +2,20 @@
 
 # Release notes NCPeH-Simulation-API
 
+## Release 1.0.3
+
+### added
+- Mock now supports CDA 1 & CDA 3 Patient Summary
+- Third module ncpeh-simulation-ehdsi-model to generate Java classes for Patient Summary and Clinical Document from HL7v3 schema files
+
+### changed
+- For API definition switched from javax to jakarta
+- Mock: When building the messages for the response of the retrieveDocument operation, it actually uses the data, which where provided in the request
+
 ## Release 1.0.2
 
 ### fixed
-- Bug which prevented the ncpeh-simualtion-mock from starting
+- Bug which prevented the ncpeh-simulation-mock from starting
 - Default value for oidAssigningAuthority in the PatientId
 
 ### added

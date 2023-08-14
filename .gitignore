@@ -2,4 +2,5 @@
 **/logs
 *.iml
 **/*.jar
+**/*.log
 *.jenkinsfile

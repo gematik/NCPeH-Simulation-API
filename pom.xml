@@ -24,10 +24,11 @@
   <packaging>pom</packaging>
   <modules>
     <module>ncpeh-simulation-td-api</module>
+    <module>ncpeh-simulation-ehdsi-model</module>
     <module>ncpeh-simulation-mock</module>
   </modules>
   <groupId>de.gematik.api</groupId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <description>API definition for the trigger interface of the NCPeH simulation</description>
   <url>https://github.com/gematik/NCPeH-Simulation-API</url>
 
@@ -55,6 +56,11 @@
       <dependency>
         <groupId>de.gematik.api</groupId>
         <artifactId>ncpeh-simulation-td-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>de.gematik.api</groupId>
+        <artifactId>ncpeh-simulation-ehdsi-model</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!-- TODO: Remove once the log4j version in the Gematik parent is fixed-->

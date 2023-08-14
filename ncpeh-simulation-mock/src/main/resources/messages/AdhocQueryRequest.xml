@@ -1,5 +1,5 @@
 <ns3:AdhocQueryRequest xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
-	<ResponseOption returnComposedObjects="true" returnType="LeafClass"/>
+	<ns3:ResponseOption returnComposedObjects="true" returnType="LeafClass"/>
 	<AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d">
 		<Slot name="$XDSDocumentEntryPatientId">
 			<ValueList>

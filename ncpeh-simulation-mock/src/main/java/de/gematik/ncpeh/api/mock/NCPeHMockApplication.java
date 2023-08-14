@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -42,17 +42,17 @@ public class NCPeHMockApplication {
    * Create the JsonProvider as Bean, which is then used to serialize and deserialize the data,
    * which are processed at the implemented API interface ({@link NCPeHMockApiImpl}).
    *
-   * @return {@link JacksonJaxbJsonProvider}
+   * @return {@link JacksonJsonProvider}
    */
   @Bean
-  public JacksonJaxbJsonProvider jsonProvider() {
+  public JacksonJsonProvider jsonProvider() {
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setSerializationInclusion(Include.NON_EMPTY);
     objectMapper.setDefaultPropertyInclusion(Include.NON_DEFAULT);
     objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     objectMapper.registerModule(new JavaTimeModule());
 
-    final JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+    final JacksonJsonProvider provider = new JacksonJsonProvider();
     provider.setMapper(objectMapper);
     return provider;
   }

@@ -21,7 +21,7 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,21 +31,33 @@
     <yaml.directory>${project.build.directory}/generated-sources/resources/openapi</yaml.directory>
     <yaml.zip.path>${project.build.directory}/${project.artifactId}-yaml.zip</yaml.zip.path>
     <yaml.filename>NCPeH_TriggerIF</yaml.filename>
-    <swagger.version>2.2.7</swagger.version>
+    <swagger.version>2.2.14</swagger.version>
     <api.config.dir>${project.build.directory}/config</api.config.dir>
     <api.config.filename>api_configuration.yaml</api.config.filename>
+    <jar.excluded.source>de/gematik/ncpeh/build/**</jar.excluded.source>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>jakarta.ws.rs</groupId>
       <artifactId>jakarta.ws.rs-api</artifactId>
-      <version>2.1.6</version>
+      <version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-jaxrs2</artifactId>
+      <artifactId>swagger-annotations-jakarta</artifactId>
       <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-models-jakarta</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-integration-jakarta</artifactId>
+      <version>${swagger.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -75,12 +87,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>${jar.excluded.source}</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <quiet>true</quiet>
+          <sourceFileExcludes>
+            <sourceFileExclude>${jar.excluded.source}</sourceFileExclude>
+          </sourceFileExcludes>
         </configuration>
       </plugin>
       <plugin>
@@ -109,7 +129,7 @@
       </plugin>
       <plugin>
         <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-maven-plugin</artifactId>
+        <artifactId>swagger-maven-plugin-jakarta</artifactId>
         <version>${swagger.version}</version>
         <configuration>
           <configurationFilePath>${api.config.dir}/${api.config.filename}</configurationFilePath>
@@ -145,6 +165,16 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <!-- Exclude the Swagger-related class from the generated JAR -->
+          <excludes>
+            <exclude>${jar.excluded.source}</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

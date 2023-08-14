@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.gematik.ncpeh.util;
+package de.gematik.ncpeh.build;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;

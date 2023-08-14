@@ -1,0 +1,1078 @@
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:pharm="urn:hl7-org:pharm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<realmCode code="DE"/>
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+	<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.1.3"/>
+	<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.1" root="1.2.203.24341.1.10.60001000.4"/>
+	<code code="60591-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Pacientský souhrn">
+		<translation code="60591-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Patient summary Document">
+			<translation code="60591-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Pacientský souhrn"/>
+		</translation>
+	</code>
+	<title>Pacientský souhrn - Mračena Mrakomorová - 27.2.2023</title>
+	<effectiveTime value="20230227140856+0100"/>
+	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality" codeSystemVersion="913-20091020" displayName="Normální">
+		<translation code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality" displayName="normal">
+			<translation code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality" displayName="Normální"/>
+		</translation>
+	</confidentialityCode>
+	<languageCode code="cs-DE"/>
+	<recordTarget contextControlCode="OP" typeCode="RCT">
+		<patientRole classCode="PAT">
+			<id extension="X110405394" root="1.2.276.0.76.3.1.580.047"/>
+			<id assigningAuthorityName="BMG" extension="X110405394" root="1.2.276.0.76.3.1.580.047"/>
+			<addr use="HP">
+				<streetAddressLine>Patientstr. 1</streetAddressLine>
+				<city>Patientstadt</city>
+				<postalCode>12345</postalCode>
+				<country>D</country>
+			</addr>
+			<telecom use="MC" value="tel:+420777666555"/>
+			<telecom use="H" value="tel:+420123456789"/>
+			<telecom use="H" value="mailto:mracena.mrak@qgmail.com"/>
+			<patient classCode="PSN" determinerCode="INSTANCE">
+				<name>
+					<prefix>Prof. Dr.</prefix>
+					<given>Felicitas Anna Julia</given>
+					<family>ÐoriaTEST-ONLY</family>
+				</name>
+				<administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGender" codeSystemVersion="913-20091020" displayName="Žena">
+					<translation code="F" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGender" displayName="Female">
+						<translation code="F" codeSystem="1.2.203.24341.11.2.3" codeSystemName="administrativeGender" displayName="Žena"/>
+					</translation>
+				</administrativeGenderCode>
+				<birthTime value="19670630"/>
+				<languageCommunication>
+					<languageCode code="de-DE"/>
+				</languageCommunication>
+			</patient>
+		</patientRole>
+	</recordTarget>
+	<author contextControlCode="OP" typeCode="AUT">
+		<time value="20230227140856+0100"/>
+		<assignedAuthor classCode="ASSIGNED">
+			<id extension="STAPRO FE" root="1.2.203.24341.1.10.60001000.3"/>
+			<addr use="WP">
+				<streetAddressLine>Husova 2624</streetAddressLine>
+				<city>Havlíčkův Brod</city>
+				<postalCode>58022</postalCode>
+				<country>DE</country>
+			</addr>
+			<telecom use="WP" value="tel:+420569472111"/>
+			<telecom use="WP" value="mailto:nemocnice@onhb.de"/>
+			<assignedAuthoringDevice determinerCode="INSTANCE">
+				<manufacturerModelName>STAPRO</manufacturerModelName>
+				<softwareName>FONS Enterprise 1.221.52.30</softwareName>
+			</assignedAuthoringDevice>
+			<representedOrganization classCode="ORG" determinerCode="INSTANCE">
+				<id assigningAuthorityName="Všeobecná zdravotní pojišťovna ČR" extension="60001000" root="1.2.203.24341.1.10"/>
+				<name>Nemocnice Havlíčkův Brod, příspěvková organizace</name>
+				<telecom use="WP" value="tel:+420569472111"/>
+				<telecom use="WP" value="mailto:nemocnice@onhb.de"/>
+				<addr use="WP">
+					<streetAddressLine>Husova 2624</streetAddressLine>
+					<city>Havlíčkův Brod</city>
+					<postalCode>58022</postalCode>
+					<country>DE</country>
+				</addr>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian typeCode="CST">
+		<assignedCustodian classCode="ASSIGNED">
+			<representedCustodianOrganization classCode="ORG" determinerCode="INSTANCE">
+				<id assigningAuthorityName="Všeobecná zdravotní pojišťovna ČR" extension="60001000" root="1.2.203.24341.1.10"/>
+				<name>Nemocnice Havlíčkův Brod, příspěvková organizace</name>
+				<telecom use="WP" value="tel:+420569472111"/>
+				<addr use="WP">
+					<streetAddressLine>Husova 2624</streetAddressLine>
+					<city>Havlíčkův Brod</city>
+					<postalCode>58022</postalCode>
+					<country>DE</country>
+				</addr>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<legalAuthenticator contextControlCode="OP" typeCode="LA">
+		<time value="20230227140856+0100"/>
+		<signatureCode code="S"/>
+		<assignedEntity classCode="ASSIGNED">
+			<id assigningAuthorityName="Nemocnice Havlíčkův Brod, příspěvková organizace" extension="7800" root="1.2.203.24341.1.10.60001000.2"/>
+			<addr use="WP">
+				<streetName>Nemocnice Havlíčkův Brod, příspěvková organizace</streetName>
+				<streetAddressLine>Husova 2624</streetAddressLine>
+				<city>Havlíčkův Brod</city>
+				<postalCode>58022</postalCode>
+				<country>DE</country>
+			</addr>
+			<telecom use="WP" value="tel:+420569472111"/>
+			<telecom use="WP" value="mailto:nemocnice@onhb.de"/>
+			<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+				<name>
+					<given>Kristýna</given>
+					<family>Molnárová</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization classCode="ORG" determinerCode="INSTANCE">
+				<id assigningAuthorityName="Všeobecná zdravotní pojišťovna ČR" extension="60001000" root="1.2.203.24341.1.10"/>
+				<name>Nemocnice Havlíčkův Brod, příspěvková organizace</name>
+				<telecom use="WP" value="tel:+420569472111"/>
+				<telecom use="WP" value="mailto:nemocnice@onhb.de"/>
+				<addr use="WP">
+					<streetAddressLine>Husova 2624</streetAddressLine>
+					<city>Havlíčkův Brod</city>
+					<postalCode>58022</postalCode>
+					<country>DE</country>
+				</addr>
+			</representedOrganization>
+		</assignedEntity>
+	</legalAuthenticator>
+	<participant contextControlCode="OP" typeCode="IND">
+		<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.4"/>
+		<functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88"/>
+		<associatedEntity classCode="PRS">
+			<addr use="WP">
+				<streetAddressLine>Thomayerova 403/4</streetAddressLine>
+				<city>Říčany</city>
+				<postalCode>25101</postalCode>
+				<country>DE</country>
+			</addr>
+			<telecom use="MC" value="tel:+420777888999"/>
+			<telecom use="WP" value="mailto:lekar@qgmail.com"/>
+			<associatedPerson classCode="PSN" determinerCode="INSTANCE">
+				<name>
+					<given>.</given>
+					<family>MUDr. Ludmila Lékařská</family>
+				</name>
+			</associatedPerson>
+		</associatedEntity>
+	</participant>
+	<participant contextControlCode="OP" typeCode="IND">
+		<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.4"/>
+		<associatedEntity classCode="NOK">
+			<code code="CHILD" codeSystem="2.16.840.1.113883.5.111" codeSystemName="RoleCode" codeSystemVersion="913-20091020" displayName="dítě">
+				<translation code="CHILD" codeSystem="2.16.840.1.113883.5.111" codeSystemName="RoleCode" displayName="Child">
+					<translation code="CHILD" codeSystem="2.16.840.1.113883.5.111" codeSystemName="RoleCode" displayName="Dítě"/>
+				</translation>
+			</code>
+			<addr use="HP">
+				<streetAddressLine>Trmalova 64</streetAddressLine>
+				<city>Říčany</city>
+				<postalCode>25101</postalCode>
+				<country>DE</country>
+			</addr>
+			<telecom use="MC" value="tel:+420666555444"/>
+			<telecom use="H" value="mailto:syn@qgmail.com"/>
+			<associatedPerson classCode="PSN" determinerCode="INSTANCE">
+				<name>
+					<given>.</given>
+					<family>Merlin Mrakomor</family>
+				</name>
+			</associatedPerson>
+		</associatedEntity>
+	</participant>
+	<documentationOf typeCode="DOC">
+		<serviceEvent classCode="PCPR" moodCode="EVN">
+			<effectiveTime>
+				<high value="20230227140815+0100"/>
+			</effectiveTime>
+		</serviceEvent>
+	</documentationOf>
+	<relatedDocument typeCode="XFRM">
+		<parentDocument moodCode="EVN">
+			<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226" root="1.2.203.24341.1.10.60001000.4"/>
+		</parentDocument>
+	</relatedDocument>
+	<component>
+		<structuredBody classCode="DOCBODY" moodCode="EVN">
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.3"/>
+					<templateId root="2.16.840.1.113883.10.20.1.8"/>
+					<code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Léková anamnéza (volným textem)">
+						<translation code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of Medication use Narrative">
+							<translation code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Léková anamnéza"/>
+						</translation>
+					</code>
+					<title>Léková anamnéza</title>
+					<text mediaType="text/plain">
+						<table>
+							<thead>
+								<tr>
+									<th>Datum od</th>
+									<th>Datum do</th>
+									<th>Název léku (Kód SÚKL)</th>
+									<th>Síla</th>
+									<th>Forma</th>
+									<th>Rozpis</th>
+									<th>Kód ATC</th>
+									<th>Název ATC</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ID="drug-0">
+									<td ID="drug-0-startdate">2023-02-03 08:29</td>
+									<td ID="drug-0-enddate"/>
+									<td ID="drug-0-name">TARDYFERON (0014712)</td>
+									<td ID="drug-0-strength">80MG</td>
+									<td ID="drug-0-form">Tableta s řízeným uvolňováním</td>
+									<td ID="drug-0-dosage">1-1-1</td>
+									<td ID="drug-0-atccode">B03AA07</td>
+									<td ID="drug-0-atcname">síran železnatý</td>
+								</tr>
+								<tr ID="drug-1">
+									<td ID="drug-1-startdate">2023-02-03 08:29</td>
+									<td ID="drug-1-enddate"/>
+									<td ID="drug-1-name">BETALOC ZOK (0231689)</td>
+									<td ID="drug-1-strength">100MG</td>
+									<td ID="drug-1-form">Tableta s prodlouženým uvolňováním</td>
+									<td ID="drug-1-dosage">1-0-0</td>
+									<td ID="drug-1-atccode">C07AB02</td>
+									<td ID="drug-1-atcname">metoprolol</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<substanceAdministration classCode="SBADM" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.4"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+							<templateId root="2.16.840.1.113883.10.20.1.24"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.MedicationEntry.0" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="DRUG"/>
+							<text>
+								<reference value="#drug-0"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime xsi:type="IVL_TS">
+								<low value="20230203082900+0100"/>
+							</effectiveTime>
+							<effectiveTime nullFlavor="UNK"/>
+							<consumable typeCode="CSM">
+								<manufacturedProduct classCode="MANU">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.31"/>
+									<manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+										<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.32"/>
+										<code code="0014712" codeSystem="1.2.203.24341.11.2.7.1" codeSystemName="Databáze léčivých přípravků" displayName="TARDYFERON">
+											<originalText>
+												<reference value="#drug-0-name"/>
+											</originalText>
+										</code>
+										<name>TARDYFERON</name>
+										<pharm:desc>80MG</pharm:desc>
+										<pharm:formCode code="10227000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" codeSystemVersion="2023-01-03" displayName="Tableta s řízeným uvolňováním">
+											<originalText>
+												<reference value="#drug-0-form"/>
+											</originalText>
+											<pharm:translation xmlns:pharm="urn:hl7-org:v3" code="10227000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" displayName="Modified-release tablet">
+												<pharm:translation code="10227000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" displayName="Tableta s řízeným uvolňováním"/>
+											</pharm:translation>
+										</pharm:formCode>
+										<pharm:asSpecializedKind classCode="GEN">
+											<pharm:generalizedMaterialKind classCode="MMAT" determinerCode="KIND">
+												<pharm:code code="B03AA07" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" codeSystemVersion="2023-01" displayName="síran železnatý" xsi:type="CE">
+													<originalText>
+														<reference value="#drug-0-atcname"/>
+													</originalText>
+													<pharm:translation xmlns:pharm="urn:hl7-org:v3" code="B03AA07" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" displayName="ferrous sulfate">
+														<pharm:translation code="B03AA07" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" displayName="síran železnatý"/>
+													</pharm:translation>
+												</pharm:code>
+											</pharm:generalizedMaterialKind>
+										</pharm:asSpecializedKind>
+									</manufacturedMaterial>
+								</manufacturedProduct>
+							</consumable>
+						</substanceAdministration>
+					</entry>
+					<entry>
+						<substanceAdministration classCode="SBADM" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.4"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+							<templateId root="2.16.840.1.113883.10.20.1.24"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.MedicationEntry.1" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="DRUG"/>
+							<text>
+								<reference value="#drug-1"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime xsi:type="IVL_TS">
+								<low value="20230203082900+0100"/>
+							</effectiveTime>
+							<effectiveTime nullFlavor="UNK"/>
+							<consumable typeCode="CSM">
+								<manufacturedProduct classCode="MANU">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.31"/>
+									<manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+										<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.32"/>
+										<code code="0231689" codeSystem="1.2.203.24341.11.2.7.1" codeSystemName="Databáze léčivých přípravků" displayName="BETALOC ZOK">
+											<originalText>
+												<reference value="#drug-1-name"/>
+											</originalText>
+										</code>
+										<name>BETALOC ZOK</name>
+										<pharm:desc>100MG</pharm:desc>
+										<pharm:formCode code="10226000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" codeSystemVersion="2023-01-03" displayName="Tableta s prodlouženým uvolňováním">
+											<originalText>
+												<reference value="#drug-1-form"/>
+											</originalText>
+											<pharm:translation xmlns:pharm="urn:hl7-org:v3" code="10226000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" displayName="Prolonged-release tablet">
+												<pharm:translation code="10226000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" displayName="Tableta s prodlouženým uvolňováním"/>
+											</pharm:translation>
+										</pharm:formCode>
+										<pharm:asSpecializedKind classCode="GEN">
+											<pharm:generalizedMaterialKind classCode="MMAT" determinerCode="KIND">
+												<pharm:code code="C07AB02" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" codeSystemVersion="2023-01" displayName="metoprolol" xsi:type="CE">
+													<originalText>
+														<reference value="#drug-1-atcname"/>
+													</originalText>
+												</pharm:code>
+											</pharm:generalizedMaterialKind>
+										</pharm:asSpecializedKind>
+									</manufacturedMaterial>
+								</manufacturedProduct>
+							</consumable>
+						</substanceAdministration>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.5"/>
+					<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.CodedResultsSection" root="1.2.203.24341.1.10.60001000.4"/>
+					<code code="30954-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Výsledky diagnostických/laboratorních vyšetření (volným textem)">
+						<translation code="30954-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Relevant diagnostic tests/laboratory data Narrative">
+							<translation code="30954-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Výsledky diagnostických/laboratorních vyšetření"/>
+						</translation>
+					</code>
+					<title>Výsledky diagnostických/laboratorních vyšetření</title>
+					<text mediaType="text/plain">
+						<table>
+							<thead>
+								<tr>
+									<th>Datum testu</th>
+									<th>Krevní skupina</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ID="bloodGroup">
+									<td>13.1.2023 10:52:46</td>
+									<td>A1 Rh(D) pozitivní</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.6"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13"/>
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.25"/>
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.20"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.CodedResultsEntry.0" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="34530-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="ABO and Rh group panel - Blood"/>
+							<text>
+								<reference value="#bloodGroup"/>
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20230113"/>
+							<value codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED Clinical Terms" nullFlavor="OTH" xsi:type="CE">
+								<translation code="A1+" codeSystem="1.2.203.24341.11.2.4.1" codeSystemName="LUKSAB0" displayName="A1 Rh(D) pozitivní"/>
+							</value>
+						</observation>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="2.16.840.1.113883.10.20.1.2"/>
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.13"/>
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.12"/>
+					<code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Alergie a nežádoucí reakce">
+						<translation code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Allergies and adverse reactions Document">
+							<translation code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Alergie a nežádoucí reakce"/>
+						</translation>
+					</code>
+					<title>Alergie a intolerance</title>
+					<text mediaType="text/plain">
+						<table>
+							<thead>
+								<tr>
+									<th>Alergen</th>
+									<th>Upřesnění alergenu</th>
+									<th>Projev reakce</th>
+									<th>Stupeň závažnosti</th>
+									<th>Datum zjištění</th>
+									<th>Datum ukončení</th>
+									<th>Typ alergie</th>
+									<th>Poznámka</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ID="allergy-0">
+									<td ID="allergy-0-allergen">Meloun</td>
+									<td/>
+									<td ID="allergy-0-reaction">Atopická dermatitida</td>
+									<td ID="allergy-0-severity">Život ohrožující</td>
+									<td>1995-07-13</td>
+									<td>2000-07-13</td>
+									<td ID="allergy-0-type">Alergická dispozice</td>
+									<td/>
+								</tr>
+								<tr ID="allergy-1">
+									<td ID="allergy-1-allergen">Ořech</td>
+									<td/>
+									<td ID="allergy-1-reaction">Astma</td>
+									<td ID="allergy-1-severity">Středně těžký/á</td>
+									<td/>
+									<td/>
+									<td ID="allergy-1-type">Alergická dispozice</td>
+									<td/>
+								</tr>
+								<tr ID="allergy-2">
+									<td ID="allergy-2-allergen">Latex</td>
+									<td/>
+									<td ID="allergy-2-reaction">Kopřivka</td>
+									<td ID="allergy-2-severity">Mírný/á až střední</td>
+									<td>1990-01-10</td>
+									<td/>
+									<td ID="allergy-2-type">Alergická dispozice</td>
+									<td>Kopřivka</td>
+								</tr>
+								<tr ID="allergy-3">
+									<td ID="allergy-3-allergen">kyselina acetylsalicylová</td>
+									<td>Kyselina acetylsalicyová</td>
+									<td ID="allergy-3-reaction">Astma</td>
+									<td ID="allergy-3-severity">Mírný/á</td>
+									<td>1994-03-10</td>
+									<td/>
+									<td ID="allergy-3-type">Alergická dispozice</td>
+									<td>Astma</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.16"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<statusCode code="completed"/>
+							<effectiveTime>
+								<low value="19950713"/>
+								<high value="20000713"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.17"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.18"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/>
+									<code code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2021-09-30" displayName="Alergická dispozice">
+										<originalText>
+											<reference value="#allergy-0-type"/>
+										</originalText>
+										<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Allergic disposition">
+											<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Alergická dispozice"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#allergy-0"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="19950713"/>
+										<high value="20000713"/>
+									</effectiveTime>
+									<participant contextControlCode="OP" typeCode="CSM">
+										<participantRole classCode="MANU">
+											<playingEntity classCode="MMAT" determinerCode="INSTANCE">
+												<code code="260177005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Meloun">
+													<originalText>
+														<reference value="#allergy-0-allergen"/>
+													</originalText>
+													<translation code="260177005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Melon">
+														<translation code="260177005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Meloun"/>
+													</translation>
+												</code>
+											</playingEntity>
+										</participantRole>
+									</participant>
+									<entryRelationship typeCode="MFST">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+											<templateId root="2.16.840.1.113883.10.20.1.28"/>
+											<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.AllergiesEntry.0.Reaction" root="1.2.203.24341.1.10.60001000.4"/>
+											<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+											<text>
+												<reference value="#allergy-0-reaction"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="24079001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Atopická dermatitida" xsi:type="CD"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship inversionInd="false" typeCode="SUBJ">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.8"/>
+											<templateId root="2.16.840.1.113883.10.20.1.55"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1"/>
+											<code code="SEV" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Severity"/>
+											<text>
+												<reference value="#allergy-0-severity"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="442452003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Život ohrožující" xsi:type="CD">
+												<translation code="442452003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Life threatening severity">
+													<translation code="442452003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Život ohrožující"/>
+												</translation>
+											</value>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.16"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<statusCode code="active"/>
+							<effectiveTime nullFlavor="NI"/>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.17"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.18"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/>
+									<code code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2021-09-30" displayName="Alergická dispozice">
+										<originalText>
+											<reference value="#allergy-1-type"/>
+										</originalText>
+										<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Allergic disposition">
+											<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Alergická dispozice"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#allergy-1"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime nullFlavor="NI"/>
+									<participant contextControlCode="OP" typeCode="CSM">
+										<participantRole classCode="MANU">
+											<playingEntity classCode="MMAT" determinerCode="INSTANCE">
+												<code code="13577000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Ořech">
+													<originalText>
+														<reference value="#allergy-1-allergen"/>
+													</originalText>
+													<translation code="13577000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Nut">
+														<translation code="13577000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Ořech"/>
+													</translation>
+												</code>
+											</playingEntity>
+										</participantRole>
+									</participant>
+									<entryRelationship typeCode="MFST">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+											<templateId root="2.16.840.1.113883.10.20.1.28"/>
+											<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.AllergiesEntry.1.Reaction" root="1.2.203.24341.1.10.60001000.4"/>
+											<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+											<text>
+												<reference value="#allergy-1-reaction"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="195967001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Astma" xsi:type="CD"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship inversionInd="false" typeCode="SUBJ">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.8"/>
+											<templateId root="2.16.840.1.113883.10.20.1.55"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1"/>
+											<code code="SEV" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Severity"/>
+											<text>
+												<reference value="#allergy-1-severity"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="6736007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Středně těžký/á" xsi:type="CD">
+												<translation code="6736007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Moderate">
+													<translation code="6736007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Středně těžký/á"/>
+												</translation>
+											</value>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.16"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="19900110"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.17"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.18"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/>
+									<code code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2021-09-30" displayName="Alergická dispozice">
+										<originalText>
+											<reference value="#allergy-2-type"/>
+										</originalText>
+										<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Allergic disposition">
+											<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Alergická dispozice"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#allergy-2"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="19900110"/>
+									</effectiveTime>
+									<participant contextControlCode="OP" typeCode="CSM">
+										<participantRole classCode="MANU">
+											<playingEntity classCode="MMAT" determinerCode="INSTANCE">
+												<code code="111088007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Latex">
+													<originalText>
+														<reference value="#allergy-2-allergen"/>
+													</originalText>
+												</code>
+											</playingEntity>
+										</participantRole>
+									</participant>
+									<entryRelationship typeCode="MFST">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+											<templateId root="2.16.840.1.113883.10.20.1.28"/>
+											<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.AllergiesEntry.2.Reaction" root="1.2.203.24341.1.10.60001000.4"/>
+											<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+											<text>
+												<reference value="#allergy-2-reaction"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="126485001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Kopřivka" xsi:type="CD"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship inversionInd="false" typeCode="SUBJ">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.8"/>
+											<templateId root="2.16.840.1.113883.10.20.1.55"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1"/>
+											<code code="SEV" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Severity"/>
+											<text>
+												<reference value="#allergy-2-severity"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="371923003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Mírný/á až střední" xsi:type="CD">
+												<translation code="371923003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Mild to moderate">
+													<translation code="371923003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Mírný/á až střední"/>
+												</translation>
+											</value>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.16"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="19940310"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.17"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.18"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/>
+									<code code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2021-09-30" displayName="Alergická dispozice">
+										<originalText>
+											<reference value="#allergy-3-type"/>
+										</originalText>
+										<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Allergic disposition">
+											<translation code="609328004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Alergická dispozice"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#allergy-3"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="19940310"/>
+									</effectiveTime>
+									<participant contextControlCode="OP" typeCode="CSM">
+										<participantRole classCode="MANU">
+											<playingEntity classCode="MMAT" determinerCode="INSTANCE">
+												<code code="N02BA01" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" codeSystemVersion="2023-01" displayName="kyselina acetylsalicylová">
+													<originalText>
+														<reference value="#allergy-3-allergen"/>
+													</originalText>
+													<translation code="N02BA01" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" displayName="acetylsalicylic acid">
+														<translation code="N02BA01" codeSystem="2.16.840.1.113883.6.73" codeSystemName="Anatomical Therapeutic Chemical" displayName="kyselina acetylsalicylová"/>
+													</translation>
+												</code>
+												<name>Kyselina acetylsalicyová</name>
+											</playingEntity>
+										</participantRole>
+									</participant>
+									<entryRelationship typeCode="MFST">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+											<templateId root="2.16.840.1.113883.10.20.1.28"/>
+											<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.AllergiesEntry.3.Reaction" root="1.2.203.24341.1.10.60001000.4"/>
+											<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+											<text>
+												<reference value="#allergy-3-reaction"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="195967001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Astma" xsi:type="CD"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship inversionInd="false" typeCode="SUBJ">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.8"/>
+											<templateId root="2.16.840.1.113883.10.20.1.55"/>
+											<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1"/>
+											<code code="SEV" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Severity"/>
+											<text>
+												<reference value="#allergy-3-severity"/>
+											</text>
+											<statusCode code="completed"/>
+											<value code="255604002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Mírný/á" xsi:type="CD">
+												<translation code="255604002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Mild">
+													<translation code="255604002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Mírný/á"/>
+												</translation>
+											</value>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.11"/>
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.12"/>
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.11"/>
+					<code code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Anamnéza provedených operací a jiných výkonů">
+						<translation code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of Procedures Document">
+							<translation code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Anamnéza provedených operací a jiných výkonů"/>
+						</translation>
+					</code>
+					<title>Operační zákroky</title>
+					<text ID="CodedListOfSurgeries" mediaType="text/plain">No information about past history of procedures</text>
+					<entry>
+						<procedure classCode="PROC" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.26"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.19"/>
+							<templateId root="2.16.840.1.113883.10.20.1.29"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.HistoryOfProceduresEntry" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="no-procedure-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" codeSystemVersion="0.2.0" displayName="Žádné informace o provedených výkonech">
+								<translation code="no-procedure-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" displayName="No information about past history of procedures">
+									<translation code="no-procedure-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" displayName="Žádné informace o provedených výkonech"/>
+								</translation>
+							</code>
+							<text>
+								<reference value="#CodedListOfSurgeries"/>
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime nullFlavor="NI"/>
+						</procedure>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.9"/>
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.6"/>
+					<templateId root="2.16.840.1.113883.10.20.1.11"/>
+					<code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Přehled obtíží (problémů)">
+						<translation code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Problem list - Reported">
+							<translation code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Přehled obtíží (problémů)"/>
+						</translation>
+					</code>
+					<title>Současné zdravotní problémy a diagnózy</title>
+					<text mediaType="text/plain">
+						<table>
+							<thead>
+								<tr>
+									<th>Datum zjištění</th>
+									<th>Kód MKN-10</th>
+									<th>Název</th>
+									<th>Poznámka</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ID="activeProblem-0">
+									<td>1994-10-03</td>
+									<td>J450</td>
+									<td ID="activeProblem-0-name">Astma převážně alergické</td>
+									<td ID="activeProblem-0-description"/>
+								</tr>
+								<tr ID="activeProblem-1">
+									<td>1997-10-06</td>
+									<td>E890</td>
+									<td ID="activeProblem-1-name">Hypotyreóza po operačních a jiných výkonech</td>
+									<td ID="activeProblem-1-description"/>
+								</tr>
+								<tr ID="activeProblem-2">
+									<td>2013-01-09</td>
+									<td>I498</td>
+									<td ID="activeProblem-2-name">Jiné určené srdeční arytmie</td>
+									<td ID="activeProblem-2-description"/>
+								</tr>
+								<tr ID="activeProblem-3">
+									<td>2023-01-13</td>
+									<td>I7020</td>
+									<td ID="activeProblem-3-name">Ateroskleróza končetinových tepen, bez gangrény</td>
+									<td ID="activeProblem-3-description"/>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.15"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.0" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<text>
+								<reference value="#activeProblem-0"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="19941003"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.0.Problem" root="1.2.203.24341.1.10.60001000.4"/>
+									<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Zdravotní problém">
+										<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Problem">
+											<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#activeProblem-0-description"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="19941003"/>
+									</effectiveTime>
+									<value code="J45.0" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" codeSystemVersion="2016" displayName="Astma převážně alergické" xsi:type="CD">
+										<originalText>
+											<reference value="#activeProblem-0-name"/>
+										</originalText>
+										<translation code="J45.0" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" displayName="Predominantly allergic asthma">
+											<translation code="J450" codeSystem="1.2.203.24341.11.2.1" codeSystemName="MKN-10" displayName="Astma převážně alergické"/>
+										</translation>
+									</value>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.15"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.1" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<text>
+								<reference value="#activeProblem-1"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="19971006"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.1.Problem" root="1.2.203.24341.1.10.60001000.4"/>
+									<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Zdravotní problém">
+										<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Problem">
+											<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#activeProblem-1-description"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="19971006"/>
+									</effectiveTime>
+									<value code="E89.0" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" codeSystemVersion="2016" displayName="Hypotyreóza po operačních a jiných výkonech" xsi:type="CD">
+										<originalText>
+											<reference value="#activeProblem-1-name"/>
+										</originalText>
+										<translation code="E89.0" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" displayName="Postprocedural hypothyroidism">
+											<translation code="E890" codeSystem="1.2.203.24341.11.2.1" codeSystemName="MKN-10" displayName="Hypotyreóza po operačních a jiných výkonech"/>
+										</translation>
+									</value>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.15"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.2" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<text>
+								<reference value="#activeProblem-2"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="20130109"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.2.Problem" root="1.2.203.24341.1.10.60001000.4"/>
+									<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Zdravotní problém">
+										<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Problem">
+											<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#activeProblem-2-description"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="20130109"/>
+									</effectiveTime>
+									<value code="I49.8" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" codeSystemVersion="2016" displayName="Jiné určené srdeční arytmie" xsi:type="CD">
+										<originalText>
+											<reference value="#activeProblem-2-name"/>
+										</originalText>
+										<translation code="I49.8" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" displayName="Other specified cardiac arrhythmias">
+											<translation code="I498" codeSystem="1.2.203.24341.11.2.1" codeSystemName="MKN-10" displayName="Jiné určené srdeční arytmie"/>
+										</translation>
+									</value>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<entry>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.15"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/>
+							<templateId root="2.16.840.1.113883.10.20.1.27"/>
+							<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.3" root="1.2.203.24341.1.10.60001000.4"/>
+							<code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+							<text>
+								<reference value="#activeProblem-3"/>
+							</text>
+							<statusCode code="active"/>
+							<effectiveTime>
+								<low value="20230113"/>
+							</effectiveTime>
+							<entryRelationship inversionInd="false" typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.7"/>
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+									<templateId root="2.16.840.1.113883.10.20.1.28"/>
+									<id extension="ec24dc82-e8f4-40ce-a5c8-e060305ca226.ActiveProblemsEntry.3.Problem" root="1.2.203.24341.1.10.60001000.4"/>
+									<code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" codeSystemVersion="2019-07-31" displayName="Zdravotní problém">
+										<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Problem">
+											<translation code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Zdravotní problém"/>
+										</translation>
+									</code>
+									<text>
+										<reference value="#activeProblem-3-description"/>
+									</text>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<low value="20230113"/>
+									</effectiveTime>
+									<value code="I70.20" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" codeSystemVersion="2016" displayName="Ateroskleróza končetinových tepen, bez gangrény" xsi:type="CD">
+										<originalText>
+											<reference value="#activeProblem-3-name"/>
+										</originalText>
+										<translation code="I70.20" codeSystem="1.3.6.1.4.1.12559.11.10.1.3.1.44.2" codeSystemName="ICD-10" displayName="Atherosclerosis of arteries of extremities: without gangrene">
+											<translation code="I7020" codeSystem="1.2.203.24341.11.2.1" codeSystemName="MKN-10" displayName="Ateroskleróza končetinových tepen, bez gangrény"/>
+										</translation>
+									</value>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.2.4"/>
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.5"/>
+					<templateId root="2.16.840.1.113883.10.20.1.7"/>
+					<code code="46264-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" codeSystemVersion="2.59" displayName="Zdravotní přístroje a implantáty">
+						<translation code="46264-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of medical device use">
+							<translation code="46264-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Zdravotní přístroje a implantáty"/>
+						</translation>
+					</code>
+					<title>Zařízení a implantáty</title>
+					<text ID="MedicalDevices" mediaType="text/plain">No information about device</text>
+					<entry>
+						<supply classCode="SPLY" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.3.5"/>
+							<text>
+								<reference value="#MedicalDevices"/>
+							</text>
+							<effectiveTime nullFlavor="NA" xsi:type="IVL_TS"/>
+							<participant contextControlCode="OP" typeCode="DEV">
+								<participantRole classCode="MANU">
+									<playingDevice classCode="DEV" determinerCode="INSTANCE">
+										<code code="no-device-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" codeSystemVersion="0.2.0" displayName="Žádné informace o zdravotních přístrojích a implantátech">
+											<translation code="no-device-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" displayName="No information about devices">
+												<translation code="no-device-info" codeSystem="2.16.840.1.113883.5.1150.1" codeSystemName="IPS Absent And Unknown Data" displayName="Žádné informace o zdravotních přístrojích a implantátech"/>
+											</translation>
+										</code>
+									</playingDevice>
+								</participantRole>
+							</participant>
+						</supply>
+					</entry>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

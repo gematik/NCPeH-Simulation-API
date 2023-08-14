@@ -20,9 +20,12 @@ import static de.gematik.ncpeh.api.mock.builder.Constants.*;
 
 import de.gematik.ncpeh.api.mock.http.PseudoHttpRequest;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpResponse;
+import de.gematik.ncpeh.api.mock.util.XmlUtils;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -144,6 +147,20 @@ public final class HttpMessageFactory {
     return buildHttpResponse(RETRIEVE_DOCUMENT_RESPONSE_FILE_NAME);
   }
 
+  public static PseudoHttpRequest buildRetrieveDocumentRequest(
+      @NonNull RetrieveDocumentSetRequestType request) {
+    var body = XmlUtils.marshal(request);
+
+    return buildHttpRequest(body);
+  }
+
+  public static PseudoHttpResponse buildRetrieveDocumentResponse(
+      @NonNull RetrieveDocumentSetResponseType response) {
+    var body = XmlUtils.marshal(response);
+
+    return buildHttpResponse(body);
+  }
+
   /**
    * Read the content of a file at the given path into a String.<br>
    * The encoding of the file must be UTF-8.
@@ -152,7 +169,12 @@ public final class HttpMessageFactory {
    * @return the file content as {@link String}
    */
   @SneakyThrows
-  public static String readFileContentFromPath(final String filePath) {
+  public static String readUTF8FileContentFromPath(final String filePath) {
+    return new String(readFileContentFromPath(filePath), StandardCharsets.UTF_8);
+  }
+
+  @SneakyThrows
+  public static byte[] readFileContentFromPath(String filePath) {
     var fileResource =
         Optional.ofNullable(filePath)
             .map(HttpMessageFactory::getReadableFileResource)
@@ -183,17 +205,21 @@ public final class HttpMessageFactory {
                     new FileNotFoundException(
                         "No file with path " + filePath + " found in the common locations"));
 
-    return new String(fileResource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+    return fileResource.getInputStream().readAllBytes();
   }
 
   // region private
 
   private static PseudoHttpRequest buildHttpRequest(@NonNull String bodyDataFilePath) {
+    return buildHttpRequest(readFileContentFromPath(MESSAGES_FOLDER + bodyDataFilePath));
+  }
+
+  private static PseudoHttpRequest buildHttpRequest(byte[] bodyData) {
     var httpRequest =
         new PseudoHttpRequest()
             .setMethod(HttpMethod.POST)
             .setURI(PSEUDO_URI)
-            .setRequestBody(readFileContentToOutputStream(MESSAGES_FOLDER + bodyDataFilePath));
+            .setRequestBody(toOutputStream(bodyData));
 
     var headers = httpRequest.getHeaders();
 
@@ -207,24 +233,26 @@ public final class HttpMessageFactory {
     return httpRequest;
   }
 
-  private static ByteArrayOutputStream readFileContentToOutputStream(@NonNull String filePath) {
-    var body = new ByteArrayOutputStream();
-    body.writeBytes(readFileContentFromPath(filePath).getBytes(StandardCharsets.UTF_8));
-    return body;
+  private static ByteArrayOutputStream toOutputStream(byte[] bytes) {
+    var outputStream = new ByteArrayOutputStream();
+    outputStream.writeBytes(bytes);
+    return outputStream;
   }
 
   private static PseudoHttpResponse buildHttpResponse(@NonNull String bodyDataFilePath) {
-    var body =
-        readFileContentFromPath(MESSAGES_FOLDER + bodyDataFilePath)
-            .getBytes(StandardCharsets.UTF_8);
+    var body = readFileContentFromPath(MESSAGES_FOLDER + bodyDataFilePath);
 
+    return buildHttpResponse(body);
+  }
+
+  private static PseudoHttpResponse buildHttpResponse(byte[] bodyData) {
     try (var httpResponse =
-        new PseudoHttpResponse(HttpStatus.OK).setBody(new ByteArrayInputStream(body))) {
+        new PseudoHttpResponse(HttpStatus.OK).setBody(new ByteArrayInputStream(bodyData))) {
 
       var headers = new HttpHeaders();
       headers.setContentType(APPLICATION_SOAP_XML);
       headers.setAccept(List.of(APPLICATION_SOAP_XML, MediaType.TEXT_XML));
-      headers.setContentLength(body.length);
+      headers.setContentLength(bodyData.length);
 
       return httpResponse.setHeaders(headers);
     }

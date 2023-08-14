@@ -18,6 +18,7 @@ package de.gematik.ncpeh.api.mock.builder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo;
 import java.io.FileNotFoundException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -93,7 +94,7 @@ class HttpMessageFactoryTest {
     var result =
         assertDoesNotThrow(
             () ->
-                HttpMessageFactory.readFileContentFromPath(
+                HttpMessageFactory.readUTF8FileContentFromPath(
                     HttpMessageFactory.MESSAGES_FOLDER
                         + HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
 
@@ -107,7 +108,7 @@ class HttpMessageFactoryTest {
         assertThrows(
             FileNotFoundException.class,
             () ->
-                HttpMessageFactory.readFileContentFromPath(
+                HttpMessageFactory.readUTF8FileContentFromPath(
                     HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME + ".bak"));
 
     assertTrue(
@@ -123,13 +124,34 @@ class HttpMessageFactoryTest {
     var expectedException =
         assertThrows(
             FileNotFoundException.class,
-            () -> HttpMessageFactory.readFileContentFromPath(lowestPackage));
+            () -> HttpMessageFactory.readUTF8FileContentFromPath(lowestPackage));
 
     assertTrue(expectedException.getMessage().contains(lowestPackage));
   }
 
+  @Test
+  void buildRetrieveDocumentRequestTest() {
+    var testdata = retrieveDocumentTestdata().buildRequest();
+
+    var result =
+        assertDoesNotThrow(() -> HttpMessageFactory.buildRetrieveDocumentRequest(testdata));
+
+    assertRequestProps(result);
+  }
+
+  @Test
+  void buildRetrieveDocumentResponseTest() {
+    var testdata = retrieveDocumentTestdata().buildResponse();
+
+    var result =
+        assertDoesNotThrow(() -> HttpMessageFactory.buildRetrieveDocumentResponse(testdata));
+
+    assertResponseProps(result);
+  }
+
   @SneakyThrows
   private void assertRequestProps(ClientHttpRequest httpRequest) {
+    assertNotNull(httpRequest);
     assertEquals(HttpMethod.POST, httpRequest.getMethod(), "Wrong method in HTTP request");
     assertEquals(Constants.PSEUDO_URI, httpRequest.getURI(), "Wrong URI in HTTP request");
     assertNotNull(httpRequest.getHeaders(), "No HTTP headers present in response");
@@ -139,9 +161,18 @@ class HttpMessageFactoryTest {
 
   @SneakyThrows
   private void assertResponseProps(ClientHttpResponse httpResponse) {
+    assertNotNull(httpResponse);
     assertEquals(HttpStatus.OK, httpResponse.getStatusCode(), "Wrong status in HTTP response");
     assertNotNull(httpResponse.getHeaders(), "No HTTP headers present in response");
     assertFalse(httpResponse.getHeaders().isEmpty(), "No HTTP headers present in response");
     assertNotNull(httpResponse.getBody());
+  }
+
+  private RetrieveDocumentMessagesBuilder retrieveDocumentTestdata() {
+    return new RetrieveDocumentMessagesBuilder()
+        .documentUniqueId("2.25.2350928502702" + CDALevelInfo.LEVEL_1.idMarker())
+        .additionalDocumentUniqueId("2.25.2350928502702" + CDALevelInfo.LEVEL_3.idMarker())
+        .homeCommunityId("urn:oid:2.16.17.710.850.1000.990.101")
+        .repositoryUniqueId("1.2.276.0.76.3.1.91.2");
   }
 }

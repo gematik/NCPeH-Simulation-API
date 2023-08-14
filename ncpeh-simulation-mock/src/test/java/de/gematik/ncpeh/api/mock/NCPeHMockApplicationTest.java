@@ -22,11 +22,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
 import de.gematik.ncpeh.api.mock.builder.SimulatorCommunicationDataBuilder;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
+import jakarta.ws.rs.core.MediaType;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import javax.xml.namespace.QName;
 import lombok.SneakyThrows;
 import org.apache.cxf.Bus;
@@ -129,7 +129,7 @@ class NCPeHMockApplicationTest {
     Message msg = new MessageImpl();
 
     setMessageProperties(msg, request);
-    msg.putIfAbsent(Message.HTTP_REQUEST_METHOD, request.getMethodValue());
+    msg.putIfAbsent(Message.HTTP_REQUEST_METHOD, request.getMethod().name());
     msg.setId("loggingFeatureSenderTest InMessage");
     msg.putIfAbsent(Message.REQUEST_URL, request.getURI().toString());
 
