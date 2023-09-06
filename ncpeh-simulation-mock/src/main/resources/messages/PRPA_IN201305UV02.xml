@@ -38,12 +38,12 @@
 			<ns6:responsePriorityCode code="I"/>
 			<ns6:matchCriterionList/>
 			<ns6:parameterList>
-				<ns6:livingSubjectBirthTime>
-					<ns6:value value="19670630"/>
-					<ns6:semanticsText/>
-				</ns6:livingSubjectBirthTime>
 				<ns6:livingSubjectId>
-					<ns6:value extension="X114428538"/>
+					<ns6:value root="1.2.276.0.76.3.1.580.47" extension="X114428538"/>
+					<ns6:semanticsText/>
+				</ns6:livingSubjectId>
+				<ns6:livingSubjectId>
+					<ns6:value root="1.2.276.0.76.4.298" extension="A2C4E6"/>
 					<ns6:semanticsText/>
 				</ns6:livingSubjectId>
 			</ns6:parameterList>

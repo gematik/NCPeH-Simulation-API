@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2023 gematik GmbH
- * 
- * Licensed under the Apache License, Version 2.0 (the License);
+ * Copyright 2023 gematik GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -21,7 +21,6 @@ import de.gematik.ncpeh.api.common.EuCountryCode;
 import de.gematik.ncpeh.api.common.PatientId;
 import de.gematik.ncpeh.api.common.SubjectId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
 import java.util.Set;
 
 public record IdentifyPatientRequest(
@@ -37,10 +36,19 @@ public record IdentifyPatientRequest(
     @JsonProperty(required = true)
         @Schema(
             description =
-                "Definiert den Wert des Geburtsdatums, mit dem im XCPD-Request in der queryByParameter Liste im Element "
-                    + "'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectBirthTime/value' "
-                    + "das Attribute 'value' befüllt werden muss.")
-        LocalDate birthDateTime,
+                "Der Wert repräsentiert den Zugriffscode, den der Versicherte dem LE-EU vor Ort übergibt. "
+                    + "Aktuell ist es ein 6stelliger alphanumerischer Code: [A-Za-z0-9]{6}. "
+                    + "Er ist in das Attribut \"extension\" eines Elementes PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value einzusetzen.",
+            maxLength = 20)
+        String accessCode,
+    @JsonProperty(defaultValue = "1.2.276.0.76.4.298")
+        @Schema(
+            description =
+                "Der Wert repräsentiert die OID der Assigning Authority zum AccessCode. "
+                    + "Er ist in das Attribut \"root\" des Elementes PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value einzusetzen.",
+            defaultValue = "1.2.276.0.76.4.298",
+            maxLength = 50)
+        String accessCodeAssigningAuthority,
     @JsonProperty(defaultValue = "1.2.276.0.76.4.291")
         @Schema(
             defaultValue = "1.2.276.0.76.4.291",
@@ -65,7 +73,7 @@ public record IdentifyPatientRequest(
                     + "so ist pro Wertepaar ein Listenelement 'value' im Element "
                     + "'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID' einzufügen"
                     + "und mit den angegebenen Werten zu befüllen. "
-                    + "Dies geschieht zusätzlich zum value-Eintrag für die KVNR in der livingSubjectID (siehe patientId).")
+                    + "Dies geschieht zusätzlich zu den value-Einträgen für die KVNR und den AccessCode in der livingSubjectID.")
         Set<SubjectId> additionalLivingSubjectId,
     @JsonProperty
         @Schema(

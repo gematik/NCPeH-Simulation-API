@@ -2,6 +2,18 @@
 
 # Release notes NCPeH-Simulation-API
 
+## Release 1.5.0
+
+### added
+- Security Policy description in file SECURITY.MD
+
+### changed
+- Adapted Simulation-API to changes made in the 1.5 version of gemSpec_NCPeH_FD specification
+
+### fixed
+- Included newer versions of snakeyaml and tomcat-embed-websocket to avoid vulnerabilities in the versions shipped with Spring-Boot
+
+
 ## Release 1.0.3
 
 ### added
@@ -11,6 +23,7 @@
 ### changed
 - For API definition switched from javax to jakarta
 - Mock: When building the messages for the response of the retrieveDocument operation, it actually uses the data, which where provided in the request
+
 
 ## Release 1.0.2
 
@@ -26,10 +39,12 @@
 - The mock now contains proper data in the httpBody elements of the responses,
   which are of correct type, containing plausible data for each operation
 
+
 ## Release 1.0.1
 
 ### fixed
 - Updated version of the nexus-staging-maven-plugin, as the old version prevented deploy to Maven Central
+
 
 ## Release 1.0.0
 
