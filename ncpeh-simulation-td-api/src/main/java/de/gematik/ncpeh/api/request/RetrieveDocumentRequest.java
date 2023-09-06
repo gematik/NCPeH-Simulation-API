@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2023 gematik GmbH
- * 
- * Licensed under the Apache License, Version 2.0 (the License);
+ * Copyright 2023 gematik GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -36,6 +36,14 @@ public record RetrieveDocumentRequest(
             description =
                 "Definiert die Werte zur Berechnung der resourceId, die per Default in der TRC-Assertion genutzt werden sollen.")
         PatientId patientId,
+    @JsonProperty(required = true)
+        @Schema(
+            description =
+                "Der Wert repräsentiert den Zugriffscode, den der Versicherte dem LE-EU vor Ort übergibt. "
+                    + "Aktuell ist es ein 6stelliger alphanumerischer Code: [A-Za-z0-9]{6}. "
+                    + "Sofern im Parameter \"ResourceId\" zur TRC-Assertion nicht anders angegeben, geht dieser Wert auch dort als AccessCode in den Bildungsschritt des Elementes \"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" mit ein.",
+            maxLength = 20)
+        String accessCode,
     @JsonProperty(required = true)
         @Schema(
             description =

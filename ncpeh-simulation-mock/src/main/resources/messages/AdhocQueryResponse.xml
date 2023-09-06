@@ -98,7 +98,7 @@
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
 			</ExternalIdentifier>
-			<ExternalIdentifier id="urn:uuid:9b7f4301-9991-4fc7-a7b1-9a3ae59dff11" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.2">
+			<ExternalIdentifier id="urn:uuid:9b7f4301-9991-4fc7-a7b1-9a3ae59dff11" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="2.16.17.710.813.1000.990.1.1^PS.XML">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.uniqueId"/>
 				</Name>
@@ -202,7 +202,7 @@
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
 			</ExternalIdentifier>
-			<ExternalIdentifier id="urn:uuid:199425df-d4f8-41a1-85a7-e49307c8abe3" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="2.16.17.710.813.1000.990.1.1^2.25.2.PS.1">
+			<ExternalIdentifier id="urn:uuid:199425df-d4f8-41a1-85a7-e49307c8abe3" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="2.16.17.710.813.1000.990.1.1^PS.PDF">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.uniqueId"/>
 				</Name>

@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) 2023 gematik GmbH
-  ~ 
-  ~ Licensed under the Apache License, Version 2.0 (the License);
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~ 
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~ 
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an 'AS IS' BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,7 +6,7 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.0.3</version>
+    <version>1.5.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +16,7 @@
     <yaml.directory>${project.build.directory}/generated-sources/resources/openapi</yaml.directory>
     <yaml.zip.path>${project.build.directory}/${project.artifactId}-yaml.zip</yaml.zip.path>
     <yaml.filename>NCPeH_TriggerIF</yaml.filename>
-    <swagger.version>2.2.14</swagger.version>
+    <swagger.version>2.2.15</swagger.version>
     <api.config.dir>${project.build.directory}/config</api.config.dir>
     <api.config.filename>api_configuration.yaml</api.config.filename>
     <jar.excluded.source>de/gematik/ncpeh/build/**</jar.excluded.source>
