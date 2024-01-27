@@ -20,7 +20,7 @@
 				<ns6:statusCode code="active"/>
 				<ns6:subject1 typeCode="SBJ">
 					<ns6:patient classCode="PAT">
-						<ns6:id extension="X110405394"/>
+						<ns6:id extension="X110405394|ABC123"/>
 						<ns6:statusCode code="active"/>
 						<ns6:patientPerson classCode="PSN" determinerCode="INSTANCE">
 							<ns6:name>

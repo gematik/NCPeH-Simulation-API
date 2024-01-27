@@ -26,9 +26,9 @@ public record PatientId(
     @JsonProperty(required = true)
         @Schema(description = "Der Wert repräsentiert die KVNR des Versicherten", maxLength = 20)
         String kvnr,
-    @JsonProperty(defaultValue = "1.2.276.0.76.3.1.580.047")
+    @JsonProperty(defaultValue = "1.2.276.0.76.3.1.580.147")
         @Schema(
-            defaultValue = "1.2.276.0.76.3.1.580.047",
+            defaultValue = "1.2.276.0.76.3.1.580.147",
             description = "Der Wert repräsentiert die OID der Assigning Authority zur KVNR",
             maxLength = 50)
         String oidAssigningAuthority) {}
