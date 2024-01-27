@@ -18,8 +18,8 @@
 	<languageCode code="cs-DE"/>
 	<recordTarget contextControlCode="OP" typeCode="RCT">
 		<patientRole classCode="PAT">
-			<id extension="X110405394" root="1.2.276.0.76.3.1.580.047"/>
-			<id assigningAuthorityName="BMG" extension="X110405394" root="1.2.276.0.76.3.1.580.047"/>
+			<id extension="X110405394" root="1.2.276.0.76.3.1.580.147"/>
+			<id assigningAuthorityName="BMG" extension="X110405394" root="1.2.276.0.76.3.1.580.147"/>
 			<addr use="HP">
 				<streetAddressLine>Patientstr. 1</streetAddressLine>
 				<city>Patientstadt</city>

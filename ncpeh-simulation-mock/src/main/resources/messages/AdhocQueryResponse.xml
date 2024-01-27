@@ -13,7 +13,7 @@
 			</Slot>
 			<Slot name="sourcePatientId">
 				<ValueList>
-					<Value>X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO</Value>
+					<Value>X110405394|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
 				</ValueList>
 			</Slot>
 			<Slot name="languageCode">
@@ -93,7 +93,7 @@
 					<LocalizedString value="Not Used"/>
 				</Name>
 			</Classification>
-			<ExternalIdentifier id="urn:uuid:f0eeb7ce-7b37-4e33-954f-2ca7b8072551" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO">
+			<ExternalIdentifier id="urn:uuid:f0eeb7ce-7b37-4e33-954f-2ca7b8072551" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:7bea8a52-9fdc-4b81-b47f-736e79df164b" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
@@ -117,7 +117,7 @@
 			</Slot>
 			<Slot name="sourcePatientId">
 				<ValueList>
-					<Value>X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO</Value>
+					<Value>X110405394|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
 				</ValueList>
 			</Slot>
 			<Slot name="languageCode">
@@ -197,7 +197,7 @@
 					<LocalizedString value="Not Used"/>
 				</Name>
 			</Classification>
-			<ExternalIdentifier id="urn:uuid:f7383a55-7aa9-4dec-9b6e-73e72461ee51" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.047&amp;ISO">
+			<ExternalIdentifier id="urn:uuid:f7383a55-7aa9-4dec-9b6e-73e72461ee51" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="urn:uuid:5e099a45-ff39-41bb-857a-506c0b9a5ca7" value="X114428538^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO">
 				<Name>
 					<LocalizedString value="XDSDocumentEntry.patientId"/>
 				</Name>
