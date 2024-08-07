@@ -31,7 +31,7 @@ public record IdentifyPatientRequest(
                 "Gibt die Werte an, mit denen im XCPD-Request in der queryByParameter Liste im Element "
                     + "'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value' "
                     + "die Attribute 'extension' und 'root' befüllt werden müssen. "
-                    + "Definiert außerdem die Werte zur Berechnung der resourceId, die per Default in der TRC-Assertion genutzt werden sollen")
+                    + "Definiert außerdem die Werte zur Berechnung der subjectId, die per Default in der TRC-Assertion genutzt werden sollen")
         PatientId patientId,
     @JsonProperty(required = true)
         @Schema(
@@ -41,12 +41,14 @@ public record IdentifyPatientRequest(
                     + "Er ist in das Attribut \"extension\" eines Elementes PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value einzusetzen.",
             maxLength = 20)
         String accessCode,
-    @JsonProperty(defaultValue = "1.2.276.0.76.4.298")
+    @JsonProperty(required = true)
         @Schema(
             description =
                 "Der Wert repräsentiert die OID der Assigning Authority zum AccessCode. "
-                    + "Er ist in das Attribut \"root\" des Elementes PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value einzusetzen.",
-            defaultValue = "1.2.276.0.76.4.298",
+                    + "Er ist in das Attribut \"root\" des Elementes PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value einzusetzen. "
+                    + "Spezifizierte Werte sind: oid der AssigningAuthority für das Szenario Patient Summary Land A = 1.2.276.0.76.4.298 und "
+                    + "oid der AssigningAuthority für das Szenario ePrescription/eDispensation Land A = 1.2.276.0.76.4.299. "
+                    + "Andere Werte können für Fehlerszenarien eingesetzt werden.",
             maxLength = 50)
         String accessCodeAssigningAuthority,
     @JsonProperty(defaultValue = "1.2.276.0.76.4.291")

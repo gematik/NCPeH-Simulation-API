@@ -16,7 +16,7 @@
     <yaml.directory>${project.build.directory}/generated-sources/resources/openapi</yaml.directory>
     <yaml.zip.path>${project.build.directory}/${project.artifactId}-yaml.zip</yaml.zip.path>
     <yaml.filename>NCPeH_TriggerIF</yaml.filename>
-    <swagger.version>2.2.15</swagger.version>
+    <swagger.version>2.2.22</swagger.version>
     <api.config.dir>${project.build.directory}/config</api.config.dir>
     <api.config.filename>api_configuration.yaml</api.config.filename>
     <jar.excluded.source>de/gematik/ncpeh/build/**</jar.excluded.source>

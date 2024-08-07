@@ -26,9 +26,9 @@ public record TrcAssertionProfile(
             description =
                 "Wenn hier ein Wert gesetzt ist, bestimmt dieser den vollständigen Inhalt im "
                     + "Assertion-Element 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
-                    + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\"' gilt. "
+                    + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:subject-id\"' gilt. "
                     + "Falls die Angabe fehlt, so sind mit der KVNR und OID_AssigningAuthority aus dem fachlichen Kontext "
                     + "des Trigger-Requests (Element patientId aus diesem Request) "
                     + "eine gültige URN für das SOAP-Element zu berechnen.",
             maxLength = 70)
-        String resourceId) {}
+        String patientId) {}

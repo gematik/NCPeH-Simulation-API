@@ -30,11 +30,21 @@ import org.springframework.http.client.ClientHttpResponse;
 class HttpMessageFactoryTest {
 
   @Test
-  void buildStandardIdentifyPatientRequestTest() {
+  void buildPSAIdentifyPatientRequestTest() {
     var httpRequest =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardIdentifyPatientRequest,
-            "Method HttpMessageFactory.buildStandardIdentifyPatientRequest threw exception");
+            HttpMessageFactory::buildPSAIdentifyPatientRequest,
+            "Method HttpMessageFactory.buildPSAIdentifyPatientRequest threw exception");
+
+    assertRequestProps(httpRequest);
+  }
+
+  @Test
+  void buildEPEDIdentifyPatientRequestTest() {
+    var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildEPEDIdentifyPatientRequest,
+            "Method HttpMessageFactory.buildEPEDIdentifyPatientRequest threw exception");
 
     assertRequestProps(httpRequest);
   }

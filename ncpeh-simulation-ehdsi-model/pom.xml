@@ -25,11 +25,11 @@
   </properties>
 
   <dependencies>
-  <dependency>
-    <groupId>jakarta.ws.rs</groupId>
-    <artifactId>jakarta.ws.rs-api</artifactId>
-    <version>3.1.0</version>
-  </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.cxf.xjc-utils</groupId>
       <artifactId>cxf-xjc-runtime</artifactId>
@@ -53,7 +53,8 @@
           <additionalJvmArgs>-Djavax.xml.accessExternalDTD=file</additionalJvmArgs>
           <extensions>
             <extension>org.apache.cxf.xjcplugins:cxf-xjc-ts:${cxf-xjc.version}</extension>
-            <extension>org.jvnet.jaxb2_commons:jaxb2-fluent-api:${jaxb.fluent.api.version}</extension>
+            <extension>org.jvnet.jaxb2_commons:jaxb2-fluent-api:${jaxb.fluent.api.version}
+            </extension>
             <extension>org.jvnet.jaxb2_commons:jaxb2-basics:0.13.1</extension>
             <extension>javax.xml.bind:jaxb-api:2.3.1</extension>
             <extension>com.sun.xml.bind:jaxb-impl:2.3.1</extension>

@@ -35,15 +35,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class NCPeHMockApiImpl implements NcpehSimulatorApi {
 
+  public static final String oidAssigningAuthority_psa = "1.2.276.0.76.4.298";
+  public static final String oidAssigningAuthority_eped = "1.2.276.0.76.4.299";
+
   @Override
   public Response identifyPatient(IdentifyPatientRequest request) {
-    return okResponseBuilder()
-        .entity(
-            SimulatorCommunicationDataBuilder.newInstance()
-                .requestMessage(HttpMessageFactory.buildStandardIdentifyPatientRequest())
-                .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse())
-                .build())
-        .build();
+    if (request.accessCodeAssigningAuthority() != null
+        && request.accessCodeAssigningAuthority().equals(oidAssigningAuthority_eped)) {
+      return okResponseBuilder()
+          .entity(
+              SimulatorCommunicationDataBuilder.newInstance()
+                  .requestMessage(HttpMessageFactory.buildEPEDIdentifyPatientRequest())
+                  .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse())
+                  .build())
+          .build();
+    } else {
+      return okResponseBuilder()
+          .entity(
+              SimulatorCommunicationDataBuilder.newInstance()
+                  .requestMessage(HttpMessageFactory.buildPSAIdentifyPatientRequest())
+                  .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse())
+                  .build())
+          .build();
+    }
   }
 
   @Override
