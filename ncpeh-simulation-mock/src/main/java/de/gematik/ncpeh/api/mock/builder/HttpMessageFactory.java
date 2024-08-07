@@ -63,7 +63,11 @@ public final class HttpMessageFactory {
 
   public static final String MESSAGES_FOLDER = "messages/";
 
-  public static final String PATIENT_IDENTIFICATION_REQUEST_FILE_NAME = "PRPA_IN201305UV02.xml";
+  public static final String PATIENT_IDENTIFICATION_PSA_REQUEST_FILE_NAME =
+      "PRPA_IN201305UV02_298.xml";
+
+  public static final String PATIENT_IDENTIFICATION_EPED_REQUEST_FILE_NAME =
+      "PRPA_IN201305UV02_299.xml";
 
   public static final String PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME = "PRPA_IN201306UV02.xml";
 
@@ -79,14 +83,25 @@ public final class HttpMessageFactory {
   private static final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
   /**
-   * Build an HTTP request to be used as payload in the {@link
+   * Build an HTTP request for PSA to be used as payload in the {@link
    * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
    * de.gematik.ncpeh.api.NcpehSimulatorApi#identifyPatient(IdentifyPatientRequest)} response.
    *
    * @return {@link PseudoHttpRequest}
    */
-  public static PseudoHttpRequest buildStandardIdentifyPatientRequest() {
-    return buildHttpRequest(PATIENT_IDENTIFICATION_REQUEST_FILE_NAME);
+  public static PseudoHttpRequest buildPSAIdentifyPatientRequest() {
+    return buildHttpRequest(PATIENT_IDENTIFICATION_PSA_REQUEST_FILE_NAME);
+  }
+
+  /**
+   * Build an HTTP request for EPED to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#identifyPatient(IdentifyPatientRequest)} response.
+   *
+   * @return {@link PseudoHttpRequest}
+   */
+  public static PseudoHttpRequest buildEPEDIdentifyPatientRequest() {
+    return buildHttpRequest(PATIENT_IDENTIFICATION_EPED_REQUEST_FILE_NAME);
   }
 
   /**

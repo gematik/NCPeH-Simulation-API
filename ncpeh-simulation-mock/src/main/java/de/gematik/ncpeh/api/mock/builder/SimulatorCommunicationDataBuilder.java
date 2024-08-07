@@ -104,7 +104,7 @@ public class SimulatorCommunicationDataBuilder implements Builder<SimulatorCommu
   }
 
   public static WrappedHttpRequest wrapHttpRequest(@NonNull ClientHttpRequest msg) {
-    return new WrappedHttpRequest(msg.getMethodValue() + " " + msg.getURI(), wrapHttpMessage(msg));
+    return new WrappedHttpRequest(msg.getMethod() + " " + msg.getURI(), wrapHttpMessage(msg));
   }
 
   public static WrappedHttpResponse wrapHttpResponse(@NonNull PseudoHttpResponse msg) {

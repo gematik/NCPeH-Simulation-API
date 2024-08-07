@@ -24,19 +24,18 @@ import lombok.NonNull;
 
 @Schema(enumAsRef = true)
 public enum Saml2AttributeName {
-  SUBJECT_ID("urn:oasis:names:tc:xacml:1.0:subject:subject-id"),
+  SUBJECT_ID("urn:oasis:names:tc:xspa:1.0:subject:subject-id"),
   SUBJECT_ROLE("urn:oasis:names:tc:xacml:2.0:subject:role"),
   SUBJECT_ORGANIZATION("urn:oasis:names:tc:xspa:1.0:subject:organization"),
   SUBJECT_ORGANIZATION_ID("urn:oasis:names:tc:xspa:1.0:subject:organization-id"),
   SUBJECT_ON_BEHALF_OF("urn:ehdsi:names:subject:on-behalf-of"),
   HEALTHCARE_FACILITY_TYPE("urn:ehdsi:names:subject:healthcare-facility-type"),
   ENVIRONMENT_LOCALITY("urn:oasis:names:tc:xspa:1.0:environment:locality"),
-  SUBJECT_FUNCTIONAL_ROLE("urn:oasis:names:tc:xspa:1.0:subject:functional-role"),
   SUBJECT_CLINICAL_SPECIALTY("urn:ehdsi:names:subject:clinical-speciality");
 
   private final String attributeName;
 
-  Saml2AttributeName(String attributeName) {
+  Saml2AttributeName(final String attributeName) {
     this.attributeName = attributeName;
   }
 
@@ -46,7 +45,7 @@ public enum Saml2AttributeName {
   }
 
   @JsonCreator
-  public static Saml2AttributeName fromString(@NonNull String attributeName) {
+  public static Saml2AttributeName fromString(@NonNull final String attributeName) {
     return Arrays.stream(values())
         .filter(value -> attributeName.equalsIgnoreCase(value.getAttributeName()))
         .findFirst()

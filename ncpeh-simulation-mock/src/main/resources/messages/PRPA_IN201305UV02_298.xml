@@ -39,7 +39,7 @@
 			<ns6:matchCriterionList/>
 			<ns6:parameterList>
 				<ns6:livingSubjectId>
-					<ns6:value root="1.2.276.0.76.3.1.580.47" extension="X114428538"/>
+					<ns6:value root="1.2.276.0.76.3.1.580.147" extension="X114428538"/>
 					<ns6:semanticsText/>
 				</ns6:livingSubjectId>
 				<ns6:livingSubjectId>

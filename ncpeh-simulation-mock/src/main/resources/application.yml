@@ -24,8 +24,6 @@ management:
       enabled: true
 
 logging:
-  file:
-    name: /data/ncpeh-mock.log
   level:
     de.gematik.ncpeh: INFO
     org.apache.cxf.services: DEBUG

@@ -34,14 +34,14 @@ public record RetrieveDocumentRequest(
     @JsonProperty(required = true)
         @Schema(
             description =
-                "Definiert die Werte zur Berechnung der resourceId, die per Default in der TRC-Assertion genutzt werden sollen.")
+                "Definiert die Werte zur Berechnung der subjectId, die per Default in der TRC-Assertion genutzt werden sollen.")
         PatientId patientId,
     @JsonProperty(required = true)
         @Schema(
             description =
                 "Der Wert repräsentiert den Zugriffscode, den der Versicherte dem LE-EU vor Ort übergibt. "
                     + "Aktuell ist es ein 6stelliger alphanumerischer Code: [A-Za-z0-9]{6}. "
-                    + "Sofern im Parameter \"ResourceId\" zur TRC-Assertion nicht anders angegeben, geht dieser Wert auch dort als AccessCode in den Bildungsschritt des Elementes \"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" mit ein.",
+                    + "Sofern im Parameter \"PatientId\" zur TRC-Assertion nicht anders angegeben, geht dieser Wert auch dort als AccessCode in den Bildungsschritt des Elementes \"urn:oasis:names:tc:xspa:1.0:subject:subject-id\" mit ein.",
             maxLength = 20)
         String accessCode,
     @JsonProperty(required = true)
