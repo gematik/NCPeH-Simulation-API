@@ -6,7 +6,7 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
