@@ -20,6 +20,7 @@
     <api.config.dir>${project.build.directory}/config</api.config.dir>
     <api.config.filename>api_configuration.yaml</api.config.filename>
     <jar.excluded.source>de/gematik/ncpeh/build/**</jar.excluded.source>
+    <javadoc.excluded.packages>de.gematik.ncpeh.build</javadoc.excluded.packages>
   </properties>
 
   <dependencies>
@@ -80,12 +81,13 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <quiet>true</quiet>
-          <sourceFileExcludes>
-            <sourceFileExclude>${jar.excluded.source}</sourceFileExclude>
-          </sourceFileExcludes>
+          <excludePackageNames>${javadoc.excluded.packages}</excludePackageNames>
         </configuration>
       </plugin>
       <plugin>
