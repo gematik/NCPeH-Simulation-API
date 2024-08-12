@@ -10,8 +10,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ncpeh-simulation-mock</artifactId>
   <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
     <version.java>17</version.java>
     <spring.boot.version>3.3.2</spring.boot.version>
     <apache.cxf.version>4.0.5</apache.cxf.version>
@@ -105,10 +103,11 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <quiet>true</quiet>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>com.spotify.fmt</groupId>

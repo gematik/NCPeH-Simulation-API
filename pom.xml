@@ -12,6 +12,7 @@
   </modules>
   <groupId>de.gematik.api</groupId>
   <version>1.6.0</version>
+  <name>NCPeH Simulation API</name>
   <description>API definition for the trigger interface of the NCPeH simulation</description>
   <url>https://github.com/gematik/NCPeH-Simulation-API</url>
 
@@ -23,9 +24,8 @@
   </organization>
 
   <properties>
-    <maven.compiler.source>16</maven.compiler.source>
-    <maven.compiler.target>16</maven.compiler.target>
     <version.java>17</version.java>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- The log4j Version is only needed, due to a bug in the gematik-parent-->
     <!-- TODO: Remove once the log4j version in the Gematik parent is fixed-->
     <log4j.version>2.17.2</log4j.version>
@@ -64,6 +64,46 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>${version.java}</source>
+            <target>${version.java}</target>
+            <debug>true</debug>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.0.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.6.3</version>
+          <configuration>
+            <doclint>none</doclint>
+          </configuration>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
@@ -151,4 +191,19 @@
     <system>GitHub</system>
     <url>https://github.com/gematik/NCPeH-Simulation-API/issues</url>
   </issueManagement>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>gematik</name>
+      <email>software-development@gematik.de</email>
+      <url>https://gematik.github.io/</url>
+      <organization>gematik GmbH</organization>
+      <organizationUrl>https://www.gematik.de/</organizationUrl>
+    </developer>
+  </developers>
 </project>
