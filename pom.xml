@@ -11,7 +11,7 @@
     <module>ncpeh-simulation-mock</module>
   </modules>
   <groupId>de.gematik.api</groupId>
-  <version>1.6.0</version>
+  <version>1.6.1</version>
   <name>NCPeH Simulation API</name>
   <description>API definition for the trigger interface of the NCPeH simulation</description>
   <url>https://github.com/gematik/NCPeH-Simulation-API</url>
