@@ -56,6 +56,21 @@ In case you want to clone the project you need:
 
 For non Java-Projects code can be generated from the OpenAPI description available at Maven Central.
 
+### Development
+
+* Default-Branch is develop
+* No direct pushing on the develop/release Branches is permitted
+* Instead, create a feature branch, push it and create a merge request for merging to the
+  Development branch.
+* Before pushing, always run a maven build.
+    * The Google Code Formatter Maven Plugin is used and all new code should be formatted, before
+      first checkin,
+      so "pseudo" changes, which just stem from changed code formatting, are avoided.
+* For hot fixes or for parallel development of different versions, create a branch from the release
+  tag or develop, the branch name should be Release-X.X, configure jenkinsfiles for new Release
+  branch.
+* Always merge Release branches back to develop.
+
 ## License
 
 See [LICENSE](./LICENSE)
@@ -67,17 +82,18 @@ Right now this is not a collaborative project, so input can only be given throug
 
 ## Fachliche Einordnung
 
-Die Szenarien des europäischen Datentransfers, wie z. B. das in Deutschland zuerst umzusetzende 
-"Patient Summary Country A" erfordert neben dem NCPeH-Fachdienst die Beteiligung verschiedener 
+Die Szenarien des europäischen Datentransfers, wie z. B. das in Deutschland zuerst umzusetzende
+"Patient Summary Country A" erfordert neben dem NCPeH-Fachdienst die Beteiligung verschiedener
 Produkte der TI (Produktkette), wie z. B. ePA Aktensysteme, Konnektoren etc.
 Um sowohl Herstellern von Produkten der TI als auch der gematik eine eigenständige und
 automatisierte Durchführung von
 integrativen Tests in den Umgebungen RU und TU zu ermöglichen, wird diese NCPeH Simulation API zum
 Auslösen von
 Anwendungsfällen in beiden Umgebungen bereitgestellt (NCPeH-Testinterface).  
-Über das NCPeH-Testinterface sollen von Testszenarien eHDSI-Anwendungsfälle angestoßen werden. 
-Dabei sollen IHE-Nachrichten von einem NCPeH-Simulator generiert, an den NCPeH-FD gesendet und die 
-Antwort vom NCPeH-FD entgegengenommen werden. Der generierte Request und die vom NCPeH empfangene Antwort 
+Über das NCPeH-Testinterface sollen von Testszenarien eHDSI-Anwendungsfälle angestoßen werden.
+Dabei sollen IHE-Nachrichten von einem NCPeH-Simulator generiert, an den NCPeH-FD gesendet und die
+Antwort vom NCPeH-FD entgegengenommen werden. Der generierte Request und die vom NCPeH empfangene
+Antwort
 werden über das NCPeH-Testinterface an den aufrufenden Testfall zurückgegeben.
 Also das jeweilige IHE-Request- und IHE-Response-Paar, das mit dem NCPeH-Fachdienst ausgetauscht
 wurde. Beide werden aufgeteilt in

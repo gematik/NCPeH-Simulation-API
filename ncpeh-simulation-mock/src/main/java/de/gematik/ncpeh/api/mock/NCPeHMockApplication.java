@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import java.util.List;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.ext.logging.event.EventType;
 import org.apache.cxf.ext.logging.event.LogEvent;
 import org.apache.cxf.ext.logging.slf4j.Slf4jEventSender;
+import org.apache.cxf.jaxrs.openapi.OpenApiFeature;
+import org.apache.cxf.jaxrs.swagger.ui.SwaggerUiConfig;
+import org.apache.cxf.metrics.MetricsFeature;
+import org.apache.cxf.metrics.MetricsProvider;
 import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +44,29 @@ import org.springframework.http.HttpStatus;
 @Slf4j
 @SpringBootApplication
 public class NCPeHMockApplication {
+
+  @Value("${cxf.openapi.url:/openapi.json}")
+  private String url = "/openapi.json";
+
+  @Value("${cxf.openapi.resource-packages:de.gematik.ncpeh.api}")
+  private String resourcePackages = "de.gematik.ncpeh.api";
+
+  @Autowired private MetricsProvider metricsProvider;
+
+  @Bean
+  public OpenApiFeature createOpenApiFeature() {
+    final OpenApiFeature openApiFeature = new OpenApiFeature();
+    openApiFeature.setPrettyPrint(true);
+    openApiFeature.setScan(true);
+    openApiFeature.setResourcePackages(Set.of(resourcePackages));
+    openApiFeature.setSwaggerUiConfig(new SwaggerUiConfig().url(url).queryConfigEnabled(false));
+    return openApiFeature;
+  }
+
+  @Bean
+  public MetricsFeature metricsFeature() {
+    return new MetricsFeature(metricsProvider);
+  }
 
   /**
    * Create the JsonProvider as Bean, which is then used to serialize and deserialize the data,
@@ -63,8 +93,8 @@ public class NCPeHMockApplication {
     final var sender =
         new Slf4jEventSender() {
           @Override
-          protected String getLogMessage(LogEvent event) {
-            StringBuilder buf = new StringBuilder().append("\n");
+          protected String getLogMessage(final LogEvent event) {
+            final StringBuilder buf = new StringBuilder().append("\n");
             if (List.of(EventType.REQ_IN, EventType.REQ_OUT).contains(event.getType())) {
               buf.append(event.getHttpMethod()).append(" ").append(event.getAddress()).append("\n");
             } else {

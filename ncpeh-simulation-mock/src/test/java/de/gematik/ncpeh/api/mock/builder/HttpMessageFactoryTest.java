@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,173 +16,287 @@
 
 package de.gematik.ncpeh.api.mock.builder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static de.gematik.ncpeh.api.mock.TestUtils.loadFromJsonResource;
+import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
+import static de.gematik.ncpeh.api.mock.builder.HttpMessageFactory.PSEUDO_URI;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo;
+import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
+import org.xmlunit.matchers.CompareMatcher;
 
+@Slf4j
 class HttpMessageFactoryTest {
+
+  /**
+   * Read the content of a file at the given path into a String.<br>
+   * The encoding of the file must be UTF-8.
+   *
+   * @param is InputStream of the file
+   * @return the file content as {@link String}
+   */
+  @SneakyThrows
+  private static String toUTF8String(final InputStream is) {
+    final var result = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    is.close();
+    return result;
+  }
 
   @Test
   void buildPSAIdentifyPatientRequestTest() {
-    var httpRequest =
+    // Arrange
+    // Act
+    final var httpRequest =
         assertDoesNotThrow(
             HttpMessageFactory::buildPSAIdentifyPatientRequest,
             "Method HttpMessageFactory.buildPSAIdentifyPatientRequest threw exception");
 
+    // Assert
     assertRequestProps(httpRequest);
+    final var expectedData = readResourceFile(getClass(), "PRPA_IN201305UV02_298.xml");
+    assertThat(
+        httpRequest.getRequestBody().toString(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
   void buildEPEDIdentifyPatientRequestTest() {
-    var httpRequest =
+    // Arrange
+    // Act
+    final var httpRequest =
         assertDoesNotThrow(
             HttpMessageFactory::buildEPEDIdentifyPatientRequest,
             "Method HttpMessageFactory.buildEPEDIdentifyPatientRequest threw exception");
 
+    // Assert
     assertRequestProps(httpRequest);
+    final var expectedData = readResourceFile(getClass(), "PRPA_IN201305UV02_299.xml");
+    assertThat(
+        httpRequest.getRequestBody().toString(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
   void buildStandardIdentifyPatientResponseTest() {
-    var httpResponse =
+    // Arrange
+    // Act
+    final var httpResponse =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardIdentifyPatientResponse,
+            () -> HttpMessageFactory.buildStandardIdentifyPatientResponse(null),
             "Method HttpMessageFactory.buildStandardIdentifyPatientResponse threw exception");
 
+    // Assert
     assertResponseProps(httpResponse);
+
+    final var expectedData = readResourceFile(getClass(), "PRPA_IN201306UV02.xml");
+    assertThat(
+        httpResponse.getBody(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
   void buildStandardFindDocumentRequestTest() {
-    var httpRequest =
+    // Arrange
+    // Act
+    final var httpRequest =
         assertDoesNotThrow(
             HttpMessageFactory::buildStandardFindDocumentRequest,
             "Method HttpMessageFactory.buildStandardFindDocumentRequest threw exception");
-
+    // Assert
     assertRequestProps(httpRequest);
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryRequest.xml");
+    assertThat(
+        httpRequest.getRequestBody().toString(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
   void buildStandardFindDocumentResponseTest() {
-    var httpResponse =
+    // Arrange
+    // Act
+    final var httpResponse =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardFindDocumentResponse,
+            () -> HttpMessageFactory.buildStandardFindDocumentResponse(null),
             "Method HttpMessageFactory.buildStandardFindDocumentResponse threw exception");
 
+    // Assert
     assertResponseProps(httpResponse);
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryResponse.xml");
+    assertThat(
+        httpResponse.getBody(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
-  void buildStandardRetrieveDocumentRequest() {
-    var httpRequest =
-        assertDoesNotThrow(
-            HttpMessageFactory::buildStandardRetrieveDocumentRequest,
-            "Method HttpMessageFactory.buildStandardRetrieveDocumentRequest threw exception");
-
-    assertRequestProps(httpRequest);
-  }
-
-  @Test
-  void buildStandardRetrieveDocumentResponse() {
-    var httpResponse =
-        assertDoesNotThrow(
-            HttpMessageFactory::buildStandardRetrieveDocumentResponse,
-            "Method HttpMessageFactory.buildStandardRetrieveDocumentResponse threw exception");
-
-    assertResponseProps(httpResponse);
-  }
-
-  @Test
-  void readFileContentFromPathTest() {
-    var result =
+  void readMessageFileSafelyTest() {
+    // Arrange
+    // Act
+    final var is =
         assertDoesNotThrow(
             () ->
-                HttpMessageFactory.readUTF8FileContentFromPath(
-                    HttpMessageFactory.MESSAGES_FOLDER
-                        + HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
+                HttpMessageFactory.readMessageFileSafely(
+                    HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
 
-    assertNotNull(result);
-    assertTrue(result.contains("subjectOf1"));
+    // Assert
+    assertNotNull(is);
+    final var content = toUTF8String(is);
+    final var expexted =
+        assertDoesNotThrow(
+            () -> readResourceFile(this.getClass(), "mPRPA_IN201306UV02.xml"),
+            "Error reading file");
+
+    assertThat(content, CompareMatcher.isSimilarTo(expexted).ignoreWhitespace());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "null,mPRPA_IN201306UV02.xml",
+    "some,mPRPA_IN201306UV02.xml",
+    "PRPA_IN201306UV02_4.xml,mPRPA_IN201306UV02_4.xml"
+  })
+  void readMessageFileSafelyTest2(String input, final String expected) {
+    // Arrange
+    if ("null".equals(input)) {
+      input = null;
+    }
+    final String finalInput = input;
+
+    // Act
+    final var is =
+        assertDoesNotThrow(
+            () ->
+                HttpMessageFactory.readMessageFileSafely(
+                    finalInput, HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
+
+    // Assert
+    assertNotNull(is);
+    final var content = toUTF8String(is);
+    final var expexted =
+        assertDoesNotThrow(() -> readResourceFile(this.getClass(), expected), "Error reading file");
+
+    assertThat(content, CompareMatcher.isSimilarTo(expexted).ignoreWhitespace().ignoreComments());
   }
 
   @Test
-  void readFileContentFromPathNoExistingFileTest() {
-    var expectedException =
+  void readMessageFileSafelyNoExistingFileTest() {
+    // Arrange
+    // Act
+    final var expectedException =
+        assertThrows(
+            FileNotFoundException.class,
+            () -> HttpMessageFactory.readMessageFileSafely("notExistingFile.xml"));
+
+    // Assert
+    assertEquals(
+        "Message files not found: notExistingFile.xml & null", expectedException.getMessage());
+  }
+
+  @Test
+  void readMessageFileSafelyNoExistingFileTest2() {
+    // Arrange
+    // Act
+    final var expectedException =
         assertThrows(
             FileNotFoundException.class,
             () ->
-                HttpMessageFactory.readUTF8FileContentFromPath(
-                    HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME + ".bak"));
+                HttpMessageFactory.readMessageFileSafely(
+                    "notExistingFile.xml", "notExistingDefaultFile.xml"));
 
-    assertTrue(
-        expectedException
-            .getMessage()
-            .contains(HttpMessageFactory.PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
-  }
-
-  @Test
-  void findReadableFileResourceNoFileTest() {
-    var packageName = this.getClass().getPackageName();
-    var lowestPackage = packageName.substring(packageName.lastIndexOf(".") + 1);
-    var expectedException =
-        assertThrows(
-            FileNotFoundException.class,
-            () -> HttpMessageFactory.readUTF8FileContentFromPath(lowestPackage));
-
-    assertTrue(expectedException.getMessage().contains(lowestPackage));
-  }
-
-  @Test
-  void buildRetrieveDocumentRequestTest() {
-    var testdata = retrieveDocumentTestdata().buildRequest();
-
-    var result =
-        assertDoesNotThrow(() -> HttpMessageFactory.buildRetrieveDocumentRequest(testdata));
-
-    assertRequestProps(result);
-  }
-
-  @Test
-  void buildRetrieveDocumentResponseTest() {
-    var testdata = retrieveDocumentTestdata().buildResponse();
-
-    var result =
-        assertDoesNotThrow(() -> HttpMessageFactory.buildRetrieveDocumentResponse(testdata));
-
-    assertResponseProps(result);
+    // Assert
+    assertEquals(
+        "Message files not found: notExistingFile.xml & notExistingDefaultFile.xml",
+        expectedException.getMessage());
   }
 
   @SneakyThrows
-  private void assertRequestProps(ClientHttpRequest httpRequest) {
+  @Test
+  void buildRetrieveDocumentRequestTest() {
+    // Arrange
+    final var request =
+        loadFromJsonResource(
+            RetrieveDocumentRequest.class, this.getClass(), "RetrieveDocumentRequest.json");
+
+    // Act
+    final var result =
+        assertDoesNotThrow(() -> HttpMessageFactory.buildRetrieveDocumentRequest(request));
+
+    // Assert
+    final var body = result.getBody().toString();
+    log.info(body);
+    assertRequestProps(result);
+
+    final var expexted =
+        assertDoesNotThrow(
+            () -> readResourceFile(this.getClass(), "RetrieveDocumentSetRequest.xml"),
+            "Error reading file");
+
+    assertThat(body, CompareMatcher.isSimilarTo(expexted).ignoreWhitespace().ignoreComments());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "null,RetrieveDocumentSetResponse.xml",
+    "some,RetrieveDocumentSetResponse.xml",
+    "RetrieveDocumentSetResponse_020.xml,RetrieveDocumentSetResponse_020.xml"
+  })
+  void buildRetrieveDocumentResponseTest(String input, final String expected) {
+    // Arrange
+    if ("null".equals(input)) {
+      input = null;
+    }
+    final String finalInput = input;
+
+    final var request =
+        loadFromJsonResource(
+            RetrieveDocumentRequest.class, this.getClass(), "RetrieveDocumentRequest.json");
+
+    // Act
+    final var result =
+        assertDoesNotThrow(
+            () -> HttpMessageFactory.buildRetrieveDocumentResponse(request, finalInput));
+
+    // Assert
+    final var body = toUTF8String(result.getBody());
+    assertResponseProps(result);
+
+    final var expexted =
+        assertDoesNotThrow(() -> readResourceFile(this.getClass(), expected), "Error reading file");
+
+    assertThat(body, CompareMatcher.isSimilarTo(expexted).ignoreWhitespace().ignoreComments());
+  }
+
+  @SneakyThrows
+  private void assertRequestProps(final ClientHttpRequest httpRequest) {
     assertNotNull(httpRequest);
     assertEquals(HttpMethod.POST, httpRequest.getMethod(), "Wrong method in HTTP request");
-    assertEquals(Constants.PSEUDO_URI, httpRequest.getURI(), "Wrong URI in HTTP request");
+    assertEquals(PSEUDO_URI, httpRequest.getURI(), "Wrong URI in HTTP request");
     assertNotNull(httpRequest.getHeaders(), "No HTTP headers present in response");
     assertFalse(httpRequest.getHeaders().isEmpty(), "No HTTP headers present in response");
     assertNotNull(httpRequest.getBody(), "No body present in HTTP request");
   }
 
   @SneakyThrows
-  private void assertResponseProps(ClientHttpResponse httpResponse) {
+  private void assertResponseProps(final ClientHttpResponse httpResponse) {
     assertNotNull(httpResponse);
     assertEquals(HttpStatus.OK, httpResponse.getStatusCode(), "Wrong status in HTTP response");
     assertNotNull(httpResponse.getHeaders(), "No HTTP headers present in response");
     assertFalse(httpResponse.getHeaders().isEmpty(), "No HTTP headers present in response");
     assertNotNull(httpResponse.getBody());
-  }
-
-  private RetrieveDocumentMessagesBuilder retrieveDocumentTestdata() {
-    return new RetrieveDocumentMessagesBuilder()
-        .documentUniqueId("2.25.2350928502702" + CDALevelInfo.LEVEL_1.idMarker())
-        .additionalDocumentUniqueId("2.25.2350928502702" + CDALevelInfo.LEVEL_3.idMarker())
-        .homeCommunityId("urn:oid:2.16.17.710.850.1000.990.101")
-        .repositoryUniqueId("1.2.276.0.76.3.1.91.2");
   }
 }

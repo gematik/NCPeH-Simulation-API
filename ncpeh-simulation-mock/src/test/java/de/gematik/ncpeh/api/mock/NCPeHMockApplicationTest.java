@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 package de.gematik.ncpeh.api.mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
@@ -57,13 +59,13 @@ class NCPeHMockApplicationTest {
 
   @Test
   void jsonProviderTest() {
-    var tstObj = new NCPeHMockApplication();
+    final var tstObj = new NCPeHMockApplication();
 
-    var jsonProvider =
+    final var jsonProvider =
         assertDoesNotThrow(
             tstObj::jsonProvider, "Method NCPeHMockApplication.jsonProvider threw an exception");
 
-    var objectMapper =
+    final var objectMapper =
         jsonProvider.locateMapper(IdentifyPatientRequest.class, MediaType.APPLICATION_JSON_TYPE);
     assertNotNull(objectMapper, "JSON provider does not contain object mapper.");
 
@@ -73,10 +75,22 @@ class NCPeHMockApplicationTest {
   }
 
   @Test
-  void loggingFeatureTest() {
-    var tstObj = new NCPeHMockApplication();
+  void createOpenApiFeatureTest() {
+    final var tstObj = new NCPeHMockApplication();
 
-    var loggingFeature =
+    final var openApiFeature =
+        assertDoesNotThrow(
+            tstObj::createOpenApiFeature,
+            "Method NCPeHMockApplication.createOpenApiFeature threw an exception");
+
+    assertNotNull(openApiFeature);
+  }
+
+  @Test
+  void loggingFeatureTest() {
+    final var tstObj = new NCPeHMockApplication();
+
+    final var loggingFeature =
         assertDoesNotThrow(
             tstObj::loggingFeature,
             "Method NCPeHMockApplication.loggingFeature threw an exception");
@@ -86,19 +100,19 @@ class NCPeHMockApplicationTest {
 
   @Test
   void loggingFeatureSenderTest() {
-    var tstObj = new NCPeHMockApplication();
+    final var tstObj = new NCPeHMockApplication();
 
-    var loggingFeature =
+    final var loggingFeature =
         assertDoesNotThrow(
             tstObj::loggingFeature,
             "Method NCPeHMockApplication.loggingFeature threw an exception");
 
-    var bus = new SpringBus();
+    final var bus = new SpringBus();
     loggingFeature.initialize(bus);
 
-    var inMsg = createInMessage(bus);
+    final var inMsg = createInMessage(bus);
 
-    var loggingInInterceptor =
+    final var loggingInInterceptor =
         bus.getInInterceptors().stream()
             .filter(interceptor -> interceptor instanceof LoggingInInterceptor)
             .map(LoggingInInterceptor.class::cast)
@@ -107,9 +121,9 @@ class NCPeHMockApplicationTest {
 
     assertDoesNotThrow(() -> loggingInInterceptor.handleMessage(inMsg));
 
-    var outMsg = createOutMessage(inMsg);
+    final var outMsg = createOutMessage(inMsg);
 
-    var logOutInterceptor =
+    final var logOutInterceptor =
         bus.getOutInterceptors().stream()
             .filter(interceptor -> interceptor instanceof LoggingOutInterceptor)
             .map(LoggingOutInterceptor.class::cast)
@@ -124,16 +138,16 @@ class NCPeHMockApplicationTest {
   // region private
 
   @SneakyThrows
-  private Message createInMessage(Bus bus) {
-    var request = HttpMessageFactory.buildStandardFindDocumentRequest();
-    Message msg = new MessageImpl();
+  private Message createInMessage(final Bus bus) {
+    final var request = HttpMessageFactory.buildStandardFindDocumentRequest();
+    final Message msg = new MessageImpl();
 
     setMessageProperties(msg, request);
     msg.putIfAbsent(Message.HTTP_REQUEST_METHOD, request.getMethod().name());
     msg.setId("loggingFeatureSenderTest InMessage");
     msg.putIfAbsent(Message.REQUEST_URL, request.getURI().toString());
 
-    var cachedOutStream = new CachedOutputStream();
+    final var cachedOutStream = new CachedOutputStream();
     cachedOutStream.resetOut(request.getRequestBody(), false);
     msg.setContent(CachedOutputStream.class, cachedOutStream);
 
@@ -142,19 +156,19 @@ class NCPeHMockApplicationTest {
     return msg;
   }
 
-  private Message createOutMessage(Message inMessage) {
-    var response = HttpMessageFactory.buildStandardFindDocumentResponse();
+  private Message createOutMessage(final Message inMessage) {
+    final var response = HttpMessageFactory.buildStandardFindDocumentResponse(null);
 
-    Message msg = new MessageImpl();
+    final Message msg = new MessageImpl();
 
     setMessageProperties(msg, response);
     msg.setId("loggingFeatureSenderTest OutMessage");
     msg.putIfAbsent(Message.RESPONSE_CODE, response.getStatusCode().value());
 
-    var httpResponseMsg =
+    final var httpResponseMsg =
         SimulatorCommunicationDataBuilder.wrapHttpResponse(
-            HttpMessageFactory.buildStandardFindDocumentResponse());
-    var msgAsOutputStream = new ByteArrayOutputStream();
+            HttpMessageFactory.buildStandardFindDocumentResponse(null));
+    final var msgAsOutputStream = new ByteArrayOutputStream();
     msgAsOutputStream.writeBytes(httpResponseMsg.messageContent().httpBody());
     msg.setContent(OutputStream.class, msgAsOutputStream);
 
@@ -163,7 +177,7 @@ class NCPeHMockApplicationTest {
     return msg;
   }
 
-  private void setMessageProperties(Message msg, HttpMessage httpMessage) {
+  private void setMessageProperties(final Message msg, final HttpMessage httpMessage) {
     msg.putIfAbsent(ENABLE_LOGGING_KEY, Boolean.TRUE);
     msg.putIfAbsent(Message.ENCODING, StandardCharsets.UTF_8.name());
     msg.putIfAbsent(Message.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.toString());
@@ -171,23 +185,23 @@ class NCPeHMockApplicationTest {
   }
 
   @SneakyThrows
-  private Exchange createExchange(Bus bus, String address) {
-    var exchange = new ExchangeImpl();
+  private Exchange createExchange(final Bus bus, final String address) {
+    final var exchange = new ExchangeImpl();
 
-    var name = new QName("loggingTestPort");
+    final var name = new QName("loggingTestPort");
 
-    var serviceInfo = new ServiceInfo();
+    final var serviceInfo = new ServiceInfo();
     serviceInfo.setName(name);
     serviceInfo.setInterface(new InterfaceInfo(serviceInfo, name));
 
-    var endpointInfo = new EndpointInfo();
+    final var endpointInfo = new EndpointInfo();
     endpointInfo.setAddress(address);
     endpointInfo.setService(serviceInfo);
     endpointInfo.setName(name);
     endpointInfo.setBinding(new BindingInfo(serviceInfo, JAXRSBindingFactory.JAXRS_BINDING_ID));
 
-    var service = new ServiceImpl(serviceInfo);
-    var endpoint = new EndpointImpl(bus, service, endpointInfo);
+    final var service = new ServiceImpl(serviceInfo);
+    final var endpoint = new EndpointImpl(bus, service, endpointInfo);
     service.setEndpoints(Map.of(name, endpoint));
 
     exchange.put(Service.class, service);

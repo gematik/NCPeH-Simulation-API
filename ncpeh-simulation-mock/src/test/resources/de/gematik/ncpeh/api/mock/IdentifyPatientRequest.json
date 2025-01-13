@@ -1,0 +1,26 @@
+{
+  "baseParameter": {
+    "euCountryCode": "ES",
+    "idaAssertionProfile": {
+      "assertionProperties": {
+        "profileName": "defaultIda",
+        "invalidSignature": null,
+        "deltaNotBefore": null,
+        "deltaNotAfter": null,
+        "purposeOfUse": null
+      },
+      "permissions": null,
+      "attributeStatements": null
+    }
+  },
+  "patientId": {
+    "kvnr": "X112309471",
+    "kvnrAssigningAuthority": "1.2.276.0.76.3.1.580.147"
+  },
+  "accessCode": "123",
+  "accessCodeAssigningAuthority": "1.2.276.0.76.4.298",
+  "hcidNcpCountryA": null,
+  "hcidNcpCountryB": null,
+  "additionalLivingSubjectId": null,
+  "patientAddressCountry": null
+}

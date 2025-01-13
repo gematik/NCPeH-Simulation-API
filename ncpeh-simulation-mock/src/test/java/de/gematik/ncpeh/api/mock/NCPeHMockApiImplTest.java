@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,60 +16,199 @@
 
 package de.gematik.ncpeh.api.mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_NCPEH_MOCK_RESPONSE;
+import static de.gematik.ncpeh.api.mock.TestUtils.loadFromJsonResource;
+import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
+import de.gematik.ncpeh.api.NcpehSimulatorApi;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
-import org.junit.jupiter.api.Test;
+import jakarta.ws.rs.core.MediaType;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.cxf.jaxrs.client.Client;
+import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.joda.time.DateTime;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.xmlunit.matchers.CompareMatcher;
 
+@SpringBootTest(
+    classes = NCPeHMockApplication.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 class NCPeHMockApiImplTest {
 
-  NCPeHMockApiImpl tstObj = new NCPeHMockApiImpl();
+  @LocalServerPort private int port;
 
-  @Test
-  void identifyPatient() {
-    var response =
+  final JacksonJsonProvider provider = createJacksonJsonProvider();
+
+  NcpehSimulatorApi api;
+
+  @BeforeEach
+  void setUp() {
+    api =
+        JAXRSClientFactory.create(
+            "http://localhost:" + port + "/rest", NcpehSimulatorApi.class, List.of(provider));
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "null,PRPA_IN201306UV02.xml",
+    "some,PRPA_IN201306UV02.xml",
+    "PRPA_IN201306UV02_4,PRPA_IN201306UV02_4.xml"
+  })
+  void identifyPatientTest(final String header, final String expected) {
+    // Arrange
+    if (!"null".equals(header)) {
+      ((Client) api).header(HEADER_X_NCPEH_MOCK_RESPONSE, header);
+    }
+    final var request =
+        loadFromJsonResource(
+            IdentifyPatientRequest.class, this.getClass(), "IdentifyPatientRequest.json");
+
+    // Act
+    final var response =
         assertDoesNotThrow(
-            () ->
-                tstObj.identifyPatient(
-                    new IdentifyPatientRequest(null, null, null, null, null, null, null, null)),
+            () -> api.identifyPatient(request),
             "Method NCPeHMockApiImpl.identifyPatient threw an exception");
 
-    assertEquals(
-        SimulatorCommunicationData.class,
-        response.getEntity().getClass(),
-        "Entity of the response was not of expected type");
+    // Assert
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var requestBody =
+        new String(
+            simulatorComData.requestSend().messageContent().httpBody(), StandardCharsets.UTF_8);
+    var expectedData = readResourceFile(this.getClass(), "PRPA_IN201305UV02_298.xml");
+    assertThat(
+        requestBody, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+    expectedData = readResourceFile(this.getClass(), expected);
+
+    assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
-  @Test
-  void findDocuments() {
-    var response =
+  private static JacksonJsonProvider createJacksonJsonProvider() {
+    final var provider =
+        new JacksonJsonProvider()
+            .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+            .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+    provider
+        .locateMapper(DateTime.class, MediaType.APPLICATION_JSON_TYPE)
+        .setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
+        //        .registerModule(new JodaModule())
+        .registerModule(new JavaTimeModule());
+
+    return provider;
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "null,AdhocQueryResponse.xml",
+    "some,AdhocQueryResponse.xml",
+    "AdhocQueryResponse_010,AdhocQueryResponse_010.xml"
+  })
+  void findDocumentsTest(final String header, final String expected) {
+    // Arrange
+    if (!"null".equals(header)) {
+      ((Client) api).header(HEADER_X_NCPEH_MOCK_RESPONSE, header);
+    }
+    final var request =
+        loadFromJsonResource(
+            FindDocumentsRequest.class, this.getClass(), "FindDocumentsRequest.json");
+
+    // Act
+    final var response =
         assertDoesNotThrow(
-            () ->
-                tstObj.findDocuments(
-                    new FindDocumentsRequest(null, null, null, null, null, null, null)),
+            () -> api.findDocuments(request),
             "Method NCPeHMockApiImpl.findDocuments threw an exception");
 
-    assertEquals(
-        SimulatorCommunicationData.class,
-        response.getEntity().getClass(),
-        "Entity of the response was not of expected type");
+    // Assert
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var requestBody =
+        new String(
+            simulatorComData.requestSend().messageContent().httpBody(), StandardCharsets.UTF_8);
+    var expectedData = readResourceFile(this.getClass(), "AdhocQueryRequest.xml");
+    assertThat(
+        requestBody, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+    expectedData = readResourceFile(this.getClass(), expected);
+
+    assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
-  @Test
-  void retrieveDocument() {
-    var response =
+  @ParameterizedTest
+  @CsvSource({
+    "null,RetrieveDocumentSetResponse.xml",
+    "some,RetrieveDocumentSetResponse.xml",
+    "RetrieveDocumentSetResponse_020,RetrieveDocumentSetResponse_020.xml"
+  })
+  void retrieveDocumentTest(final String header, final String expected) {
+    // Arrange
+    if (!"null".equals(header)) {
+      ((Client) api).header(HEADER_X_NCPEH_MOCK_RESPONSE, header);
+    }
+    final var request =
+        loadFromJsonResource(
+            RetrieveDocumentRequest.class, this.getClass(), "RetrieveDocumentRequest.json");
+
+    // Act
+    final var response =
         assertDoesNotThrow(
-            () ->
-                tstObj.retrieveDocument(
-                    new RetrieveDocumentRequest(null, null, null, null, null, null, null, null)),
+            () -> api.retrieveDocument(request),
             "Method NCPeHMockApiImpl.retrieveDocument threw an exception");
 
-    assertEquals(
-        SimulatorCommunicationData.class,
-        response.getEntity().getClass(),
-        "Entity of the response was not of expected type");
+    // Assert
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var requestBody =
+        new String(
+            simulatorComData.requestSend().messageContent().httpBody(), StandardCharsets.UTF_8);
+    var expectedData = readResourceFile(this.getClass(), "RetrieveDocumentSetRequest.xml");
+    assertThat(
+        requestBody, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+
+    log.debug("Response body: {}", body);
+
+    expectedData = readResourceFile(this.getClass(), expected);
+    assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 }

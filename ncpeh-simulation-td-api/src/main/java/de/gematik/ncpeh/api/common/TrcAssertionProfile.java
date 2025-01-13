@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public record TrcAssertionProfile(
                 "Wenn hier ein Wert gesetzt ist, bestimmt dieser den vollständigen Inhalt im "
                     + "Assertion-Element 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
                     + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:subject-id\"' gilt. "
-                    + "Falls die Angabe fehlt, so sind mit der KVNR und OID_AssigningAuthority aus dem fachlichen Kontext "
+                    + "Falls die Angabe fehlt, so sind mit der KVNR und die OID der Assigning Authority zum AccessCode aus dem fachlichen Kontext "
                     + "des Trigger-Requests (Element patientId aus diesem Request) "
                     + "eine gültige URN für das SOAP-Element zu berechnen.",
             maxLength = 70)

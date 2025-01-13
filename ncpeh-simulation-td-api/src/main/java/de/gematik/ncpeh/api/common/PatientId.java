@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,4 +31,4 @@ public record PatientId(
             defaultValue = "1.2.276.0.76.3.1.580.147",
             description = "Der Wert repräsentiert die OID der Assigning Authority zur KVNR",
             maxLength = 50)
-        String oidAssigningAuthority) {}
+        String kvnrAssigningAuthority) {}

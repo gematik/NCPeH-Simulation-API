@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  ~ Copyright (c) 2024-2025 gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -7,15 +23,12 @@
   <parent>
     <groupId>de.gematik.api</groupId>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
   </parent>
 
   <artifactId>ncpeh-simulation-ehdsi-model</artifactId>
 
   <properties>
-    <cxf-xjc.version>4.0.0</cxf-xjc.version>
-    <xml.bind.jaxb.version>4.0.3</xml.bind.jaxb.version>
-    <jaxb.fluent.api.version>3.0</jaxb.fluent.api.version>
     <generated.sources.path>${project.build.directory}/generated-sources</generated.sources.path>
     <schema.root.path>${project.basedir}/src/main/resources/schemas</schema.root.path>
     <binding.path>${project.basedir}/src/main/bindings</binding.path>
@@ -25,17 +38,14 @@
     <dependency>
       <groupId>jakarta.ws.rs</groupId>
       <artifactId>jakarta.ws.rs-api</artifactId>
-      <version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf.xjc-utils</groupId>
       <artifactId>cxf-xjc-runtime</artifactId>
-      <version>${cxf-xjc.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
     </dependency>
   </dependencies>
 
@@ -45,18 +55,6 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-xjc-plugin</artifactId>
-        <version>${cxf-xjc.version}</version>
-        <configuration>
-          <additionalJvmArgs>-Djavax.xml.accessExternalDTD=file</additionalJvmArgs>
-          <extensions>
-            <extension>org.apache.cxf.xjcplugins:cxf-xjc-ts:${cxf-xjc.version}</extension>
-            <extension>org.jvnet.jaxb2_commons:jaxb2-fluent-api:${jaxb.fluent.api.version}
-            </extension>
-            <extension>org.jvnet.jaxb2_commons:jaxb2-basics:0.13.1</extension>
-            <extension>javax.xml.bind:jaxb-api:2.3.1</extension>
-            <extension>com.sun.xml.bind:jaxb-impl:2.3.1</extension>
-          </extensions>
-        </configuration>
         <executions>
           <execution>
             <id>generate-sources</id>
