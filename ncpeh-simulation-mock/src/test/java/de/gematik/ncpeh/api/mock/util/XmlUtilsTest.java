@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,16 @@
 
 package de.gematik.ncpeh.api.mock.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
 import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
+import lombok.SneakyThrows;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import org.junit.jupiter.api.Test;
 
@@ -28,13 +33,14 @@ class XmlUtilsTest {
 
   @Test
   void marshalTest() {
-    var testdata = retrieveDocumentTestdata().buildRequest();
+    final var testdata = retrieveDocumentTestdata().buildRequest();
 
-    var result = assertDoesNotThrow(() -> XmlUtils.marshal(testdata));
+    final var result = assertDoesNotThrow(() -> XmlUtils.marshal(testdata));
 
     assertNotNull(result);
 
-    var roundTripResult = assertDoesNotThrow(() -> XmlUtils.unmarshal(testdata.getClass(), result));
+    final var roundTripResult =
+        assertDoesNotThrow(() -> XmlUtils.unmarshal(testdata.getClass(), result));
 
     assertNotNull(roundTripResult);
     assertEquals(testdata.getDocumentRequest().size(), roundTripResult.getDocumentRequest().size());
@@ -45,23 +51,26 @@ class XmlUtilsTest {
             .toArray());
   }
 
+  @SneakyThrows
   @Test
   void unmarshalTest() {
-    var testdata =
-        HttpMessageFactory.readFileContentFromPath(
-            HttpMessageFactory.MESSAGES_FOLDER
-                + HttpMessageFactory.FIND_DOCUMENT_REQUEST_FILE_NAME);
+    try (final var testdata =
+        HttpMessageFactory.readMessageFileSafely(
+            HttpMessageFactory.FIND_DOCUMENT_REQUEST_FILE_NAME)) {
 
-    var result = assertDoesNotThrow(() -> XmlUtils.unmarshal(AdhocQueryRequest.class, testdata));
+      final var result =
+          assertDoesNotThrow(
+              () -> XmlUtils.unmarshal(AdhocQueryRequest.class, testdata.readAllBytes()));
 
-    assertNotNull(result);
-    assertNotNull(result.getResponseOption());
-    assertNotNull(result.getAdhocQuery());
-    assertFalse(result.getAdhocQuery().getSlot().isEmpty());
+      assertNotNull(result);
+      assertNotNull(result.getResponseOption());
+      assertNotNull(result.getAdhocQuery());
+      assertFalse(result.getAdhocQuery().getSlot().isEmpty());
 
-    var roundTripResult = assertDoesNotThrow(() -> XmlUtils.marshal(result));
+      final var roundTripResult = assertDoesNotThrow(() -> XmlUtils.marshal(result));
 
-    assertNotNull(roundTripResult);
+      assertNotNull(roundTripResult);
+    }
   }
 
   private RetrieveDocumentMessagesBuilder retrieveDocumentTestdata() {

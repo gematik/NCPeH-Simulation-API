@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,13 @@ public record FindDocumentsRequest(
                     + "Sofern im Parameter \"PatientId\" zur TRC-Assertion nicht anders angegeben, geht dieser Wert auch dort als AccessCode in den Bildungsschritt des Elementes \"urn:oasis:names:tc:xspa:1.0:subject:subject-id\" mit ein.",
             maxLength = 20)
         String accessCode,
-    @JsonProperty(defaultValue = "('60591-5^^2.16.840.1.113883.6.1')")
+    @JsonProperty(required = true)
         @Schema(
-            defaultValue = "('60591-5^^2.16.840.1.113883.6.1')",
             description =
                 "Enthält den vollständigen Wert, der im AdhocQueryRequest im "
                     + "Element 'AdhocQueryRequest/AdhocQuery/Slot/ValueList/Value' mit "
                     + "Slot 'name=\"XDSDocumentEntryClassCode\"' eingetragen werden muss.",
+            example = "('60591-5^^2.16.840.1.113883.6.1')",
             maxLength = 50)
         String xdsDocumentEntryClassCode,
     @JsonProperty(defaultValue = "('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')")

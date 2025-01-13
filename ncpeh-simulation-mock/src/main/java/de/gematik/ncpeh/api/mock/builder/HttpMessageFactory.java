@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package de.gematik.ncpeh.api.mock.builder;
 
-import static de.gematik.ncpeh.api.mock.builder.Constants.*;
+import static de.gematik.ncpeh.api.mock.builder.SoapMessageFactory.createSoapMessage;
 
 import de.gematik.ncpeh.api.mock.http.PseudoHttpRequest;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpResponse;
@@ -24,15 +24,13 @@ import de.gematik.ncpeh.api.mock.util.XmlUtils;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
@@ -41,25 +39,17 @@ import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.ResourceUtils;
 
 /** Static methods used to create test data, to be returned by API operations */
 @UtilityClass
 @Slf4j
 @Accessors(fluent = true)
 public final class HttpMessageFactory {
-
-  public static final String RESOURCES_FOLDER = "src/main/resources/";
-
-  public static final String SPRING_BOOT_CLASSES_FOLDER = "BOOT-INF/classes/";
 
   public static final String MESSAGES_FOLDER = "messages/";
 
@@ -75,9 +65,10 @@ public final class HttpMessageFactory {
 
   public static final String FIND_DOCUMENT_RESPONSE_FILE_NAME = "AdhocQueryResponse.xml";
 
-  public static final String RETRIEVE_DOCUMENT_REQUEST_FILE_NAME = "RetrieveDocumentRequest.xml";
+  public static final URI PSEUDO_URI = URI.create("http://pseudoDn:12345/pseudoPath");
 
-  public static final String RETRIEVE_DOCUMENT_RESPONSE_FILE_NAME = "RetrieveDocumentResponse.xml";
+  private static final MediaType APPLICATION_SOAP_XML =
+      new MediaType("application", "soap+xml", StandardCharsets.UTF_8);
 
   @Getter(lazy = true)
   private static final ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -116,17 +107,6 @@ public final class HttpMessageFactory {
   }
 
   /**
-   * Build an HTTP request to be used as payload in the {@link
-   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
-   * de.gematik.ncpeh.api.NcpehSimulatorApi#retrieveDocument(RetrieveDocumentRequest)} response.
-   *
-   * @return {@link PseudoHttpRequest}
-   */
-  public static PseudoHttpRequest buildStandardRetrieveDocumentRequest() {
-    return buildHttpRequest(RETRIEVE_DOCUMENT_REQUEST_FILE_NAME);
-  }
-
-  /**
    * Build an HTTP response to be used as payload in the {@link
    * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element for the
    * {@link de.gematik.ncpeh.api.NcpehSimulatorApi#identifyPatient(IdentifyPatientRequest)}
@@ -134,8 +114,10 @@ public final class HttpMessageFactory {
    *
    * @return {@link PseudoHttpResponse}
    */
-  public static PseudoHttpResponse buildStandardIdentifyPatientResponse() {
-    return buildHttpResponse(PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME);
+  @SneakyThrows
+  public static PseudoHttpResponse buildStandardIdentifyPatientResponse(final String fileName) {
+    return buildHttpResponse(
+        readMessageFileSafely(fileName, PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
   }
 
   /**
@@ -146,97 +128,81 @@ public final class HttpMessageFactory {
    *
    * @return {@link PseudoHttpResponse}
    */
-  public static PseudoHttpResponse buildStandardFindDocumentResponse() {
-    return buildHttpResponse(FIND_DOCUMENT_RESPONSE_FILE_NAME);
-  }
-
-  /**
-   * Build an HTTP response to be used as payload in the {@link
-   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element for the
-   * {@link de.gematik.ncpeh.api.NcpehSimulatorApi#retrieveDocument(RetrieveDocumentRequest)}
-   * response.
-   *
-   * @return {@link PseudoHttpResponse}
-   */
-  public static PseudoHttpResponse buildStandardRetrieveDocumentResponse() {
-    return buildHttpResponse(RETRIEVE_DOCUMENT_RESPONSE_FILE_NAME);
+  public static PseudoHttpResponse buildStandardFindDocumentResponse(final String fileName) {
+    return buildHttpResponse(readMessageFileSafely(fileName, FIND_DOCUMENT_RESPONSE_FILE_NAME));
   }
 
   public static PseudoHttpRequest buildRetrieveDocumentRequest(
-      @NonNull RetrieveDocumentSetRequestType request) {
-    var body = XmlUtils.marshal(request);
-
-    return buildHttpRequest(body);
+      final RetrieveDocumentRequest request) {
+    final var iheMsgBuilder = new RetrieveDocumentMessagesBuilder().useDataFrom(request);
+    final var body = XmlUtils.marshal(iheMsgBuilder.buildRequest());
+    return buildHttpRequest(new ByteArrayInputStream(body));
   }
 
   public static PseudoHttpResponse buildRetrieveDocumentResponse(
-      @NonNull RetrieveDocumentSetResponseType response) {
-    var body = XmlUtils.marshal(response);
-
-    return buildHttpResponse(body);
+      final RetrieveDocumentRequest request, final String fileName) {
+    return buildHttpResponse(
+        Optional.ofNullable(readMessageFile(fileName))
+            .orElseGet(
+                () -> {
+                  final var iheMsgBuilder =
+                      new RetrieveDocumentMessagesBuilder().useDataFrom(request);
+                  final var body = XmlUtils.marshal(iheMsgBuilder.buildResponse());
+                  return new ByteArrayInputStream(body);
+                }));
   }
 
-  /**
-   * Read the content of a file at the given path into a String.<br>
-   * The encoding of the file must be UTF-8.
-   *
-   * @param filePath path of the file to read
-   * @return the file content as {@link String}
-   */
-  @SneakyThrows
-  public static String readUTF8FileContentFromPath(final String filePath) {
-    return new String(readFileContentFromPath(filePath), StandardCharsets.UTF_8);
+  public static InputStream readMessageFileSafely(final String filePath) {
+    return readMessageFileSafely(filePath, null);
+  }
+
+  private static InputStream readMessageFile(final String filePath) {
+    return readMessageFile(filePath, null);
   }
 
   @SneakyThrows
-  public static byte[] readFileContentFromPath(String filePath) {
-    var fileResource =
-        Optional.ofNullable(filePath)
-            .map(HttpMessageFactory::getReadableFileResource)
-            .or(
-                () ->
-                    Optional.ofNullable(filePath)
-                        .map(fp -> RESOURCES_FOLDER + fp)
-                        .map(HttpMessageFactory::getReadableFileResource))
-            .or(
-                () ->
-                    Optional.ofNullable(filePath)
-                        .map(fp -> ResourceUtils.CLASSPATH_URL_PREFIX + fp)
-                        .map(HttpMessageFactory::getReadableFileResource))
-            .or(
-                () ->
-                    Optional.ofNullable(filePath)
-                        .map(
-                            fp ->
-                                ResourceUtils.CLASSPATH_URL_PREFIX
-                                    + SPRING_BOOT_CLASSES_FOLDER
-                                    + fp)
-                        .map(HttpMessageFactory::getReadableFileResource))
-            .or(
-                () ->
-                    Optional.ofNullable(filePath).map(HttpMessageFactory::findReadableFileResource))
-            .orElseThrow(
-                () ->
-                    new FileNotFoundException(
-                        "No file with path " + filePath + " found in the common locations"));
+  public static InputStream readMessageFileSafely(
+      final String filePath, final String defaultFilePath) {
+    return Optional.ofNullable(readMessageFile(filePath, defaultFilePath))
+        .orElseThrow(
+            () ->
+                new FileNotFoundException(
+                    String.format("Message files not found: %s & %s", filePath, defaultFilePath)));
+  }
 
-    return fileResource.getInputStream().readAllBytes();
+  @SneakyThrows
+  private static InputStream readMessageFile(final String filePath, final String defaultFilePath) {
+    return Optional.ofNullable(filePath)
+        .map(
+            fp ->
+                HttpMessageFactory.class.getClassLoader().getResourceAsStream(MESSAGES_FOLDER + fp))
+        .or(
+            () ->
+                Optional.ofNullable(defaultFilePath)
+                    .map(
+                        fp ->
+                            HttpMessageFactory.class
+                                .getClassLoader()
+                                .getResourceAsStream(MESSAGES_FOLDER + fp)))
+        .orElse(null);
   }
 
   // region private
 
-  private static PseudoHttpRequest buildHttpRequest(@NonNull String bodyDataFilePath) {
-    return buildHttpRequest(readFileContentFromPath(MESSAGES_FOLDER + bodyDataFilePath));
+  @SneakyThrows
+  private static PseudoHttpRequest buildHttpRequest(@NonNull final String bodyDataFilePath) {
+    return buildHttpRequest(readMessageFileSafely(bodyDataFilePath));
   }
 
-  private static PseudoHttpRequest buildHttpRequest(byte[] bodyData) {
-    var httpRequest =
+  @SneakyThrows
+  private static PseudoHttpRequest buildHttpRequest(@NonNull final InputStream bodyData) {
+    final var httpRequest =
         new PseudoHttpRequest()
             .setMethod(HttpMethod.POST)
             .setURI(PSEUDO_URI)
-            .setRequestBody(toOutputStream(bodyData));
+            .setRequestBody(createSoapMessage(bodyData));
 
-    var headers = httpRequest.getHeaders();
+    final var headers = httpRequest.getHeaders();
 
     headers.setAccept(List.of(MediaType.TEXT_XML, APPLICATION_SOAP_XML));
     headers.setContentType(APPLICATION_SOAP_XML);
@@ -248,52 +214,19 @@ public final class HttpMessageFactory {
     return httpRequest;
   }
 
-  private static ByteArrayOutputStream toOutputStream(byte[] bytes) {
-    var outputStream = new ByteArrayOutputStream();
-    outputStream.writeBytes(bytes);
-    return outputStream;
-  }
+  @SneakyThrows
+  private static PseudoHttpResponse buildHttpResponse(@NonNull final InputStream bodyData) {
+    try (final var httpResponse = new PseudoHttpResponse(HttpStatus.OK)) {
 
-  private static PseudoHttpResponse buildHttpResponse(@NonNull String bodyDataFilePath) {
-    var body = readFileContentFromPath(MESSAGES_FOLDER + bodyDataFilePath);
+      httpResponse.setBody(new ByteArrayInputStream(createSoapMessage(bodyData).toByteArray()));
 
-    return buildHttpResponse(body);
-  }
-
-  private static PseudoHttpResponse buildHttpResponse(byte[] bodyData) {
-    try (var httpResponse =
-        new PseudoHttpResponse(HttpStatus.OK).setBody(new ByteArrayInputStream(bodyData))) {
-
-      var headers = new HttpHeaders();
+      final var headers = new HttpHeaders();
       headers.setContentType(APPLICATION_SOAP_XML);
       headers.setAccept(List.of(APPLICATION_SOAP_XML, MediaType.TEXT_XML));
-      headers.setContentLength(bodyData.length);
+      headers.setContentLength(httpResponse.getBody().available());
 
       return httpResponse.setHeaders(headers);
     }
   }
-
-  private static Resource getReadableFileResource(@NonNull String filePath) {
-    var resource = resourceLoader().getResource(filePath);
-    log.debug("Current resource attempt: {}", resource);
-    if (resource.exists() && resource.isReadable()) {
-      return resource;
-    } else {
-      return null;
-    }
-  }
-
-  @SneakyThrows
-  private static Resource findReadableFileResource(@NonNull String filePath) {
-    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-    Resource[] resources = resolver.getResources(ResourceUtils.CLASSPATH_URL_PREFIX + "**");
-    return Arrays.stream(resources)
-        .filter(resource -> Objects.nonNull(resource.getFilename()))
-        .filter(resource -> resource.getFilename().endsWith(filePath))
-        .filter(Resource::isReadable)
-        .findFirst()
-        .orElse(null);
-  }
-
   // endregion private
 }

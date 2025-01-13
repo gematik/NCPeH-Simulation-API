@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright (c) 2024-2025 gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+  see: https://profiles.ihe.net/ITI/TF/Volume2/ITI-55.html#3.55.4.2.3
+  Case 4: The Responding Gateway finds no patients anywhere close to matching the criteria sent in the query parameters.
+-->
+
+<ns6:PRPA_IN201306UV02 xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:ns6="urn:hl7-org:v3" ITSVersion="XML_1.0">
+  <ns6:id root="f302e153-f4c3-4586-a003-557b2150e7c2" extension="0903372231150"/>
+  <ns6:creationTime value="20230124085038.622+0000"/>
+  <ns6:versionCode code="V3PR1"/>
+  <ns6:interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201306UV02"/>
+  <ns6:processingCode code="D"/>
+  <ns6:processingModeCode code="T"/>
+  <ns6:acceptAckCode code="NE"/>
+  <ns6:receiver typeCode="RCV">
+    <ns6:device classCode="DEV" determinerCode="INSTANCE">
+      <ns6:id root="2.16.17.710.803.1000.990.1"/>
+    </ns6:device>
+  </ns6:receiver>
+  <ns6:sender typeCode="SND">
+    <ns6:device classCode="DEV" determinerCode="INSTANCE">
+      <ns6:id root="1.2.276.0.76.4.291"/>
+    </ns6:device>
+  </ns6:sender>
+  <ns6:acknowledgement>
+    <ns6:typeCode code="AA"/>
+    <ns6:targetMessage>
+      <ns6:id root="1.2.840.114350.1.13.0.1.7.1.1" extension="35423"/>
+    </ns6:targetMessage>
+    <ns6:acknowledgementDetail typeCode="E">
+      <ns6:code code="ERROR_PI_NO_MATCH"/>
+      <ns6:text>Patient Identification Error</ns6:text>
+      <ns6:location>It was not possible to localise the patient's health record account in the national health record system.</ns6:location>
+    </ns6:acknowledgementDetail>
+  </ns6:acknowledgement>
+  <ns6:controlActProcess classCode="CACT" moodCode="EVN">
+    <ns6:code code="PRPA_TE201306UV02"/>
+    <ns6:reasonOf typeCode="RSON">
+      <ns6:detectedIssueEvent classCode="ALRT" moodCode="EVN">
+        <ns6:code code="_ActAdministrativeDetectedIssueManagementCode" codeSystem="2.16.840.1.113883.5.4"/>
+        <ns6:mitigatedBy typeCode="MITGT">
+          <ns6:detectedIssueManagement classCode="ACT" moodCode="EVN">
+            <ns6:code code="AnswerNotAvailable" codeSystem="1.3.6.1.4.1.19376.1.2.27.3"/>
+          </ns6:detectedIssueManagement>
+        </ns6:mitigatedBy>
+      </ns6:detectedIssueEvent>
+    </ns6:reasonOf>
+    <ns6:queryAck>
+      <ns6:statusCode code="completed"/>
+      <ns6:queryId root="1.263507841149"/>
+      <ns6:queryResponseCode code="NF"/>
+    </ns6:queryAck>
+  </ns6:controlActProcess>
+</ns6:PRPA_IN201306UV02>

@@ -6,21 +6,26 @@ server:
 cxf:
   jaxrs:
     component-scan: true
-    classes-scan-packages: org.apache.cxf.jaxrs.swagger
+    classes-scan-packages: org.apache.cxf.jaxrs.swagger,org.apache.cxf.metrics
   path: "/rest"
+  openapi:
+    resource-packages: de.gematik.ncpeh.api
+    url: "${cxf.path}/openapi.json"
 
 management:
   endpoints:
     enabled-by-default: false
     web:
       exposure:
-        include: "health, info, mappings"
+        include: "health, info, mappings, metrics"
   endpoint:
     health:
       enabled: true
     mappings:
       enabled: true
     info:
+      enabled: true
+    metrics:
       enabled: true
 
 logging:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,17 @@ package de.gematik.ncpeh.api.mock.builder;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 import org.springframework.http.MediaType;
 
@@ -45,7 +49,7 @@ public class RetrieveDocumentMessagesBuilder {
   private String homeCommunityId = "urn:oid:1.2.276.0.76.4.291";
 
   public RetrieveDocumentMessagesBuilder useDataFrom(
-      RetrieveDocumentRequest retrieveDocumentRequest) {
+      final RetrieveDocumentRequest retrieveDocumentRequest) {
     return documentUniqueId(retrieveDocumentRequest.documentUniqueId())
         .additionalDocumentUniqueId(retrieveDocumentRequest.additionalDocumentUniqueId())
         .homeCommunityId(retrieveDocumentRequest.homeCommunityId())
@@ -53,7 +57,7 @@ public class RetrieveDocumentMessagesBuilder {
   }
 
   public RetrieveDocumentSetRequestType buildRequest() {
-    var request = new RetrieveDocumentSetRequestType();
+    final var request = new RetrieveDocumentSetRequestType();
 
     Optional.ofNullable(documentUniqueId())
         .ifPresent(duid -> request.getDocumentRequest().add(buildDocumentRequest(duid)));
@@ -64,9 +68,9 @@ public class RetrieveDocumentMessagesBuilder {
   }
 
   public RetrieveDocumentSetResponseType buildResponse() {
-    var response = new RetrieveDocumentSetResponseType();
+    final var response = new RetrieveDocumentSetResponseType();
 
-    var registryResponse = new RegistryResponseType();
+    final var registryResponse = new RegistryResponseType();
     registryResponse.setStatus(STATUS_SUCCESS);
 
     response.setRegistryResponse(registryResponse);
@@ -79,8 +83,9 @@ public class RetrieveDocumentMessagesBuilder {
     return response;
   }
 
-  private RetrieveDocumentSetRequestType.DocumentRequest buildDocumentRequest(String uniqueId) {
-    var documentRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
+  private RetrieveDocumentSetRequestType.DocumentRequest buildDocumentRequest(
+      final String uniqueId) {
+    final var documentRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
 
     documentRequest.setDocumentUniqueId(uniqueId);
     documentRequest.setRepositoryUniqueId(repositoryUniqueId());
@@ -89,14 +94,15 @@ public class RetrieveDocumentMessagesBuilder {
     return documentRequest;
   }
 
-  private RetrieveDocumentSetResponseType.DocumentResponse buildDocumentResponse(String uniqueId) {
-    var documentResponse = new RetrieveDocumentSetResponseType.DocumentResponse();
+  private RetrieveDocumentSetResponseType.DocumentResponse buildDocumentResponse(
+      final String uniqueId) {
+    final var documentResponse = new RetrieveDocumentSetResponseType.DocumentResponse();
 
     documentResponse.setDocumentUniqueId(uniqueId);
     documentResponse.setRepositoryUniqueId(repositoryUniqueId());
     documentResponse.setHomeCommunityId(homeCommunityId());
 
-    var lvlInfo = CDALevelInfo.fromDocumentUniqueId(uniqueId);
+    final var lvlInfo = CDALevelInfo.fromDocumentUniqueId(uniqueId);
 
     documentResponse.setMimeType(lvlInfo.mimeType());
     documentResponse.setDocument(lvlInfo.readDocument());
@@ -107,6 +113,7 @@ public class RetrieveDocumentMessagesBuilder {
   @RequiredArgsConstructor
   @Getter
   @Accessors(fluent = true)
+  @Slf4j
   enum CDALevelInfo {
     LEVEL_1("^PS.PDF", MediaType.APPLICATION_PDF_VALUE, "Patient_Summary_CDA1.pdf"),
     LEVEL_3("^PS.XML", MediaType.TEXT_XML_VALUE, "Patient_Summary_CDA3.xml");
@@ -117,16 +124,27 @@ public class RetrieveDocumentMessagesBuilder {
 
     private final String documentFileName;
 
-    public boolean documentIsOfLevel(String documentUniqueId) {
+    private static final String COMMENT_REGEX = "(?s)<!--.*?-->";
+
+    public boolean documentIsOfLevel(final String documentUniqueId) {
       return documentUniqueId.endsWith(idMarker());
     }
 
+    @SneakyThrows
     public byte[] readDocument() {
-      return HttpMessageFactory.readFileContentFromPath(
-          HttpMessageFactory.MESSAGES_FOLDER + documentFileName);
+      try (final InputStream io = HttpMessageFactory.readMessageFileSafely(documentFileName)) {
+        log.debug("name {}", this.name());
+        if (this.name().equals(LEVEL_1.name())) {
+          return io.readAllBytes();
+        }
+        // remove comments from xml file
+        return new String(io.readAllBytes(), StandardCharsets.UTF_8)
+            .replaceAll(COMMENT_REGEX, "")
+            .getBytes(StandardCharsets.UTF_8);
+      }
     }
 
-    public static CDALevelInfo fromDocumentUniqueId(@NonNull String documentUniqueId) {
+    public static CDALevelInfo fromDocumentUniqueId(@NonNull final String documentUniqueId) {
       return Arrays.stream(CDALevelInfo.values())
           .filter(psl -> psl.documentIsOfLevel(documentUniqueId))
           .findFirst()

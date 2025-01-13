@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 package de.gematik.ncpeh.api.mock.builder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,15 +26,15 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void buildPSA() {
-    var tstObj =
+    final var tstObj =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.newInstance()
                     .requestMessage(HttpMessageFactory.buildPSAIdentifyPatientRequest())
-                    .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse()),
+                    .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse(null)),
             "Unexpected Exception thrown by SimulatorCommunicationDataBuilder");
 
-    var result =
+    final var result =
         assertDoesNotThrow(
             tstObj::build, "SimulatorCommunicationDataBuilder.build threw unexpected exception");
 
@@ -44,15 +46,15 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void buildEPED() {
-    var tstObj =
+    final var tstObj =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.newInstance()
                     .requestMessage(HttpMessageFactory.buildEPEDIdentifyPatientRequest())
-                    .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse()),
+                    .responseMessage(HttpMessageFactory.buildStandardIdentifyPatientResponse(null)),
             "Unexpected Exception thrown by SimulatorCommunicationDataBuilder");
 
-    var result =
+    final var result =
         assertDoesNotThrow(
             tstObj::build, "SimulatorCommunicationDataBuilder.build threw unexpected exception");
 
@@ -64,12 +66,12 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void buildNull() {
-    var tstObj =
+    final var tstObj =
         assertDoesNotThrow(
             SimulatorCommunicationDataBuilder::newInstance,
             "Unexpected Exception thrown by SimulatorCommunicationDataBuilder");
 
-    var result =
+    final var result =
         assertDoesNotThrow(
             tstObj::build, "SimulatorCommunicationDataBuilder.build threw unexpected exception");
 
@@ -82,7 +84,7 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpMessageReqPSA() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpMessage(
@@ -95,7 +97,7 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpMessageReqEPED() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpMessage(
@@ -108,11 +110,11 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpMessageResp() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpMessage(
-                    HttpMessageFactory.buildStandardIdentifyPatientResponse()),
+                    HttpMessageFactory.buildStandardIdentifyPatientResponse(null)),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpMessage");
 
     assertNotNull(
@@ -121,7 +123,7 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpRequestPSA() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpRequest(
@@ -134,7 +136,7 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpRequestEPeD() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpRequest(
@@ -147,11 +149,11 @@ class SimulatorCommunicationDataBuilderTest {
 
   @Test
   void wrapHttpResponse() {
-    var result =
+    final var result =
         assertDoesNotThrow(
             () ->
                 SimulatorCommunicationDataBuilder.wrapHttpResponse(
-                    HttpMessageFactory.buildStandardIdentifyPatientResponse()),
+                    HttpMessageFactory.buildStandardIdentifyPatientResponse(null)),
             "Unexpected exception thrown by method SimulatorCommunicationDataBuilder.wrapHttpResponse");
 
     assertNotNull(

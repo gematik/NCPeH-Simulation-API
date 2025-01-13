@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 gematik GmbH
+ * Copyright (c) 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,8 +74,8 @@ public class XmlUtils {
    * IDE.
    *
    * @param xmlObject the object for which the JAXBElement is created
-   * @return {@link JAXBElement} to the object
    * @param <T> class type of the object
+   * @return {@link JAXBElement} to the object
    */
   @SneakyThrows
   @SuppressWarnings("unchecked")

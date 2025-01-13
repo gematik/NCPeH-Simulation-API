@@ -2,16 +2,31 @@
 
 # Release notes NCPeH-Simulation-API
 
+## Release 1.6.3 (2025-01-08)
+
+### changed
+
+- **Breaking:** Attribute FindDocumentsRequest.xdsDocumentEntryClassCode is now mandatory
+- Updated KVNRs for ePA 3.0
+- Added SOAP envelope in mock responses
+- Implemented responses for negative test cases
+
+### fixed
+
+- several vulnerability issues have been fixed
+
 ## Release 1.6.0 (2024-08-06)
 
 ### changed
+
 - Attribute urn:oasis:names:tc:xspa:1.0:subject:functional-role removed
-- Patient Identifier urn:oasis:names:tc:xacml:1.0:resource:resource-id rename to urn:oasis:names:tc:
+- Patient Identifier urn:oasis:names:tc:xacml:1.0:resource:resource-id renamed to urn:oasis:names:tc:
   xspa:1.0:subject:subject-id
 - Attribute urn:oasis:names:tc:xacml:1.0:subject:subject-id rename to urn:oasis:names:tc:xspa:1.0:
   subject:subject-id
 
 ### fixed
+
 - several vulnerability issues have been fixed
 
 ## Release 1.5.2 (2024-01-30)
