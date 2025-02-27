@@ -26,5 +26,6 @@ public record Slot(
     @JsonProperty(required = true)
         @Schema(
             description = "Bestimmt den zu setzenden Wert in der ValueList des benannten Slots.",
-            maxLength = 100)
+            maxLength = 100,
+            example = "2.999.1.2.3.1375^Welby^Marcus^^MD^Dr")
         String value) {}

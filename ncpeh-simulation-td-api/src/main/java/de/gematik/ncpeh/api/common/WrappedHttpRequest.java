@@ -22,7 +22,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record WrappedHttpRequest(
     @JsonProperty(required = true)
         @Schema(
-            description = "Kopfzeile der HTTP Anfrage, mit der HTTP Methode und der Zieladresse")
+            description = "Kopfzeile der HTTP Anfrage, mit der HTTP Methode und der Zieladresse",
+            example = "POST http://pseudoDn:12345/pseudoPath")
         String requestLine,
     @JsonProperty(required = true)
         @Schema(description = "Inhalt der HTTP Anfrage mit den HTTP Headern und dem HTTP Body")

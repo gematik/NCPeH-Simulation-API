@@ -27,7 +27,8 @@ import lombok.NonNull;
     description =
         "EuCountryCode benennt ein Datenprofil in Form eines zweistelligen EU-Landescodes. "
             + "Über das Datenprofil werden die NCPeH-Zertifikate und die homeCommunityId referenziert, "
-            + "die der NCPeH-Simulator in einem auszuführenden Request nutzen soll.")
+            + "die der NCPeH-Simulator in einem auszuführenden Request nutzen soll.",
+    example = "FR")
 public enum EuCountryCode {
   BELGIUM("BE"),
   BULGARIA("BG"),

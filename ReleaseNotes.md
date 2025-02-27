@@ -2,6 +2,14 @@
 
 # Release notes NCPeH-Simulation-API
 
+## Release 2.0.0 (tbd)
+
+### added
+
+- New API endpoint `/retrieveSetOfDocuments` for triggering
+  a [Cross Gateway Retrieve Request [ITI-39]](https://profiles.ihe.net/ITI/TF/Volume2/ITI-39.html)
+- Included attribute `structuralRole` in `IdaAssertionProfile` 
+
 ## Release 1.6.3 (2025-01-08)
 
 ### changed
@@ -20,7 +28,8 @@
 ### changed
 
 - Attribute urn:oasis:names:tc:xspa:1.0:subject:functional-role removed
-- Patient Identifier urn:oasis:names:tc:xacml:1.0:resource:resource-id renamed to urn:oasis:names:tc:
+- Patient Identifier urn:oasis:names:tc:xacml:1.0:resource:resource-id renamed to urn:oasis:names:
+  tc:
   xspa:1.0:subject:subject-id
 - Attribute urn:oasis:names:tc:xacml:1.0:subject:subject-id rename to urn:oasis:names:tc:xspa:1.0:
   subject:subject-id

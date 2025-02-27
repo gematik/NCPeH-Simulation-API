@@ -139,7 +139,7 @@ class NCPeHMockApplicationTest {
 
   @SneakyThrows
   private Message createInMessage(final Bus bus) {
-    final var request = HttpMessageFactory.buildStandardFindDocumentRequest();
+    final var request = HttpMessageFactory.buildPSAFindDocumentRequest();
     final Message msg = new MessageImpl();
 
     setMessageProperties(msg, request);
@@ -157,7 +157,7 @@ class NCPeHMockApplicationTest {
   }
 
   private Message createOutMessage(final Message inMessage) {
-    final var response = HttpMessageFactory.buildStandardFindDocumentResponse(null);
+    final var response = HttpMessageFactory.buildStandardFindDocumentResponsePSA(null);
 
     final Message msg = new MessageImpl();
 
@@ -167,7 +167,7 @@ class NCPeHMockApplicationTest {
 
     final var httpResponseMsg =
         SimulatorCommunicationDataBuilder.wrapHttpResponse(
-            HttpMessageFactory.buildStandardFindDocumentResponse(null));
+            HttpMessageFactory.buildStandardFindDocumentResponsePSA(null));
     final var msgAsOutputStream = new ByteArrayOutputStream();
     msgAsOutputStream.writeBytes(httpResponseMsg.messageContent().httpBody());
     msg.setContent(OutputStream.class, msgAsOutputStream);

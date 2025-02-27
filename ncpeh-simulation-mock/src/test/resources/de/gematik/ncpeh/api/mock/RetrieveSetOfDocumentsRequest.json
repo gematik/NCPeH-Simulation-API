@@ -1,0 +1,44 @@
+{
+  "baseParameter": {
+    "euCountryCode": "ES",
+    "idaAssertionProfile": {
+      "assertionProperties": {
+        "profileName": "defaultIda",
+        "invalidSignature": null,
+        "deltaNotBefore": null,
+        "deltaNotAfter": null,
+        "purposeOfUse": null
+      },
+      "structuralRole": null,
+      "permissions": null,
+      "attributeStatements": null
+    }
+  },
+  "trcAssertionProfile": {
+    "assertionProperties": {
+      "profileName": "defaultTrc",
+      "invalidSignature": null,
+      "deltaNotBefore": null,
+      "deltaNotAfter": null,
+      "purposeOfUse": null
+    },
+    "patientId": null
+  },
+  "patientId": {
+    "kvnr": "X112309471",
+    "kvnrAssigningAuthority": "1.2.276.0.76.3.1.580.147"
+  },
+  "accessCode": "ABC123",
+  "documentRequestSet": [
+    {
+      "homeCommunityId": "urn:oid:1.2.276.0.76.4.291",
+      "repositoryUniqueId": "2.16.620.1.101.10.3.29.54290",
+      "documentUniqueId": "2.16.17.710.813.1000.990.1.1^PS.PDF"
+    },
+    {
+      "homeCommunityId": "urn:oid:1.2.276.0.76.4.291",
+      "repositoryUniqueId": "2.16.620.1.101.10.3.29.54290",
+      "documentUniqueId": "2.16.17.710.813.1000.990.1.1^PS.XML"
+    }
+  ]
+}

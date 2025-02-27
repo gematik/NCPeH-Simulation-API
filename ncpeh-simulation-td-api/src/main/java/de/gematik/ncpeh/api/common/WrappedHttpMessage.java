@@ -26,14 +26,21 @@ public record WrappedHttpMessage(
         @Schema(
             description = "Base64 kodierter ByteStream aller HTTP header",
             format = "byte",
-            type = "string")
+            type = "string",
+            example =
+                "W0FjY2VwdDoidGV4dC94bWwsIGFwcGxpY2F0aW9uL3NvYXAreG1sO2NoYXJzZXQ9VVRGLTgiLCBDb250ZW"
+                    + "50LVR5cGU6ImFwcGxpY2F0aW9uL3NvYXAreG1sO2NoYXJzZXQ9VVRGLTgiXQ==")
         byte[] httpHeader,
     @JsonProperty
         @Schema(
             description = "Base64 kodierter ByteStream des HTTP body",
             nullable = true,
             format = "byte",
-            type = "string")
+            type = "string",
+            example =
+                "PFNPQVAtRU5WOkVudmVsb3BlCgl4bWxuczpTT0FQLUVOVj0iaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcm"
+                    + "cvc29hcC9lbnZlbG9wZS8iPgoJPFNPQVAtRU5WOkhlYWRlci8+Cgk8U09BUC1FTlY6Qm9keT4KCQ"
+                    + "k8LS0gUGF5bG9hZCAtLT4KCTwvU09BUC1FTlY6Qm9keT4KPC9TT0FQLUVOVjpFbnZlbG9wZT4=")
         byte[] httpBody) {
 
   @Override

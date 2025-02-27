@@ -24,11 +24,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
         "Informationen zur eindeutigen Identifizierung eines Patienten in der deutschen TI.")
 public record PatientId(
     @JsonProperty(required = true)
-        @Schema(description = "Der Wert repräsentiert die KVNR des Versicherten", maxLength = 20)
+        @Schema(
+            description = "Der Wert repräsentiert die KVNR des Versicherten",
+            maxLength = 20,
+            example = "X123456789")
         String kvnr,
     @JsonProperty(defaultValue = "1.2.276.0.76.3.1.580.147")
         @Schema(
             defaultValue = "1.2.276.0.76.3.1.580.147",
             description = "Der Wert repräsentiert die OID der Assigning Authority zur KVNR",
-            maxLength = 50)
+            maxLength = 50,
+            example = "1.2.276.0.76.3.1.580.147")
         String kvnrAssigningAuthority) {}

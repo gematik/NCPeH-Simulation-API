@@ -30,5 +30,6 @@ public record Saml2AttributeProperty(
         @Schema(
             description =
                 "Bestimmt den zu setzenden Wert des zugehörigen Assertion-Elementes 'Security/Assertion/AttributeStatement/Attribute/AttributeValue'.",
-            maxLength = 100)
+            maxLength = 100,
+            example = "Family Medical Clinic")
         String value) {}

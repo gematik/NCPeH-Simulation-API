@@ -23,7 +23,8 @@ public record WrappedHttpResponse(
     @JsonProperty(required = true)
         @Schema(
             description =
-                "Statuszeile der HTTP Antwort, mit dem Status Code und der Status Zusammenfassung")
+                "Statuszeile der HTTP Antwort, mit dem Status Code und der Status Zusammenfassung",
+            example = "200 OK")
         String statusLine,
     @JsonProperty(required = true)
         @Schema(description = "Inhalt der HTTP Antwort mit den HTTP Headern und dem HTTP Body")
