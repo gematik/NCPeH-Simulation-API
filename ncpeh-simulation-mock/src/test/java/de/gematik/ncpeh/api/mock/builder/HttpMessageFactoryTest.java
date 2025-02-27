@@ -111,33 +111,66 @@ class HttpMessageFactoryTest {
   }
 
   @Test
-  void buildStandardFindDocumentRequestTest() {
+  void buildEPEDFindDocumentRequestTest() {
     // Arrange
     // Act
     final var httpRequest =
         assertDoesNotThrow(
-            HttpMessageFactory::buildStandardFindDocumentRequest,
-            "Method HttpMessageFactory.buildStandardFindDocumentRequest threw exception");
+            HttpMessageFactory::buildEPEDFindDocumentRequest,
+            "Method HttpMessageFactory.buildEPEDFindDocumentRequest threw exception");
     // Assert
     assertRequestProps(httpRequest);
-    final var expectedData = readResourceFile(getClass(), "AdhocQueryRequest.xml");
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryRequestEPED.xml");
     assertThat(
         httpRequest.getRequestBody().toString(),
         CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @Test
-  void buildStandardFindDocumentResponseTest() {
+  void buildPSAFindDocumentRequestTest() {
+    // Arrange
+    // Act
+    final var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildPSAFindDocumentRequest,
+            "Method HttpMessageFactory.buildPSAFindDocumentRequest threw exception");
+    // Assert
+    assertRequestProps(httpRequest);
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryRequestPSA.xml");
+    assertThat(
+        httpRequest.getRequestBody().toString(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardFindDocumentResponsePSATest() {
     // Arrange
     // Act
     final var httpResponse =
         assertDoesNotThrow(
-            () -> HttpMessageFactory.buildStandardFindDocumentResponse(null),
-            "Method HttpMessageFactory.buildStandardFindDocumentResponse threw exception");
+            () -> HttpMessageFactory.buildStandardFindDocumentResponsePSA(null),
+            "Method HttpMessageFactory.buildStandardFindDocumentResponsePSA threw exception");
 
     // Assert
     assertResponseProps(httpResponse);
-    final var expectedData = readResourceFile(getClass(), "AdhocQueryResponse.xml");
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryResponsePSA.xml");
+    assertThat(
+        httpResponse.getBody(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardFindDocumentResponseEPEDTest() {
+    // Arrange
+    // Act
+    final var httpResponse =
+        assertDoesNotThrow(
+            () -> HttpMessageFactory.buildStandardFindDocumentResponseEPED(null),
+            "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
+
+    // Assert
+    assertResponseProps(httpResponse);
+    final var expectedData = readResourceFile(getClass(), "AdhocQueryResponseEPED.xml");
     assertThat(
         httpResponse.getBody(),
         CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
@@ -279,6 +312,81 @@ class HttpMessageFactoryTest {
         assertDoesNotThrow(() -> readResourceFile(this.getClass(), expected), "Error reading file");
 
     assertThat(body, CompareMatcher.isSimilarTo(expexted).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardRetrieveSetOfDocumentsRequestTest() {
+    // Arrange
+    // Act
+    final var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardRetrieveSetOfDocumentsRequest,
+            "Method HttpMessageFactory.buildStandardRetrieveSetOfDocumentsRequest threw exception");
+    // Assert
+    assertRequestProps(httpRequest);
+    final var expectedData = readResourceFile(getClass(), "RetrieveDocumentSetRequest.xml");
+    assertThat(
+        httpRequest.getRequestBody().toString(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardRetrieveSetOfDocumentsResponseTest() {
+    // Arrange
+    // Act
+    final var httpResponse =
+        assertDoesNotThrow(
+            () -> HttpMessageFactory.buildStandardRetrieveSetOfDocumentsResponse(null),
+            "Method HttpMessageFactory.buildStandardRetrieveSetOfDocumentsResponse threw exception");
+
+    // Assert
+    assertResponseProps(httpResponse);
+
+    final var expectedData = readResourceFile(getClass(), "RetrieveDocumentSetResponse.xml");
+    assertThat(
+        httpResponse.getBody(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardProvideAndRegisterSetOfDocumentsRequestTest() {
+    // Arrange
+    // Act
+    final var httpRequest =
+        assertDoesNotThrow(
+            HttpMessageFactory::buildStandardProvideAndRegisterSetOfDocumentsRequest,
+            "Method HttpMessageFactory.buildStandardProvideAndRegisterSetOfDocumentsRequest "
+                + "threw exception");
+    // Assert
+    assertRequestProps(httpRequest);
+    final var requestBody =
+        assertDoesNotThrow(
+            () -> httpRequest.getRequestBody().toString(StandardCharsets.UTF_8),
+            "Error converting request body into a string using UTF-8 charset.");
+    final var expectedData =
+        readResourceFile(getClass(), "ProvideAndRegisterDocumentSetRequest.xml");
+    assertThat(
+        requestBody, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardProvideAndRegisterDocumentSetResponseTest() {
+    // Arrange
+    // Act
+    final var httpResponse =
+        assertDoesNotThrow(
+            () -> HttpMessageFactory.buildStandardProvideAndRegisterSetOfDocumentsResponse(null),
+            "Method HttpMessageFactory.buildStandardProvideAndRegisterSetOfDocumentsResponse "
+                + "threw exception");
+
+    // Assert
+    assertResponseProps(httpResponse);
+
+    final var expectedData =
+        readResourceFile(getClass(), "ProvideAndRegisterDocumentSetResponse.xml");
+    assertThat(
+        httpResponse.getBody(),
+        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
   @SneakyThrows

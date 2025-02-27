@@ -1,0 +1,368 @@
+<!--
+  ~ Copyright (c) 2025 gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ns3:AdhocQueryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success"
+  xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+  <RegistryObjectList>
+    <!-- ExtrinsicObject zur ePrescription 160.000.000.000.123.76^eP.XML (CDA Level 3) -->
+    <ExtrinsicObject home="urn:oid:1.2.246.556.12001.4.1000.990.1"
+      id="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+      lid="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d" mimeType="text/xml"
+      objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1"
+      status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+      <Slot name="sourcePatientId">
+        <ValueList>
+          <Value>B123456789|A2C4E6^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="size">
+        <ValueList>
+          <Value>0</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="creationTime">
+        <ValueList>
+          <Value>20230717</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="repositoryUniqueId">
+        <ValueList>
+          <Value>1.2.276.0.76.3.1.580.147</Value>
+        </ValueList>
+      </Slot>
+      <Name>
+        <LocalizedString value="ePrescription coded document"/>
+      </Name>
+      <Description>
+        <LocalizedString value="Lercanidipin Omniapharm, 10 mg, tablet"/>
+      </Description>
+      <VersionInfo versionName="1.1"/>
+      <Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:4240e4af-0a0c-48ae-88e0-8804e0736cc2" nodeRepresentation="R">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.5.25</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="restricted"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:32d2d7bc-dcf7-455f-a89d-bea6d8ba53f3" nodeRepresentation="57833-6">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.6.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="eHDSI - ePrescription"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:096d34cb-f5f8-41c0-94f9-f2ab0955c212" nodeRepresentation="DE">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>1.0.3166.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Germany"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:4d8f8407-c10b-4b32-b12f-33c37cf31fa0" nodeRepresentation="Not Used">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>eHDSI Practice Setting Codes-Not Used</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Not Used"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:5dae84b8-aac3-426d-a7a4-2720636dead9"
+        nodeRepresentation="urn:ihe:iti:xdw:2011:eventCode:open">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>1.3.6.1.4.1.19376.1.2.3</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Open"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:9be3b429-862a-462b-8255-3897f81eb237" nodeRepresentation="C08CA13">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.6.73</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Lercanidipin"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:750199ba-bc51-43b8-a4b4-239f8bd9b164" nodeRepresentation="10 mg">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>eHDSI_Strength_CodeSystem</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Strength of medication"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:5922a634-fd9b-444c-9c14-46434d81649b"
+        nodeRepresentation="urn:epsos:ep:pre:2010">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>eHDSI formatCodes</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="epSOS coded ePrescription"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d"
+        classifiedObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        id="urn:uuid:ab25d055-e681-44c3-8092-fdec60f1c43b" nodeRepresentation="">
+        <Slot name="authorPerson">
+          <ValueList>
+            <Value>Manfred Lapp</Value>
+          </ValueList>
+        </Slot>
+      </Classification>
+      <ExternalIdentifier id="urn:uuid:4d433f10-09fb-4f38-b377-579550c393ba"
+        identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427"
+        objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+        registryObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        value="B123456789|A2C4E6^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO">
+        <Name>
+          <LocalizedString value="XDSDocumentEntry.patientId"/>
+        </Name>
+      </ExternalIdentifier>
+      <ExternalIdentifier id="urn:uuid:a4ced7f7-e7ff-4547-91f5-1d64a183b38a"
+        identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"
+        objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+        registryObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"
+        value="160.000.000.000.123.76^eP.XML">
+        <Name>
+          <LocalizedString value="XDSDocumentEntry.uniqueId"/>
+        </Name>
+      </ExternalIdentifier>
+    </ExtrinsicObject>
+    <!-- ExtrinsicObject zur ePrescription 160.000.000.000.123.76^eP.PDF (CDA Level 1) -->
+    <ExtrinsicObject home="urn:oid:1.2.246.556.12001.4.1000.990.1"
+      id="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+      lid="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034" mimeType="text/xml"
+      objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1"
+      status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+      <Slot name="sourcePatientId">
+        <ValueList>
+          <Value>B123456789|A2C4E6^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="size">
+        <ValueList>
+          <Value>0</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="creationTime">
+        <ValueList>
+          <Value>20230717</Value>
+        </ValueList>
+      </Slot>
+      <Slot name="repositoryUniqueId">
+        <ValueList>
+          <Value>1.2.276.0.76.3.1.580.147</Value>
+        </ValueList>
+      </Slot>
+      <Name>
+        <LocalizedString value="ePrescription source coded PDF/A"/>
+      </Name>
+      <Description>
+        <LocalizedString value="Lercanidipin Omniapharm, 10 mg, tablet"/>
+      </Description>
+      <VersionInfo versionName="1.1"/>
+      <Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:a46daadc-6ef9-45ae-943a-1e433fc60ca5" nodeRepresentation="N">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.5.25</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="normal"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:445581e6-14e3-45d6-b745-8ab8f8996883" nodeRepresentation="57833-6">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.6.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="eHDSI - ePrescription"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:1edf12fc-03eb-4419-8fb2-2aefbc3ecd75" nodeRepresentation="57833-6">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.6.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="eHDSI - ePrescription"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:c6bded8b-7ebc-44cf-8069-6883eb76003c" nodeRepresentation="DE">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>1.0.3166.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Germany"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:cb94e806-c7a6-4afa-9726-94a4718f1123" nodeRepresentation="Not Used">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>eHDSI Practice Setting Codes-Not Used</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Not Used"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:9108022e-620f-46d6-a2df-1196f3e03f7c"
+        nodeRepresentation="urn:ihe:iti:xdw:2011:eventCode:open">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>1.3.6.1.4.1.19376.1.2.3</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Open"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:6ecba789-4372-410a-816b-2dab0fae53a1" nodeRepresentation="C08CA13">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>2.16.840.1.113883.6.73</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Lercanidipin"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:2a6b8821-7e12-4edd-bbcc-dfe5b9fe976d" nodeRepresentation="10219000">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>0.4.0.127.0.16.1.1.2.1</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Tablet"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:88f555f9-aaad-4f0b-8bb6-00f57c1f57cd" nodeRepresentation="10 mg">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>eHDSI_Strength_CodeSystem</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="Strength of medication"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:d581da40-cd28-4723-a655-27cd71f10ff1"
+        nodeRepresentation="urn:ihe:iti:xds-sd:pdf:2008">
+        <Slot name="codingScheme">
+          <ValueList>
+            <Value>IHE PCC</Value>
+          </ValueList>
+        </Slot>
+        <Name>
+          <LocalizedString value="PDF/A coded document"/>
+        </Name>
+      </Classification>
+      <Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d"
+        classifiedObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        id="urn:uuid:15d15a88-49a5-4d27-80bd-d633e39c709a" nodeRepresentation="">
+        <Slot name="authorPerson">
+          <ValueList>
+            <Value>Manfred Lapp</Value>
+          </ValueList>
+        </Slot>
+      </Classification>
+      <ExternalIdentifier id="urn:uuid:b5618bd5-21bd-4d4c-ae7f-cd4bac8d87f1"
+        identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427"
+        objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+        registryObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        value="B123456789|A2C4E6^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO">
+        <Name>
+          <LocalizedString value="XDSDocumentEntry.patientId"/>
+        </Name>
+      </ExternalIdentifier>
+      <ExternalIdentifier id="urn:uuid:294f2a0b-a31e-463d-85ae-bd702e4a17ef"
+        identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"
+        objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+        registryObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+        value="160.000.000.000.123.76^eP.PDF">
+        <Name>
+          <LocalizedString value="XDSDocumentEntry.uniqueId"/>
+        </Name>
+      </ExternalIdentifier>
+    </ExtrinsicObject>
+    <Association associationType="urn:ihe:iti:2007:AssociationType:XFRM"
+      id="urn:uuid:3bbf0de6-e186-4b18-b3ad-302790ef7c1c"
+      sourceObject="urn:uuid:740c850d-67c3-4481-bb0b-8bf32a17e034"
+      targetObject="urn:uuid:cb804da7-407c-4590-b394-ad3d7617995d"/>
+  </RegistryObjectList>
+</ns3:AdhocQueryResponse>

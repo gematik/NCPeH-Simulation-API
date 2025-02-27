@@ -29,7 +29,8 @@ public record BaseAssertionProfile(
                     + "Über das BaseAssertionProfile werden verschiedene benötigte Daten referenziert, "
                     + "die der NCPeH-Simulator in einem auszuführenden Request an den NCPeH-Fachdienst sowohl im "
                     + "IdaAssertionProfile als auch im TrcAssertionProfile nutzen soll."
-                    + "Siehe auch gematik Spezifikation, gemSpec_NCPeH_FD#4.5.3.1 \"Daten für das Triggern von Anwendungsfällen\".")
+                    + "Siehe auch gematik Spezifikation, gemSpec_NCPeH_FD#4.5.3.1 \"Daten für das Triggern von Anwendungsfällen\".",
+            example = "default")
         String profileName,
     @JsonProperty(defaultValue = "false")
         @Schema(
@@ -45,7 +46,8 @@ public record BaseAssertionProfile(
             description =
                 "Wertangabe in Minuten, der Wert kann positiv oder negativ sein. "
                     + "Im SOAP-Element 'Header/Security/Assertion/Conditions' wird der Zeitstempel im Attribut "
-                    + "'NotBefore' wie folgt berechnet: Systemzeit des Simulators in UTC + deltaNotBefore")
+                    + "'NotBefore' wie folgt berechnet: Systemzeit des Simulators in UTC + deltaNotBefore",
+            example = "-30")
         Integer deltaNotBefore,
     @JsonProperty(defaultValue = "30")
         @Schema(
@@ -53,7 +55,8 @@ public record BaseAssertionProfile(
             description =
                 "Wertangabe in Minuten, der Wert kann positiv oder negativ sein. "
                     + "Im SOAP-Element 'Header/Security/Assertion/Conditions' wird der Zeitstempel im Attribut "
-                    + "'NotOnOrAfter' wie folgt berechnet: Systemzeit des Simulators in UTC + deltaNotAfter")
+                    + "'NotOnOrAfter' wie folgt berechnet: Systemzeit des Simulators in UTC + deltaNotAfter",
+            example = "30")
         Integer deltaNotAfter,
     @JsonProperty(defaultValue = "TREATMENT")
         @Schema(
@@ -61,5 +64,6 @@ public record BaseAssertionProfile(
             description =
                 "Der Parameter bestimmt den Wert im SOAP-Element 'Header/Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
                     + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:purposeofuse\"' gilt.",
-            maxLength = 20)
+            maxLength = 20,
+            example = "TREATMENT")
         String purposeOfUse) {}

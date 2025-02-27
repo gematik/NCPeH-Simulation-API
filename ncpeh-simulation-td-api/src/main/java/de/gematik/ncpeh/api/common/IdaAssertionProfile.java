@@ -25,12 +25,23 @@ public record IdaAssertionProfile(
     @JsonProperty
         @Schema(
             description =
+                "Wenn der Wert fehlt oder leer ist, dann wird er ignoriert und die im angegebenen AssertionProfil "
+                    + "definierte Rolle genutzt.\n"
+                    + "Andernfalls ersetzt der hier angegebene Wert das Datum 'AttributeValue/Role@code' für das "
+                    + "Assertion-Element mit 'Name=\"urn:oasis:names:tc:xacml:2.0:subject:role\"'.",
+            example = "221")
+        String structuralRole,
+    @JsonProperty
+        @Schema(
+            description =
                 "Wenn die StringListe fehlt oder leer ist, dann MÜSSEN die mit dem angegebenen AssertionProfil "
                     + "definierten permissions-Einträge genutzt werden."
                     + "Andernfalls ersetzen die hier übergebenen Werte vollständig die Liste der "
                     + "Assertion-Elemente 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
-                    + "für die im Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:hl7:permissionid\"' gilt. "
-                    + "Für jeden Wert aus der StringListe ist in ein eigenes Element 'AttributeValue' in der Assertion zu erstellen.")
+                    + "für die im Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission\"' gilt. "
+                    + "Für jeden Wert aus der StringListe ist in ein eigenes Element 'AttributeValue' in der Assertion zu erstellen.",
+            example =
+                "[\"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission:PRD-004\", \"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission:PRD-010\"]")
         Set<String> permissions,
     @JsonProperty
         @Schema(

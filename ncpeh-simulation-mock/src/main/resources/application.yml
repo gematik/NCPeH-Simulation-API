@@ -6,7 +6,7 @@ server:
 cxf:
   jaxrs:
     component-scan: true
-    classes-scan-packages: org.apache.cxf.jaxrs.swagger,org.apache.cxf.metrics
+    classes-scan-packages: org.apache.cxf.jaxrs.swagger
   path: "/rest"
   openapi:
     resource-packages: de.gematik.ncpeh.api
@@ -26,6 +26,9 @@ management:
     info:
       enabled: true
     metrics:
+      enabled: true
+  info:
+    env:
       enabled: true
 
 logging:

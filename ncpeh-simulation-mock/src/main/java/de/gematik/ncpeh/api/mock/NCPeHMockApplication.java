@@ -30,10 +30,7 @@ import org.apache.cxf.ext.logging.event.LogEvent;
 import org.apache.cxf.ext.logging.slf4j.Slf4jEventSender;
 import org.apache.cxf.jaxrs.openapi.OpenApiFeature;
 import org.apache.cxf.jaxrs.swagger.ui.SwaggerUiConfig;
-import org.apache.cxf.metrics.MetricsFeature;
-import org.apache.cxf.metrics.MetricsProvider;
 import org.slf4j.event.Level;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -51,8 +48,6 @@ public class NCPeHMockApplication {
   @Value("${cxf.openapi.resource-packages:de.gematik.ncpeh.api}")
   private String resourcePackages = "de.gematik.ncpeh.api";
 
-  @Autowired private MetricsProvider metricsProvider;
-
   @Bean
   public OpenApiFeature createOpenApiFeature() {
     final OpenApiFeature openApiFeature = new OpenApiFeature();
@@ -61,11 +56,6 @@ public class NCPeHMockApplication {
     openApiFeature.setResourcePackages(Set.of(resourcePackages));
     openApiFeature.setSwaggerUiConfig(new SwaggerUiConfig().url(url).queryConfigEnabled(false));
     return openApiFeature;
-  }
-
-  @Bean
-  public MetricsFeature metricsFeature() {
-    return new MetricsFeature(metricsProvider);
   }
 
   /**

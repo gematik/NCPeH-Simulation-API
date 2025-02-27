@@ -22,20 +22,20 @@
   <parent>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
     <groupId>de.gematik.api</groupId>
-    <version>1.6.3</version>
+    <version>2.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>ncpeh-simulation-td-api</artifactId>
 
   <properties>
-    <yaml.directory>${project.build.directory}/generated-sources/resources/openapi</yaml.directory>
-    <yaml.zip.path>${project.build.directory}/${project.artifactId}-yaml.zip</yaml.zip.path>
-    <yaml.filename>NCPeH_TriggerIF</yaml.filename>
     <api.config.dir>${project.build.directory}/config</api.config.dir>
     <api.config.filename>api_configuration.yaml</api.config.filename>
     <jar.excluded.source>de/gematik/ncpeh/build/**</jar.excluded.source>
     <javadoc.excluded.packages>de.gematik.ncpeh.build</javadoc.excluded.packages>
+    <yaml.directory>${project.build.directory}/generated-sources/resources/openapi</yaml.directory>
+    <yaml.filename>NCPeH_TriggerIF</yaml.filename>
+    <yaml.zip.path>${project.build.directory}/${project.artifactId}-yaml.zip</yaml.zip.path>
   </properties>
 
   <dependencies>
@@ -59,6 +59,9 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+
+    <!-- Test -->
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

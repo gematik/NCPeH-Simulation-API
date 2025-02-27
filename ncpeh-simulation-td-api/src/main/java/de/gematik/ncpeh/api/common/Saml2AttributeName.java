@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import lombok.NonNull;
 
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "urn:oasis:names:tc:xspa:1.0:subject:organization")
 public enum Saml2AttributeName {
   SUBJECT_ID("urn:oasis:names:tc:xspa:1.0:subject:subject-id"),
   SUBJECT_ROLE("urn:oasis:names:tc:xacml:2.0:subject:role"),

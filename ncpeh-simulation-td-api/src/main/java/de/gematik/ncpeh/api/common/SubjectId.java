@@ -24,11 +24,13 @@ public record SubjectId(
         @Schema(
             description =
                 "Wert für das Attribut 'extension' "
-                    + "im Element 'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value'.")
+                    + "im Element 'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value'.",
+            example = "X123456789")
         String extension,
     @JsonProperty(required = true)
         @Schema(
             description =
                 "Wert (OID) für das Attribut 'root' "
-                    + "im Element 'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value'.")
+                    + "im Element 'PRPA_IN201305UV02/controlActProcess/queryByParameter/parameterList/livingSubjectID/value'.",
+            example = "1.2.276.0.76.3.1.580.147")
         String root) {}

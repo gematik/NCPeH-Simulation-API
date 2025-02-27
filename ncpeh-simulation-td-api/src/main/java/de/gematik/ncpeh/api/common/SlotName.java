@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import lombok.NonNull;
 
-@Schema(enumAsRef = true, name = "SlotName")
+@Schema(enumAsRef = true, name = "SlotName", example = "$XDSDocumentEntryAuthorPerson")
 public enum SlotName {
   FORMAT_CODE("$XDSDocumentEntryFormatCode"),
   ENTRY_TYPE_CODE("$XDSDocumentEntryTypeCode"),

@@ -1,0 +1,34 @@
+{
+  "baseParameter": {
+    "euCountryCode": "ES",
+    "idaAssertionProfile": {
+      "assertionProperties": {
+        "profileName": "defaultIda",
+        "invalidSignature": null,
+        "deltaNotBefore": null,
+        "deltaNotAfter": null,
+        "purposeOfUse": null
+      },
+      "permissions": null,
+      "attributeStatements": null
+    }
+  },
+  "trcAssertionProfile": {
+    "assertionProperties": {
+      "profileName": "defaultTrc",
+      "invalidSignature": null,
+      "deltaNotBefore": null,
+      "deltaNotAfter": null,
+      "purposeOfUse": null
+    },
+    "patientId": null
+  },
+  "patientId": {
+    "kvnr": "X112309471",
+    "kvnrAssigningAuthority": "1.2.276.0.76.3.1.580.147"
+  },
+  "accessCode": "123",
+  "xdsDocumentEntryClassCode": "('57833-6^^2.16.840.1.113883.6.1')",
+  "xdsDocumentEntryStatus": "('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')",
+  "slotEntries": null
+}

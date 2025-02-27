@@ -1,0 +1,30 @@
+{
+  "baseParameter": {
+    "euCountryCode": "LT",
+    "idaAssertionProfile": {
+      "assertionProperties": {
+        "profileName": "defaultIda"
+      }
+    }
+  },
+  "trcAssertionProfile": {
+    "assertionProperties": {
+      "profileName": "defaultTrc"
+    }
+  },
+  "patientId": {
+    "kvnr": "B123456789",
+    "kvnrAssigningAuthority": "1.2.276.0.76.3.1.580.147"
+  },
+  "accessCode": "A2C4E6",
+  "formatCode": "urn:epSOS:ep:dis:2010",
+  "typeCode": "60593-1",
+  "classCode": "60593-1",
+  "prescriptionProfileList": [
+    {
+      "profileName": "defaultPrescriptionProfile",
+      "prescriptionId": "160.000.000.000.123.76^eP.XML",
+      "substitution": false
+    }
+  ]
+}

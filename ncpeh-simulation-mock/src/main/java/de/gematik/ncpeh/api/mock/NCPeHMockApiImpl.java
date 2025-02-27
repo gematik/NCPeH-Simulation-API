@@ -21,7 +21,9 @@ import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
 import de.gematik.ncpeh.api.mock.builder.SimulatorCommunicationDataBuilder;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
+import de.gematik.ncpeh.api.request.ProvideAndRegisterSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
+import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -43,6 +45,9 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
 
   public static final String oidAssigningAuthority_psa = "1.2.276.0.76.4.298";
   public static final String oidAssigningAuthority_eped = "1.2.276.0.76.4.299";
+
+  public static final String XDS_DOCUMENT_ENTRY_CLASS_CODE_EPED =
+      "('57833-6^^2.16.840.1.113883.6.1')";
 
   @Override
   public Response identifyPatient(final IdentifyPatientRequest request) {
@@ -73,13 +78,19 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
   @Override
   public Response findDocuments(final FindDocumentsRequest request) {
     final var fileName = getFileNameFromRequestHeader();
-    return okResponseBuilder()
-        .entity(
-            SimulatorCommunicationDataBuilder.newInstance()
-                .requestMessage(HttpMessageFactory.buildStandardFindDocumentRequest())
-                .responseMessage(HttpMessageFactory.buildStandardFindDocumentResponse(fileName))
-                .build())
-        .build();
+    final var builder = SimulatorCommunicationDataBuilder.newInstance();
+
+    if (XDS_DOCUMENT_ENTRY_CLASS_CODE_EPED.equals(request.xdsDocumentEntryClassCode())) {
+      builder
+          .requestMessage(HttpMessageFactory.buildEPEDFindDocumentRequest())
+          .responseMessage(HttpMessageFactory.buildStandardFindDocumentResponseEPED(fileName));
+    } else {
+      builder
+          .requestMessage(HttpMessageFactory.buildPSAFindDocumentRequest())
+          .responseMessage(HttpMessageFactory.buildStandardFindDocumentResponsePSA(fileName));
+    }
+
+    return okResponseBuilder().entity(builder.build()).build();
   }
 
   @Override
@@ -92,6 +103,37 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
                 .requestMessage(HttpMessageFactory.buildRetrieveDocumentRequest(request))
                 .responseMessage(
                     HttpMessageFactory.buildRetrieveDocumentResponse(request, fileName))
+                .build())
+        .build();
+  }
+
+  @Override
+  public Response retrieveSetOfDocuments(final RetrieveSetOfDocumentsRequest request) {
+    final var fileName = getFileNameFromRequestHeader();
+
+    return okResponseBuilder()
+        .entity(
+            SimulatorCommunicationDataBuilder.newInstance()
+                .requestMessage(HttpMessageFactory.buildStandardRetrieveSetOfDocumentsRequest())
+                .responseMessage(
+                    HttpMessageFactory.buildStandardRetrieveSetOfDocumentsResponse(fileName))
+                .build())
+        .build();
+  }
+
+  @Override
+  public Response provideAndRegisterSetOfDocuments(
+      final ProvideAndRegisterSetOfDocumentsRequest request) {
+    final var fileName = getFileNameFromRequestHeader();
+
+    return okResponseBuilder()
+        .entity(
+            SimulatorCommunicationDataBuilder.newInstance()
+                .requestMessage(
+                    HttpMessageFactory.buildStandardProvideAndRegisterSetOfDocumentsRequest())
+                .responseMessage(
+                    HttpMessageFactory.buildStandardProvideAndRegisterSetOfDocumentsResponse(
+                        fileName))
                 .build())
         .build();
   }

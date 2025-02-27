@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2024 gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ns3:AdhocQueryRequest xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+  <ns3:ResponseOption returnComposedObjects="true" returnType="LeafClass"/>
+  <AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d">
+    <Slot name="$XDSDocumentEntryPatientId">
+      <ValueList>
+        <Value>'X110571344|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO'</Value>
+      </ValueList>
+    </Slot>
+    <Slot name="$XDSDocumentEntryStatus">
+      <ValueList>
+        <Value>('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')</Value>
+      </ValueList>
+    </Slot>
+    <Slot name="$XDSDocumentEntryClassCode">
+      <ValueList>
+        <Value>('57833-6^^2.16.840.1.113883.6.1')</Value>
+      </ValueList>
+    </Slot>
+  </AdhocQuery>
+</ns3:AdhocQueryRequest>

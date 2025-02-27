@@ -30,5 +30,6 @@ public record TrcAssertionProfile(
                     + "Falls die Angabe fehlt, so sind mit der KVNR und die OID der Assigning Authority zum AccessCode aus dem fachlichen Kontext "
                     + "des Trigger-Requests (Element patientId aus diesem Request) "
                     + "eine gültige URN für das SOAP-Element zu berechnen.",
-            maxLength = 70)
+            maxLength = 70,
+            example = "Walter H.Brattain IV")
         String patientId) {}

@@ -23,7 +23,9 @@ import de.gematik.ncpeh.api.mock.http.PseudoHttpResponse;
 import de.gematik.ncpeh.api.mock.util.XmlUtils;
 import de.gematik.ncpeh.api.request.FindDocumentsRequest;
 import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
+import de.gematik.ncpeh.api.request.ProvideAndRegisterSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
+import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -61,9 +63,25 @@ public final class HttpMessageFactory {
 
   public static final String PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME = "PRPA_IN201306UV02.xml";
 
-  public static final String FIND_DOCUMENT_REQUEST_FILE_NAME = "AdhocQueryRequest.xml";
+  public static final String FIND_DOCUMENT_EPED_REQUEST_FILE_NAME = "AdhocQueryRequestEPED.xml";
 
-  public static final String FIND_DOCUMENT_RESPONSE_FILE_NAME = "AdhocQueryResponse.xml";
+  public static final String FIND_DOCUMENT_PSA_REQUEST_FILE_NAME = "AdhocQueryRequestPSA.xml";
+
+  public static final String FIND_DOCUMENT_PSA_RESPONSE_FILE_NAME = "AdhocQueryResponsePSA.xml";
+
+  public static final String FIND_DOCUMENT_EPED_RESPONSE_FILE_NAME = "AdhocQueryResponseEPED.xml";
+
+  public static final String RETRIEVE_DOCUMENT_SET_REQUEST_FILE_NAME =
+      "RetrieveDocumentSetRequest.xml";
+
+  public static final String RETRIEVE_DOCUMENT_SET_RESPONSE_FILE_NAME =
+      "RetrieveDocumentSetResponse.xml";
+
+  public static final String PROVIDE_AND_REGISTER_DOCUMENT_SET_REQUEST_FILE_NAME =
+      "ProvideAndRegisterDocumentSetRequest.xml";
+
+  public static final String PROVIDE_AND_REGISTER_DOCUMENT_SET_RESPONSE_FILE_NAME =
+      "ProvideAndRegisterDocumentSetResponse.xml";
 
   public static final URI PSEUDO_URI = URI.create("http://pseudoDn:12345/pseudoPath");
 
@@ -102,8 +120,19 @@ public final class HttpMessageFactory {
    *
    * @return {@link PseudoHttpRequest}
    */
-  public static PseudoHttpRequest buildStandardFindDocumentRequest() {
-    return buildHttpRequest(FIND_DOCUMENT_REQUEST_FILE_NAME);
+  public static PseudoHttpRequest buildEPEDFindDocumentRequest() {
+    return buildHttpRequest(FIND_DOCUMENT_EPED_REQUEST_FILE_NAME);
+  }
+
+  /**
+   * Build an HTTP request to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#findDocuments(FindDocumentsRequest)} response.
+   *
+   * @return {@link PseudoHttpRequest}
+   */
+  public static PseudoHttpRequest buildPSAFindDocumentRequest() {
+    return buildHttpRequest(FIND_DOCUMENT_PSA_REQUEST_FILE_NAME);
   }
 
   /**
@@ -128,8 +157,21 @@ public final class HttpMessageFactory {
    *
    * @return {@link PseudoHttpResponse}
    */
-  public static PseudoHttpResponse buildStandardFindDocumentResponse(final String fileName) {
-    return buildHttpResponse(readMessageFileSafely(fileName, FIND_DOCUMENT_RESPONSE_FILE_NAME));
+  public static PseudoHttpResponse buildStandardFindDocumentResponsePSA(final String fileName) {
+    return buildHttpResponse(readMessageFileSafely(fileName, FIND_DOCUMENT_PSA_RESPONSE_FILE_NAME));
+  }
+
+  /**
+   * Build an HTTP response to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element in the
+   * context of the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#findDocuments(FindDocumentsRequest)} operation.
+   *
+   * @return {@link PseudoHttpResponse}
+   */
+  public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(final String fileName) {
+    return buildHttpResponse(
+        readMessageFileSafely(fileName, FIND_DOCUMENT_EPED_RESPONSE_FILE_NAME));
   }
 
   public static PseudoHttpRequest buildRetrieveDocumentRequest(
@@ -150,6 +192,61 @@ public final class HttpMessageFactory {
                   final var body = XmlUtils.marshal(iheMsgBuilder.buildResponse());
                   return new ByteArrayInputStream(body);
                 }));
+  }
+
+  /**
+   * Build an HTTP request to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#retrieveSetOfDocuments(RetrieveSetOfDocumentsRequest)}
+   * response.
+   *
+   * @return {@link PseudoHttpRequest}
+   */
+  public static PseudoHttpRequest buildStandardRetrieveSetOfDocumentsRequest() {
+    return buildHttpRequest(readMessageFileSafely(RETRIEVE_DOCUMENT_SET_REQUEST_FILE_NAME));
+  }
+
+  /**
+   * Build an HTTP response to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element in the
+   * context of the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#retrieveSetOfDocuments(RetrieveSetOfDocumentsRequest)}
+   * operation.
+   *
+   * @return {@link PseudoHttpResponse}
+   */
+  public static PseudoHttpResponse buildStandardRetrieveSetOfDocumentsResponse(
+      final String fileName) {
+    return buildHttpResponse(
+        readMessageFileSafely(fileName, RETRIEVE_DOCUMENT_SET_RESPONSE_FILE_NAME));
+  }
+
+  /**
+   * Build an HTTP request to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#requestSend()} element for the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#provideAndRegisterSetOfDocuments(ProvideAndRegisterSetOfDocumentsRequest)}
+   * response.
+   *
+   * @return {@link PseudoHttpRequest}
+   */
+  public static PseudoHttpRequest buildStandardProvideAndRegisterSetOfDocumentsRequest() {
+    return buildHttpRequest(
+        readMessageFileSafely(PROVIDE_AND_REGISTER_DOCUMENT_SET_REQUEST_FILE_NAME));
+  }
+
+  /**
+   * Build an HTTP response to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element in the
+   * context of the {@link
+   * de.gematik.ncpeh.api.NcpehSimulatorApi#provideAndRegisterSetOfDocuments(ProvideAndRegisterSetOfDocumentsRequest)}
+   * operation.
+   *
+   * @return {@link PseudoHttpResponse}
+   */
+  public static PseudoHttpResponse buildStandardProvideAndRegisterSetOfDocumentsResponse(
+      final String fileName) {
+    return buildHttpResponse(
+        readMessageFileSafely(fileName, PROVIDE_AND_REGISTER_DOCUMENT_SET_RESPONSE_FILE_NAME));
   }
 
   public static InputStream readMessageFileSafely(final String filePath) {

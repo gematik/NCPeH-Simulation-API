@@ -56,7 +56,7 @@ class XmlUtilsTest {
   void unmarshalTest() {
     try (final var testdata =
         HttpMessageFactory.readMessageFileSafely(
-            HttpMessageFactory.FIND_DOCUMENT_REQUEST_FILE_NAME)) {
+            HttpMessageFactory.FIND_DOCUMENT_PSA_REQUEST_FILE_NAME)) {
 
       final var result =
           assertDoesNotThrow(
