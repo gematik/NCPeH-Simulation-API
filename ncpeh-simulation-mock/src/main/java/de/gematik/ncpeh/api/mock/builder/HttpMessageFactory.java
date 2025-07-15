@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 gematik GmbH
+ * Copyright 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * ******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
@@ -73,9 +77,6 @@ public final class HttpMessageFactory {
 
   public static final String RETRIEVE_DOCUMENT_SET_REQUEST_FILE_NAME =
       "RetrieveDocumentSetRequest.xml";
-
-  public static final String RETRIEVE_DOCUMENT_SET_RESPONSE_FILE_NAME =
-      "RetrieveDocumentSetResponse.xml";
 
   public static final String PROVIDE_AND_REGISTER_DOCUMENT_SET_REQUEST_FILE_NAME =
       "ProvideAndRegisterDocumentSetRequest.xml";
@@ -176,20 +177,18 @@ public final class HttpMessageFactory {
 
   public static PseudoHttpRequest buildRetrieveDocumentRequest(
       final RetrieveDocumentRequest request) {
-    final var iheMsgBuilder = new RetrieveDocumentMessagesBuilder().useDataFrom(request);
+    final var iheMsgBuilder = RetrieveDocumentMessagesBuilder.buildFromRequest(request);
     final var body = XmlUtils.marshal(iheMsgBuilder.buildRequest());
     return buildHttpRequest(new ByteArrayInputStream(body));
   }
 
   public static PseudoHttpResponse buildRetrieveDocumentResponse(
-      final RetrieveDocumentRequest request, final String fileName) {
+      final RetrieveDocumentMessagesBuilder msgBuilder, final String fileName) {
     return buildHttpResponse(
         Optional.ofNullable(readMessageFile(fileName))
             .orElseGet(
                 () -> {
-                  final var iheMsgBuilder =
-                      new RetrieveDocumentMessagesBuilder().useDataFrom(request);
-                  final var body = XmlUtils.marshal(iheMsgBuilder.buildResponse());
+                  final var body = XmlUtils.marshal(msgBuilder.buildResponse());
                   return new ByteArrayInputStream(body);
                 }));
   }
@@ -204,21 +203,6 @@ public final class HttpMessageFactory {
    */
   public static PseudoHttpRequest buildStandardRetrieveSetOfDocumentsRequest() {
     return buildHttpRequest(readMessageFileSafely(RETRIEVE_DOCUMENT_SET_REQUEST_FILE_NAME));
-  }
-
-  /**
-   * Build an HTTP response to be used as payload in the {@link
-   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element in the
-   * context of the {@link
-   * de.gematik.ncpeh.api.NcpehSimulatorApi#retrieveSetOfDocuments(RetrieveSetOfDocumentsRequest)}
-   * operation.
-   *
-   * @return {@link PseudoHttpResponse}
-   */
-  public static PseudoHttpResponse buildStandardRetrieveSetOfDocumentsResponse(
-      final String fileName) {
-    return buildHttpResponse(
-        readMessageFileSafely(fileName, RETRIEVE_DOCUMENT_SET_RESPONSE_FILE_NAME));
   }
 
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 gematik GmbH
+ * Copyright 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * ******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.util;
@@ -24,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import de.gematik.ncpeh.api.mock.builder.HttpMessageFactory;
 import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder;
+import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
 import lombok.SneakyThrows;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -74,10 +79,15 @@ class XmlUtilsTest {
   }
 
   private RetrieveDocumentMessagesBuilder retrieveDocumentTestdata() {
-    return new RetrieveDocumentMessagesBuilder()
-        .documentUniqueId("2.25.2350928502702^2.25.2.PS.1")
-        .additionalDocumentUniqueId("2.25.2350928502702^2.25.2.PS.2")
-        .homeCommunityId("urn:oid:2.16.17.710.850.1000.990.101")
-        .repositoryUniqueId("1.2.276.0.76.3.1.91.2");
+    return RetrieveDocumentMessagesBuilder.buildFromRequest(
+        new RetrieveDocumentRequest(
+            null,
+            null,
+            null,
+            null,
+            "1.2.276.0.76.3.1.91.2",
+            "2.25.2350928502702^2.25.2.PS.1",
+            "2.25.2350928502702^2.25.2.PS.2",
+            "urn:oid:2.16.17.710.850.1000.990.101"));
   }
 }

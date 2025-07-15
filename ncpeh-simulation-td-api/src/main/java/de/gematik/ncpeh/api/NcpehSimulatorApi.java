@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 gematik GmbH
+ * Copyright 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * ******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api;
@@ -21,6 +25,7 @@ import de.gematik.ncpeh.api.request.IdentifyPatientRequest;
 import de.gematik.ncpeh.api.request.ProvideAndRegisterSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
+import de.gematik.ncpeh.api.response.BadRequestInformation;
 import de.gematik.ncpeh.api.response.ErrorInformation;
 import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -74,6 +79,10 @@ public interface NcpehSimulatorApi {
                 "Es fand eine Kommunikation zwischen NCPeH Simulator und NCPeH Fachdienst statt. "
                     + "Der Request des Simulators an den NCPeH-Fachdienst und die Response werden zurückgegeben."),
         @ApiResponse(
+            responseCode = "400",
+            content = @Content(schema = @Schema(implementation = BadRequestInformation.class)),
+            description = "Die Anfrage ist fehlerhaft."),
+        @ApiResponse(
             responseCode = "500",
             content = @Content(schema = @Schema(implementation = ErrorInformation.class)),
             description = "Ein Fehler ist im NCPeH Simulator aufgetreten."),
@@ -110,6 +119,10 @@ public interface NcpehSimulatorApi {
                 "Es fand eine Kommunikation zwischen NCPeH Simulator und NCPeH Fachdienst statt. "
                     + "Der Request des Simulators an den NCPeH-Fachdienst und die Response werden zurückgegeben."),
         @ApiResponse(
+            responseCode = "400",
+            content = @Content(schema = @Schema(implementation = BadRequestInformation.class)),
+            description = "Die Anfrage ist fehlerhaft."),
+        @ApiResponse(
             responseCode = "500",
             content = @Content(schema = @Schema(implementation = ErrorInformation.class)),
             description = "Ein Fehler ist im NCPeH Simulator aufgetreten."),
@@ -145,6 +158,10 @@ public interface NcpehSimulatorApi {
                 "Es fand eine Kommunikation zwischen NCPeH Simulator und NCPeH-Fachdienst statt. "
                     + "Der Request des Simulators an den NCPeH-Fachdienst und die Response werden zurückgegeben."),
         @ApiResponse(
+            responseCode = "400",
+            content = @Content(schema = @Schema(implementation = BadRequestInformation.class)),
+            description = "Die Anfrage ist fehlerhaft."),
+        @ApiResponse(
             responseCode = "500",
             content = @Content(schema = @Schema(implementation = ErrorInformation.class)),
             description = "Ein Fehler ist im NCPeH Simulator aufgetreten."),
@@ -179,6 +196,10 @@ public interface NcpehSimulatorApi {
                 "Es fand eine Kommunikation zwischen NCPeH Simulator und NCPeH-Fachdienst statt. "
                     + "Der Request des Simulators an den NCPeH-Fachdienst und die Response werden zurückgegeben."),
         @ApiResponse(
+            responseCode = "400",
+            content = @Content(schema = @Schema(implementation = BadRequestInformation.class)),
+            description = "Die Anfrage ist fehlerhaft."),
+        @ApiResponse(
             responseCode = "500",
             content = @Content(schema = @Schema(implementation = ErrorInformation.class)),
             description = "Ein Fehler ist im NCPeH Simulator aufgetreten."),
@@ -212,6 +233,10 @@ public interface NcpehSimulatorApi {
             description =
                 "Es fand eine Kommunikation zwischen NCPeH Simulator und NCPeH-Fachdienst statt. "
                     + "Der Request des Simulators an den NCPeH-Fachdienst und die Response werden zurückgegeben."),
+        @ApiResponse(
+            responseCode = "400",
+            content = @Content(schema = @Schema(implementation = BadRequestInformation.class)),
+            description = "Die Anfrage ist fehlerhaft."),
         @ApiResponse(
             responseCode = "500",
             content = @Content(schema = @Schema(implementation = ErrorInformation.class)),

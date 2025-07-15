@@ -4,37 +4,41 @@
 
 ## About the Project
 
-API specification for the testdriver interface of an NCPeH simulation.
-The purpose of the NCPeH simulation is to enable the testing of the german NCPeH service.
-The purpose of the API is to provide a defined interface for testsuites to trigger actions at the
-simulation
-and receive the contents of the resulting communication between simulation and NCPeH service.
+This project defines the API specification for the test driver interface of an NCPeH simulation.
+The purpose of the NCPeH simulation is to enable testing of the German NCPeH service.
+The purpose of the API is to provide a defined interface for testsuites to trigger actions in the
+simulation and receive the contents of the resulting communication between simulation and NCPeH
+service.
 
-The API is defined in Java, but from it a description in the OpenAPI format is generated and
-available via Maven Central.
+The API is defined in Java. An OpenAPI Description is generated from these sources and made
+available on Maven Central.
 
-A more detailed description is following in the
-chapter [Fachliche Einordnung](#fachliche-einordnung),
-but as the intended audience is part of the german eHealth project, it is in german.
+A more detailed description is given in the chapter [Fachliche Einordnung](#fachliche-einordnung).
+As the intended audience is part of the German eHealth project, it is written in German.
 
-### Release-Notes
+### Release Notes
 
-The Release-Notes can be found in the file [ReleaseNotes.md](./ReleaseNotes.md)
+The Release Notes can be found in the file [ReleaseNotes.md](./ReleaseNotes.md)
 
 ## Modules
 
-The NCPeH Simulation API project consists of two modules:
+The NCPeH Simulation API project consists of three modules:
 
 1. ncpeh-simulation-td-api: Contains the actual API definition,
    see [NCPeH-Simulation-TD-API README](./ncpeh-simulation-td-api/README.md)
 2. ncpeh-simulation-mock: A lightweight mock to illustrate implementation of the API,
    see [NCPeH-Simulation-Mock README](./ncpeh-simulation-mock/README.md)
+3. ncpeh-simulation-ehdsi-model: Contains the data models and structures required for communication
+   and data exchange in the context of the NCPeH simulation and the eHDSI interface.
 
-## Getting started
+## Getting Started
 
-Clone the project, if you want to, but this is probably not necessary if you just want to integrate
+Clone the project if you want to, but this is probably not necessary if you just want to integrate
 the API in your project.
-The easiest way for a maven project is to simply add the dependency:<br/>
+
+### Using the API in Your Project
+
+The easiest way for a Maven project is to simply add the dependency:
 
     <dependency>
       <groupId>de.gematik.api</groupId>
@@ -42,38 +46,59 @@ The easiest way for a maven project is to simply add the dependency:<br/>
       <version>x.y.z</version>
     </dependency>  
 
-For gradle it is
+For Gradle, it is:
 
     implementation 'de.gematik.api:ncpeh-simulation-td-api:x.y.z'
 
-### Prerequisites
+### Cloning This Project
 
-In case you want to clone the project you need:
+In case you want to clone the project, you need:
 
 * Git
-* Java JDK 17 or newer (Tested on OpenJDK)
+* Java JDK 21 or newer (Tested on OpenJDK)
 * Maven 3.8.0 or newer
 
-For non Java-Projects code can be generated from the OpenAPI description available at Maven Central.
-
-### Development
-
-* Default-Branch is develop
-* No direct pushing on the develop/release Branches is permitted
-* Instead, create a feature branch, push it and create a merge request for merging to the
-  Development branch.
-* Before pushing, always run a maven build.
-    * The Google Code Formatter Maven Plugin is used and all new code should be formatted, before
-      first checkin,
-      so "pseudo" changes, which just stem from changed code formatting, are avoided.
-* For hot fixes or for parallel development of different versions, create a branch from the release
-  tag or develop, the branch name should be Release-X.X, configure jenkinsfiles for new Release
-  branch.
-* Always merge Release branches back to develop.
+For non-Java projects, code can be generated from the OpenAPI description available on Maven
+Central.
 
 ## License
 
-See [LICENSE](./LICENSE)
+Copyright 2022-2025 gematik GmbH
+
+Apache License, Version 2.0
+
+See the [LICENSE](./LICENSE) for the specific language governing permissions and limitations under
+the License
+
+## Additional Notes and Disclaimer from gematik GmbH
+
+1. Copyright notice: Each published work result is accompanied by an explicit statement of the
+   license conditions for use. These are regularly typical conditions in connection with open source
+   or free software. Programs described/provided/linked here are free software, unless otherwise
+   stated.
+2. Permission notice: Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal in the Software
+   without restriction, including without limitation the rights to use, copy, modify, merge,
+   publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to
+   whom the Software is furnished to do so, subject to the following conditions:
+    1. The copyright notice (Item 1) and the permission notice (Item 2) shall be included in all
+       copies or substantial portions of the Software.
+    2. The software is provided "as is" without warranty of any kind, either express or implied,
+       including, but not limited to, the warranties of fitness for a particular purpose,
+       merchantability, and/or non-infringement. The authors or copyright holders shall not be
+       liable in any manner whatsoever for any damages or other claims arising from, out of or in
+       connection with the software or the use or other dealings with the software, whether in an
+       action of contract, tort, or otherwise.
+   3. The software is the result of research and development activities, therefore not necessarily
+      quality assured and without the character of a liable product. For this reason, gematik does
+      not provide any support or other user assistance (unless otherwise stated in individual cases
+      and without justification of a legal obligation). Furthermore, there is no claim to further
+      development and adaptation of the results to a more current state of the art.
+3. Gematik may remove published results temporarily or permanently from the place of publication at
+   any time without prior notice or justification.
+4. Please note: Parts of this code may have been generated using AI-supported technology. Please
+   take this into account, especially when troubleshooting, for security analyses and possible
+   adjustments.
 
 ## Contributing
 
@@ -106,7 +131,7 @@ wurde. Beide werden aufgeteilt in
 
 jeweils Base64-kodiert. Damit soll dem aufrufenden Testfall die
 Möglichkeit gegeben werden, die Reaktion des NCPeH-Fachdienstes direkt zu prüfen und zu bewerten.
-Der Zugang zur NCPeH-Testinterface soll mittels Gateway über das Internet ermöglicht und per TLS
+Der Zugang zum NCPeH-Testinterface soll mittels Gateway über das Internet ermöglicht und per TLS
 abgesichert werden.
 
 ### Daten für das NCPeH-Testinterface
