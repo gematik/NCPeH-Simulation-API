@@ -1,14 +1,31 @@
 <img align="right" width="200" height="37" src="Gematik_Logo_Flag.png" alt="Gematik Logo"/> <br/>
 
-# Release notes NCPeH-Simulation-API
+# Release Notes NCPeH-Simulation-API
 
-## Release 2.0.0 (tbd)
+## Release 2.0.1 (2025-07-15)
+
+### changed
+
+- The PDF file returned when requesting a Patient Summary Document with format 'CDA level 1' is now
+  generated dynamically based on patient data provided in the `X-NCPeHMock-Patient` request header
+- Updated LICENSE
+- Updated README
+
+### fixed
+
+- several fixes and small improvements
+
+## Release 2.0.0 (2025-02-27)
 
 ### added
 
 - New API endpoint `/retrieveSetOfDocuments` for triggering
   a [Cross Gateway Retrieve Request [ITI-39]](https://profiles.ihe.net/ITI/TF/Volume2/ITI-39.html)
-- Included attribute `structuralRole` in `IdaAssertionProfile` 
+- Included attribute `structuralRole` in `IdaAssertionProfile`
+
+### fixed
+
+- several vulnerability fixes and small improvements
 
 ## Release 1.6.3 (2025-01-08)
 

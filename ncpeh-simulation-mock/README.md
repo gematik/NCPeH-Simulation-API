@@ -2,29 +2,33 @@
 
 # NCPeH-Simulation-Mock
 
-This module contains a simple mock, to illustrate the implementation of the NCPeH-Simulation-API
-and provide implementors of a client using the API something to test with.
+This module provides a simple mock implementation of the NCPeH-Simulation-API to offer
+developers a test environment for their API clients.
 
 The mock does not verify or validate requests and the responses it returns are technically correct,
 but they are created from templates and do not reflect the data submitted in the request.
+
+> [!IMPORTANT]
+> The SOAP messages returned by the mock currently do not include the headers required for the
+> individual transactions.
 
 As it is a Spring Boot application, it can simply be started using the command:
 
     java -jar ncpeh-simulation-mock-<version>.jar
 
-oder maven plugin:
+or maven plugin:
 
     mvn spring-boot:run
 
-Per default the URL to call the API operations
-is: `http://<hostname or IP>:8082/rest/triggerInterface/<operation name>`
+The URL to call the API operations defaults to:
+`http://<hostname or IP>:8082/rest/triggerInterface/<operation name>`
 
 The OpenApi-UI is available on `http://<hostname or IP>:8082/rest/api-docs?url=/rest/openapi.json`
 
 The built versions can also be found
 on [Maven Central](https://repo1.maven.org/maven2/de/gematik/api/ncpeh-simulation-mock/).
 
-# Control NCPeH-Simulation-Mock response
+# Control NCPeH-Simulation-Mock responses
 
 Use **HTTP** request header `X-NCPeHMock-Response` to control the HTTP response **content** of the
 identifyPatient(IdentifyPatientRequest request).
@@ -65,3 +69,8 @@ RegistryResponse_020 with ResponseStatusType:Failure. (The account contains a va
 with new DocumentUniqueId)
 Set header `X-NCPeHMock-Response` to `RetrieveDocumentSetResponse_032` to return response body with
 RegistryResponse_032 with ResponseStatusType:Failure. (Authorization for EU member state is missing)
+
+Use **HTTP** request header `X-NCPeHMock-Patient` to provide patient data which is to be used when
+generating the Patient Summary document as CDA level 1 for the retrieveDocument operation.  
+The header value must be a base64-encoded JSON serialization of
+a [Patient](src/main/java/de/gematik/ncpeh/api/mock/data/Patient.java) object.

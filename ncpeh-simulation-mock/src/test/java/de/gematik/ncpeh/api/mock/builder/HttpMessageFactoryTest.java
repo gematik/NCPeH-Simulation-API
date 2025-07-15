@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 gematik GmbH
+ * Copyright 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * ******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
@@ -294,15 +298,15 @@ class HttpMessageFactoryTest {
       input = null;
     }
     final String finalInput = input;
-
     final var request =
         loadFromJsonResource(
             RetrieveDocumentRequest.class, this.getClass(), "RetrieveDocumentRequest.json");
+    final var builder = RetrieveDocumentMessagesBuilder.buildFromRequest(request);
 
     // Act
     final var result =
         assertDoesNotThrow(
-            () -> HttpMessageFactory.buildRetrieveDocumentResponse(request, finalInput));
+            () -> HttpMessageFactory.buildRetrieveDocumentResponse(builder, finalInput));
 
     // Assert
     final var body = toUTF8String(result.getBody());
@@ -327,24 +331,6 @@ class HttpMessageFactoryTest {
     final var expectedData = readResourceFile(getClass(), "RetrieveDocumentSetRequest.xml");
     assertThat(
         httpRequest.getRequestBody().toString(),
-        CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
-  }
-
-  @Test
-  void buildStandardRetrieveSetOfDocumentsResponseTest() {
-    // Arrange
-    // Act
-    final var httpResponse =
-        assertDoesNotThrow(
-            () -> HttpMessageFactory.buildStandardRetrieveSetOfDocumentsResponse(null),
-            "Method HttpMessageFactory.buildStandardRetrieveSetOfDocumentsResponse threw exception");
-
-    // Assert
-    assertResponseProps(httpResponse);
-
-    final var expectedData = readResourceFile(getClass(), "RetrieveDocumentSetResponse.xml");
-    assertThat(
-        httpResponse.getBody(),
         CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 

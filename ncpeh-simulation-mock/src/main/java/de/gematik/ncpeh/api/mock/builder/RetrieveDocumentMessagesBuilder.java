@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 gematik GmbH
+ * Copyright 2024-2025 gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,33 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * ******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
 
+import de.gematik.ncpeh.api.mock.data.Patient;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
+import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
@@ -35,35 +46,62 @@ import org.springframework.http.MediaType;
 
 @Data
 @Accessors(fluent = true)
-public class RetrieveDocumentMessagesBuilder {
+public final class RetrieveDocumentMessagesBuilder {
+
+  record DocumentationInfo(
+      String documentUniqueId, String repositoryUniqueId, String homeCommunityId) {}
 
   private static final String STATUS_SUCCESS =
       "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success";
 
-  private String documentUniqueId;
+  private List<DocumentationInfo> documentationInfos = new ArrayList<>();
 
-  private String additionalDocumentUniqueId;
+  private Patient patient;
 
-  private String repositoryUniqueId;
+  private RetrieveDocumentMessagesBuilder() {}
 
-  private String homeCommunityId = "urn:oid:1.2.276.0.76.4.291";
-
-  public RetrieveDocumentMessagesBuilder useDataFrom(
+  public static RetrieveDocumentMessagesBuilder buildFromRequest(
       final RetrieveDocumentRequest retrieveDocumentRequest) {
-    return documentUniqueId(retrieveDocumentRequest.documentUniqueId())
-        .additionalDocumentUniqueId(retrieveDocumentRequest.additionalDocumentUniqueId())
-        .homeCommunityId(retrieveDocumentRequest.homeCommunityId())
-        .repositoryUniqueId(retrieveDocumentRequest.repositoryUniqueId());
+    return new RetrieveDocumentMessagesBuilder()
+        .documentationInfos(
+            Stream.of(
+                    new DocumentationInfo(
+                        retrieveDocumentRequest.documentUniqueId(),
+                        retrieveDocumentRequest.repositoryUniqueId(),
+                        retrieveDocumentRequest.homeCommunityId()),
+                    new DocumentationInfo(
+                        retrieveDocumentRequest.additionalDocumentUniqueId(),
+                        retrieveDocumentRequest.repositoryUniqueId(),
+                        retrieveDocumentRequest.homeCommunityId()))
+                .filter(
+                    info -> info.documentUniqueId() != null && !info.documentUniqueId().isBlank())
+                .toList());
+  }
+
+  public static RetrieveDocumentMessagesBuilder buildFromRequestAndPatient(
+      final RetrieveDocumentRequest retrieveDocumentRequest, final Patient patient) {
+    return buildFromRequest(retrieveDocumentRequest).patient(patient);
+  }
+
+  public static RetrieveDocumentMessagesBuilder buildFromRequestAndPatient(
+      final RetrieveSetOfDocumentsRequest retrieveDocumentRequest, final Patient patient) {
+    return new RetrieveDocumentMessagesBuilder()
+        .documentationInfos(
+            retrieveDocumentRequest.documentRequestSet().stream()
+                .map(
+                    req ->
+                        new DocumentationInfo(
+                            req.documentUniqueId(),
+                            req.repositoryUniqueId(),
+                            req.homeCommunityId()))
+                .toList())
+        .patient(patient);
   }
 
   public RetrieveDocumentSetRequestType buildRequest() {
     final var request = new RetrieveDocumentSetRequestType();
-
-    Optional.ofNullable(documentUniqueId())
-        .ifPresent(duid -> request.getDocumentRequest().add(buildDocumentRequest(duid)));
-    Optional.ofNullable(additionalDocumentUniqueId())
-        .ifPresent(aduid -> request.getDocumentRequest().add(buildDocumentRequest(aduid)));
-
+    documentationInfos.forEach(
+        info -> request.getDocumentRequest().add(buildDocumentRequest(info)));
     return request;
   }
 
@@ -75,73 +113,85 @@ public class RetrieveDocumentMessagesBuilder {
 
     response.setRegistryResponse(registryResponse);
 
-    Optional.ofNullable(documentUniqueId())
-        .ifPresent(duid -> response.getDocumentResponse().add(buildDocumentResponse(duid)));
-    Optional.ofNullable(additionalDocumentUniqueId())
-        .ifPresent(aduid -> response.getDocumentResponse().add(buildDocumentResponse(aduid)));
+    documentationInfos.forEach(
+        info -> response.getDocumentResponse().add(buildDocumentResponse(info)));
 
     return response;
   }
 
   private RetrieveDocumentSetRequestType.DocumentRequest buildDocumentRequest(
-      final String uniqueId) {
+      final DocumentationInfo info) {
     final var documentRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
 
-    documentRequest.setDocumentUniqueId(uniqueId);
-    documentRequest.setRepositoryUniqueId(repositoryUniqueId());
-    documentRequest.setHomeCommunityId(homeCommunityId());
+    documentRequest.setDocumentUniqueId(info.documentUniqueId);
+    documentRequest.setRepositoryUniqueId(info.repositoryUniqueId);
+    documentRequest.setHomeCommunityId(info.homeCommunityId);
 
     return documentRequest;
   }
 
   private RetrieveDocumentSetResponseType.DocumentResponse buildDocumentResponse(
-      final String uniqueId) {
+      final DocumentationInfo info) {
     final var documentResponse = new RetrieveDocumentSetResponseType.DocumentResponse();
 
-    documentResponse.setDocumentUniqueId(uniqueId);
-    documentResponse.setRepositoryUniqueId(repositoryUniqueId());
-    documentResponse.setHomeCommunityId(homeCommunityId());
+    documentResponse.setDocumentUniqueId(info.documentUniqueId);
+    documentResponse.setRepositoryUniqueId(info.repositoryUniqueId);
+    documentResponse.setHomeCommunityId(info.homeCommunityId);
 
-    final var lvlInfo = CDALevelInfo.fromDocumentUniqueId(uniqueId);
+    final var lvlInfo = CDALevelInfo.fromDocumentUniqueId(info.documentUniqueId);
 
     documentResponse.setMimeType(lvlInfo.mimeType());
-    documentResponse.setDocument(lvlInfo.readDocument());
+    documentResponse.setDocument(lvlInfo.readOrCreateDocument(patient));
 
     return documentResponse;
   }
+
+  public static final String COMMENT_REGEX = "(?s)<!--.*?-->";
 
   @RequiredArgsConstructor
   @Getter
   @Accessors(fluent = true)
   @Slf4j
   enum CDALevelInfo {
-    LEVEL_1("^PS.PDF", MediaType.APPLICATION_PDF_VALUE, "Patient_Summary_CDA1.pdf"),
-    LEVEL_3("^PS.XML", MediaType.TEXT_XML_VALUE, "Patient_Summary_CDA3.xml");
+    LEVEL_1(
+        "^PS.PDF",
+        MediaType.APPLICATION_PDF_VALUE,
+        pat ->
+            PDFBuilder.builder()
+                .name(Optional.ofNullable(pat).map(p -> p.name().toString()).orElse(""))
+                .birthdate(
+                    Optional.ofNullable(pat)
+                        .map(p -> p.birthdate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                        .orElse(""))
+                .build()),
+    LEVEL_3(
+        "^PS.XML",
+        MediaType.TEXT_XML_VALUE,
+        pat -> {
+          try (final InputStream io =
+              HttpMessageFactory.readMessageFileSafely("Patient_Summary_CDA3.xml")) {
+            log.debug("name LEVEL_3");
+            // remove comments from xml file
+            return new String(io.readAllBytes(), StandardCharsets.UTF_8)
+                .replaceAll(COMMENT_REGEX, "")
+                .getBytes(StandardCharsets.UTF_8);
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        });
 
     private final String idMarker;
 
     private final String mimeType;
 
-    private final String documentFileName;
-
-    private static final String COMMENT_REGEX = "(?s)<!--.*?-->";
+    private final Function<Patient, byte[]> readOrCreateDocumentFunction;
 
     public boolean documentIsOfLevel(final String documentUniqueId) {
       return documentUniqueId.endsWith(idMarker());
     }
 
-    @SneakyThrows
-    public byte[] readDocument() {
-      try (final InputStream io = HttpMessageFactory.readMessageFileSafely(documentFileName)) {
-        log.debug("name {}", this.name());
-        if (this.name().equals(LEVEL_1.name())) {
-          return io.readAllBytes();
-        }
-        // remove comments from xml file
-        return new String(io.readAllBytes(), StandardCharsets.UTF_8)
-            .replaceAll(COMMENT_REGEX, "")
-            .getBytes(StandardCharsets.UTF_8);
-      }
+    public byte[] readOrCreateDocument(final Patient patient) {
+      return readOrCreateDocumentFunction.apply(patient);
     }
 
     public static CDALevelInfo fromDocumentUniqueId(@NonNull final String documentUniqueId) {
