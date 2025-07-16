@@ -31,9 +31,11 @@
     <module>ncpeh-simulation-mock</module>
   </modules>
   <groupId>de.gematik.api</groupId>
-  <version>2.0.1</version>
-  <name>NCPeH Simulation API</name>
-  <description>API definition for the trigger interface of the NCPeH simulation</description>
+  <version>2.0.2</version>
+  <name>NCPeH Simulation API Parent</name>
+  <description>Parent project of the NCPeH Simulation API containing the API definition, eHDSI
+    models, and a mock implementation
+  </description>
   <url>https://github.com/gematik/NCPeH-Simulation-API</url>
 
   <!-- Projektumgebungsinformationen -->
@@ -85,6 +87,9 @@
 
     <!-- CVE-2025-48988 spring-boot-starter-web 3.3.12 -->
     <tomcat-embed.version>10.1.42</tomcat-embed.version>
+
+    <!-- CVE-2025-48795 cxf-core 4.1.0 -->
+    <apache.cxf.core.version>4.1.1</apache.cxf.core.version>
 
   </properties>
 
@@ -260,6 +265,13 @@
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-el</artifactId>
         <version>${tomcat-embed.version}</version>
+      </dependency>
+
+      <!-- CVE-2025-48795 cxf-core 4.1.0 -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-core</artifactId>
+        <version>${apache.cxf.core.version}</version>
       </dependency>
 
     </dependencies>

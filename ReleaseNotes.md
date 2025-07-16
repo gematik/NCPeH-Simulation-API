@@ -2,6 +2,12 @@
 
 # Release Notes NCPeH-Simulation-API
 
+## Release 2.0.2 (2025-07-16)
+
+### added
+
+- Included additional POM metadata to meet Maven Central requirements
+
 ## Release 2.0.1 (2025-07-15)
 
 ### changed

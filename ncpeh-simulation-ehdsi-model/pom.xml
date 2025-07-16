@@ -27,10 +27,14 @@
   <parent>
     <groupId>de.gematik.api</groupId>
     <artifactId>ncpeh-simulation-api-parent</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
   </parent>
 
   <artifactId>ncpeh-simulation-ehdsi-model</artifactId>
+  <name>NCPeH Simulation eHDSI Model</name>
+  <description>Provides data models and structures required for communication and data exchange via
+    eHDSI interfaces
+  </description>
 
   <properties>
     <generated.sources.path>${project.build.directory}/generated-sources</generated.sources.path>
