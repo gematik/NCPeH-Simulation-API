@@ -32,8 +32,8 @@ public record WrappedHttpMessage(
             format = "byte",
             type = "string",
             example =
-                "W0FjY2VwdDoidGV4dC94bWwsIGFwcGxpY2F0aW9uL3NvYXAreG1sO2NoYXJzZXQ9VVRGLTgiLCBDb250ZW"
-                    + "50LVR5cGU6ImFwcGxpY2F0aW9uL3NvYXAreG1sO2NoYXJzZXQ9VVRGLTgiXQ==")
+                "[Accept:\"text/xml, application/soap+xml;charset=UTF-8\", Content-Type:"
+                    + "\"application/soap+xml;charset=UTF-8\"]")
         byte[] httpHeader,
     @JsonProperty
         @Schema(
@@ -42,9 +42,14 @@ public record WrappedHttpMessage(
             format = "byte",
             type = "string",
             example =
-                "PFNPQVAtRU5WOkVudmVsb3BlCgl4bWxuczpTT0FQLUVOVj0iaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcm"
-                    + "cvc29hcC9lbnZlbG9wZS8iPgoJPFNPQVAtRU5WOkhlYWRlci8+Cgk8U09BUC1FTlY6Qm9keT4KCQ"
-                    + "k8LS0gUGF5bG9hZCAtLT4KCTwvU09BUC1FTlY6Qm9keT4KPC9TT0FQLUVOVjpFbnZlbG9wZT4=")
+                """
+                <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+                    <SOAP-ENV:Header/>
+                    <SOAP-ENV:Body>
+                     <-- Payload -->
+                    </SOAP-ENV:Body>
+                </SOAP-ENV:Envelope>
+                """)
         byte[] httpBody) {
 
   @Override

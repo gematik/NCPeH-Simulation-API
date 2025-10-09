@@ -16,6 +16,15 @@ available on Maven Central.
 A more detailed description is given in the chapter [Fachliche Einordnung](#fachliche-einordnung).
 As the intended audience is part of the German eHealth project, it is written in German.
 
+### Versioning Scheme
+
+Starting with version 2.1.0.0, the NCPeH-Simulation-API uses a four-digit version number:
+- The first three digits mirror the referenced German NCPeH specification version.
+- The fourth digit reflects additional updates or changes to the API itself.
+
+This change is intended to facilitate clear identification of the referenced specification version
+for each API release.
+
 ### Release Notes
 
 The Release Notes can be found in the file [ReleaseNotes.md](./ReleaseNotes.md)
@@ -153,8 +162,7 @@ sind.
 Datenprofile, die von der gematik oder Herstellern beteiligter TI-Produkte benötigt werden, müssen
 im Rahmen der
 Bereitstellung der Schnittstelle zwischen dem Betreiber des NCPeH-Testinterface und der gematik
-abgestimmt werden. Die
-gemeinsam definierten Datenprofile sind dementsprechend mit dem NCPeH-Testinterface zur Nutzung
+abgestimmt werden. Die gemeinsam definierten Datenprofile sind dementsprechend mit dem NCPeH-Testinterface zur Nutzung
 bereitzustellen.
 
 Das Objekt 'EuCountryCode' referenziert folgendes Datenprofil:
@@ -182,6 +190,31 @@ Das Objekt 'IdAAssertionProfile' referenziert folgendes Datenprofil:
 Das Objekt 'TRCAssertionProfile' referenziert folgendes Datenprofil:
 
 * Das Signatur-Zertifikat, das zum Signieren der TRC-Assertion zum Einsatz kommen soll
-* Der Wert, der im SAML-Element Assertion/Subject/NameID einzutragen ist (Identifier des LE-EU) als
-  auch das Format des
-  Wertes (Attribut @Format)
+* Den Wert, der im SAML-Element Assertion/Subject/NameID einzutragen ist (Identifier des LE-EU) als
+  auch das Format des Wertes (Attribut @Format)
+
+Das Objekt DispenseProfile wird definiert, da für den Test der Dispensierung ein oder mehrere Dokumente im eHDSI 
+CDA-Pivotformat generiert werden müssen, die aus einem Land-B stammen. Diese Dokumente MUSS der Land-B Simulator auf 
+Grundlage des angegebenen DispenseProfile sowie ggf. weiterer übergebener Parameter erstellen.
+
+Das Objekt DispenseProfile definiert benötigte Datenanteile für ein Dispense-Dokument nach [eHDSI_CDA_Format]:
+- Medicinal Product Identifier,
+- Medicinal Product Brand Name,
+- Medicinal Product Classification,
+- Medicinal Product Package Data,
+- Active Ingredients Data,
+- Marketing Authorization Holder,
+- Falls nötig und in gemeinsamer Abstimmung: weitere benötigte medizinische Daten zur Dispensierung.
+
+Mit der KVNR wird für die Generierung von Dispensier-Dokumenten zukünftig auch ein PatientProfile referenziert. Neben 
+der KVNR selbst werden dafür folgende weitere Daten benötigt:
+- Insurance Number,
+- Given Name,
+- Family Name,
+- Gender.
+
+Das NCPeH-Testinterface gibt als Response auf die REST-Requests die Inhalte der Nachrichten von der eHDSI-Schnittstelle 
+zurück. Also den jeweiligen IHE-Request und die IHE-Responses, die mit dem NCPeH-FD ausgetauscht wurden. Beides wird 
+jeweils aufgeteilt in die HTTP-Request bzw. HTTP-Response-Zeile, den http-Header und den http-Body, jeweils 
+Base64-kodiert. Damit soll dem aufrufenden Testfall die Möglichkeit gegeben werden, die Reaktion des NCPeH-FD direkt zu 
+prüfen und zu bewerten.
