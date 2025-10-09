@@ -26,40 +26,47 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import lombok.NonNull;
 
+/**
+ * Enum representing the two-letter country codes of EU member states according to ISO 3166-1
+ * alpha-2.
+ *
+ * <p>This enum is used to specify the country code in various contexts, such as in API requests and
+ * responses.
+ */
 @Schema(
     enumAsRef = true,
     description =
-        "EuCountryCode benennt ein Datenprofil in Form eines zweistelligen EU-Landescodes. "
+        "EuCountryCode benennt ein Datenprofil in Form eines zweistelligen EU-Landescodes nach ISO-3166. "
             + "Über das Datenprofil werden die NCPeH-Zertifikate und die homeCommunityId referenziert, "
             + "die der NCPeH-Simulator in einem auszuführenden Request nutzen soll.",
     example = "FR")
 public enum EuCountryCode {
+  AUSTRIA("AT"),
   BELGIUM("BE"),
   BULGARIA("BG"),
+  CROATIA("HR"),
+  CYPRUS("CY"),
   CZECHIA("CZ"),
   DENMARK("DK"),
-  GERMANY("DE"),
   ESTONIA("EE"),
-  IRELAND("IE"),
-  GREECE("EL"),
-  SPAIN("ES"),
+  FINLAND("FI"),
   FRANCE("FR"),
-  CROATIA("HR"),
+  GERMANY("DE"),
+  GREECE("GR"),
+  HUNGARY("HU"),
+  IRELAND("IE"),
   ITALY("IT"),
-  CYPRUS("CY"),
   LATVIA("LV"),
   LITHUANIA("LT"),
   LUXEMBOURG("LU"),
-  HUNGARY("HU"),
   MALTA("MT"),
   NETHERLANDS("NL"),
-  AUSTRIA("AT"),
   POLAND("PL"),
   PORTUGAL("PT"),
   ROMANIA("RO"),
-  SLOVENIA("SI"),
   SLOVAKIA("SK"),
-  FINLAND("FI"),
+  SLOVENIA("SI"),
+  SPAIN("ES"),
   SWEDEN("SE");
 
   private final String countryCode;
@@ -82,5 +89,15 @@ public enum EuCountryCode {
             () ->
                 new IllegalArgumentException(
                     String.format("No country code %s known for any EU country", countryCode)));
+  }
+
+  public static EuCountryCode fromCountryName(@NonNull String countryName) {
+    return Arrays.stream(values())
+        .filter(value -> countryName.equalsIgnoreCase(value.name()))
+        .findFirst()
+        .orElseThrow(
+            () ->
+                new IllegalArgumentException(
+                    String.format("No country name %s known for any EU country", countryName)));
   }
 }

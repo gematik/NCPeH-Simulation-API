@@ -2,13 +2,42 @@
 
 # Release Notes NCPeH-Simulation-API
 
+## Release 2.1.0.0 (2025-10-09)
+
+**Note:** Starting with release 2.1.0.0, the versioning scheme has changed. The first three digits
+now correspond to the referenced specification version, and the fourth digit reflects additional
+updates or changes to the API itself.
+
+The NCPeH-Simulation-API Release 2.0.3 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/),
+[2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/) or
+[2.1.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.1.0/).
+
+### changed
+
+- **Breaking:** The `EuCountryCode` enum now strictly conforms to the ISO-3166 Alpha-2 standard for
+  country codes, replacing the previous Eurostat-based list.
+- Updated README.md in context of specification release gemSpec_NCPeH_FD v2.1.0: moved parts of interface description from
+  [gemSpec_NCPeH_FD](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/latest/) into the file README.md
+- Updated ReleaseNotes.md to map each Simulation API release to the referenced German NCPeH specification version
+
+### fixed
+
+- several vulnerability fixes and small improvements
+
 ## Release 2.0.2 (2025-07-16)
+The NCPeH-Simulation-API Release 2.0.2 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
+or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/).
 
 ### added
 
 - Included additional POM metadata to meet Maven Central requirements
 
 ## Release 2.0.1 (2025-07-15)
+The NCPeH-Simulation-API Release 2.0.1 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
+or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/).
 
 ### changed
 
@@ -22,6 +51,8 @@
 - several fixes and small improvements
 
 ## Release 2.0.0 (2025-02-27)
+The NCPeH-Simulation-API Release 2.0.0 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/).
 
 ### added
 
@@ -34,6 +65,9 @@
 - several vulnerability fixes and small improvements
 
 ## Release 1.6.3 (2025-01-08)
+The NCPeH-Simulation-API Release 1.6.3 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
+or [1.6.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.1/).
 
 ### changed
 
@@ -47,6 +81,8 @@
 - several vulnerability issues have been fixed
 
 ## Release 1.6.0 (2024-08-06)
+The NCPeH-Simulation-API Release 1.6.0 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
 
 ### changed
 
@@ -62,6 +98,8 @@
 - several vulnerability issues have been fixed
 
 ## Release 1.5.2 (2024-01-30)
+The NCPeH-Simulation-API Release 1.5.2 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
 
 ### changed
 
@@ -75,7 +113,7 @@
 
 ### known issues bzwg. CVE in SpringBoot
 
-Currently this test suite uses the latest version of module cxf-spring-boot-starter-jaxrs (4.0.3),
+Currently, this test suite uses the latest version of module cxf-spring-boot-starter-jaxrs (4.0.3),
 whose imports contain following CVE's:
 spring-aop-6.0.11.jar: CVE-2023-34053(7.5)
 spring-boot-starter-json-3.0.10.jar: CVE-2023-34055(6.5)
@@ -86,6 +124,8 @@ spring-web-6.0.11.jar: CVE-2023-34053(7.5)
 We will fix this problem in the next version.
 
 ## Release 1.5.0
+The NCPeH-Simulation-API Release 1.5.0 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
 
 ### added
 
@@ -101,6 +141,8 @@ We will fix this problem in the next version.
   versions shipped with Spring-Boot
 
 ## Release 1.0.3
+The NCPeH-Simulation-API Release 1.0.3 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version 1.0.0
 
 ### added
 
@@ -115,6 +157,8 @@ We will fix this problem in the next version.
   uses the data, which where provided in the request
 
 ## Release 1.0.2
+The NCPeH-Simulation-API Release 1.0.2 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version 1.0.0
 
 ### fixed
 
@@ -133,6 +177,8 @@ We will fix this problem in the next version.
   which are of correct type, containing plausible data for each operation
 
 ## Release 1.0.1
+The NCPeH-Simulation-API Release 1.0.1 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version 1.0.0
 
 ### fixed
 
@@ -140,6 +186,8 @@ We will fix this problem in the next version.
   Central
 
 ## Release 1.0.0
+The NCPeH-Simulation-API Release 1.0.0 shall be used with a NCPeH product version based on the German NCPeH 
+specification in version 1.0.0
 
 ### added
 

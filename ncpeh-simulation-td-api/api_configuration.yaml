@@ -9,7 +9,7 @@ openAPI:
     version: ${project.version}
     description: "Auf der Schnittstelle werden Operationen definiert, \
       \ um die Ausführung von Usecases des NCPeH-Fachdienstes für das Anwendungsszenario Patient Summary Land A \
-      \ mit den übergebenen Daten am Simulator des NCPeH Land B zu triggern. \
+      \ bzw. ePrescription/eDispensation Land-A mit den übergebenen Daten am Simulator des NCPeH Land B zu triggern. \
       \ Hinweis: Sobald die Unterstützung in der Toollandschaft besser ist (siehe https://openapi.tools/), \
       \ wird die API-Beschreibung auf die OpenApi Version 3.1 angehoben."
     contact:

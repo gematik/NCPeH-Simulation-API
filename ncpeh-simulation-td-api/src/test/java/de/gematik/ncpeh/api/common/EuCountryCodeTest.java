@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 class EuCountryCodeTest {
 
   @Test
-  void fromValue() {
+  void whenGivenCzechiaCountryCodeThenExpectCzechiaValue() {
     var expected = EuCountryCode.CZECHIA;
     var value =
         assertDoesNotThrow(
@@ -47,5 +47,43 @@ class EuCountryCodeTest {
         IllegalArgumentException.class,
         () -> EuCountryCode.fromValue("falscherWert"),
         "Method EuCountryCode.fromValue did not throw expected exception");
+  }
+
+  @Test
+  void whenGivenNameofSpainThenExpectCorrectSpainEnumValue() {
+    var expected = EuCountryCode.SPAIN;
+    var value =
+        assertDoesNotThrow(
+            () -> EuCountryCode.fromCountryName("SPAIN"),
+            "Method EuCountryCode.fromCountryName threw unexpected exception");
+
+    assertEquals(expected, value, "Wrong enum value found");
+  }
+
+  @Test
+  void whenGivenNameofSwitzerlandThenExpectException() {
+    assertThrows(
+        IllegalArgumentException.class, () -> EuCountryCode.fromCountryName("SWITZERLAND"));
+  }
+
+  @Test
+  void whenGivenGreeceCountryCodeThenExpectGreeceEnumValue() {
+    var expected = EuCountryCode.GREECE;
+    var value =
+        assertDoesNotThrow(
+            () -> EuCountryCode.fromValue("GR"),
+            "Method EuCountryCode.fromValue threw unexpected exception");
+
+    assertEquals(expected, value, "Wrong enum value found");
+  }
+
+  @Test
+  void whenGivenUsCountryCodeThenExpectException() {
+    assertThrows(IllegalArgumentException.class, () -> EuCountryCode.fromValue("US"));
+  }
+
+  @Test
+  void whenGivenGreeceEnumValueThenExpectGreeceEuCode() {
+    assertEquals("GR", EuCountryCode.GREECE.getCountryCode(), "Wrong enum value found");
   }
 }

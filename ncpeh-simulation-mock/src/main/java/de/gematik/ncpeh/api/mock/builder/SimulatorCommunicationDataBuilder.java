@@ -113,6 +113,6 @@ public class SimulatorCommunicationDataBuilder implements Builder<SimulatorCommu
 
   public static WrappedHttpResponse wrapHttpResponse(@NonNull PseudoHttpResponse msg) {
     return new WrappedHttpResponse(
-        msg.getRawStatusCode() + " " + msg.getStatusText(), wrapHttpMessage(msg));
+        msg.getStatusCode().value() + " " + msg.getStatusText(), wrapHttpMessage(msg));
   }
 }

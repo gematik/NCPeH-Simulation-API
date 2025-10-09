@@ -27,7 +27,7 @@ import lombok.NonNull;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.client.AbstractClientHttpResponse;
+import org.springframework.http.client.ClientHttpResponse;
 
 /**
  * Lightweight implementation of an HTTP response with the only purpose to create testdata for the
@@ -36,18 +36,13 @@ import org.springframework.http.client.AbstractClientHttpResponse;
  */
 @Accessors(chain = true)
 @Data
-public class PseudoHttpResponse extends AbstractClientHttpResponse {
+public class PseudoHttpResponse implements ClientHttpResponse {
 
   private @NonNull HttpStatus statusCode;
 
   private InputStream body;
 
   private HttpHeaders headers;
-
-  @Override
-  public int getRawStatusCode() {
-    return statusCode.value();
-  }
 
   @Override
   public String getStatusText() {
