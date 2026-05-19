@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock;
 
+import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_NCPEH_MOCK_PATIENT;
 import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_NCPEH_MOCK_RESPONSE;
 import static de.gematik.ncpeh.api.mock.TestUtils.loadFromJsonResource;
 import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
@@ -39,11 +41,13 @@ import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.jaxrs.client.Client;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -112,12 +116,51 @@ class NCPeHMockApiImplTest {
     assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
 
+  @Test
+  void identifyPatientUsesAccessCodeFromPatientHeader() {
+    // Arrange
+    final var accessCode = "R7A1B2";
+    ((Client) api).header(HEADER_X_NCPEH_MOCK_PATIENT, buildPatientHeader(accessCode));
+    final var request =
+        loadFromJsonResource(
+            IdentifyPatientRequest.class, this.getClass(), "IdentifyPatientRequest.json");
+
+    // Act
+    final var response =
+        assertDoesNotThrow(
+            () -> api.identifyPatient(request),
+            "Method NCPeHMockApiImpl.identifyPatient threw an exception");
+
+    // Assert
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+    final var expectedData =
+        readResourceFile(this.getClass(), "PRPA_IN201306UV02.xml").replace("ABC123", accessCode);
+
+    assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
   private static JacksonJsonProvider createJacksonJsonProvider() {
 
     return new JacksonJsonProvider()
         .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
         .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+  }
+
+  private static String buildPatientHeader(final String accessCode) {
+    final var patientJson =
+        """
+        {"name":{"givennames":"Max","lastnames":"Patientmann"},"birthdate":"1980-01-01","kvnr":"X123456789","accessCode":"%s"}
+        """
+            .formatted(accessCode);
+    return Base64.getEncoder().encodeToString(patientJson.getBytes(StandardCharsets.UTF_8));
   }
 
   @ParameterizedTest

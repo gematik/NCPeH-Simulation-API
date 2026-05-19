@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,15 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
 
 import static de.gematik.ncpeh.api.mock.builder.SoapMessageFactory.createSoapMessage;
 
+import de.gematik.ncpeh.api.mock.data.Medication;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpRequest;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpResponse;
 import de.gematik.ncpeh.api.mock.util.XmlUtils;
@@ -33,17 +35,21 @@ import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -146,8 +152,31 @@ public final class HttpMessageFactory {
    */
   @SneakyThrows
   public static PseudoHttpResponse buildStandardIdentifyPatientResponse(final String fileName) {
-    return buildHttpResponse(
-        readMessageFileSafely(fileName, PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME));
+    return buildStandardIdentifyPatientResponse(fileName, null);
+  }
+
+  /**
+   * Build an HTTP response to be used as payload in the {@link
+   * de.gematik.ncpeh.api.response.SimulatorCommunicationData#responseReceived()} element for the
+   * {@link de.gematik.ncpeh.api.NcpehSimulatorApi#identifyPatient(IdentifyPatientRequest)}
+   * response.
+   *
+   * @param fileName optional response template name
+   * @param accessCode optional access code to inject into the successful identifyPatient response
+   * @return {@link PseudoHttpResponse}
+   */
+  @SneakyThrows
+  public static PseudoHttpResponse buildStandardIdentifyPatientResponse(
+      final String fileName, final String accessCode) {
+    var body =
+        readMessageFileSafely(fileName, PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME).readAllBytes();
+    if (accessCode != null) {
+      body =
+          new String(body, StandardCharsets.UTF_8)
+              .replace("ABC123", accessCode)
+              .getBytes(StandardCharsets.UTF_8);
+    }
+    return buildHttpResponse(new ByteArrayInputStream(body));
   }
 
   /**
@@ -170,14 +199,42 @@ public final class HttpMessageFactory {
    *
    * @return {@link PseudoHttpResponse}
    */
-  public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(final String fileName) {
-    return buildHttpResponse(
-        readMessageFileSafely(fileName, FIND_DOCUMENT_EPED_RESPONSE_FILE_NAME));
+  public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(
+      final String fileName, Set<String> prescriptionIds) {
+    return buildStandardFindDocumentResponseEPED(fileName, prescriptionIds, Map.of());
+  }
+
+  public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(
+      final String fileName,
+      Set<String> prescriptionIds,
+      Map<String, Medication> medicationByPrescriptionId) {
+    var inputStream = readMessageFileSafely(fileName, FIND_DOCUMENT_EPED_RESPONSE_FILE_NAME);
+    if (prescriptionIds.isEmpty()) {
+      return buildHttpResponse(inputStream);
+    }
+
+    try {
+      byte[] documentAsBytes = inputStream.readAllBytes();
+      AdhocQueryResponse adhocQueryResponse =
+          XmlUtils.unmarshal(AdhocQueryResponse.class, documentAsBytes);
+
+      XmlUtils.extendRegistryObjectList(
+          adhocQueryResponse,
+          prescriptionIds,
+          Optional.ofNullable(medicationByPrescriptionId).orElse(Map.of()));
+
+      return buildHttpResponse(new ByteArrayInputStream(XmlUtils.marshal(adhocQueryResponse)));
+
+    } catch (IOException e) {
+      log.error("Error reading AdhocQueryResponse", e);
+
+      return new PseudoHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   public static PseudoHttpRequest buildRetrieveDocumentRequest(
       final RetrieveDocumentRequest request) {
-    final var iheMsgBuilder = RetrieveDocumentMessagesBuilder.buildFromRequest(request);
+    final var iheMsgBuilder = RetrieveDocumentMessagesBuilder.fromRequest(request);
     final var body = XmlUtils.marshal(iheMsgBuilder.buildRequest());
     return buildHttpRequest(new ByteArrayInputStream(body));
   }

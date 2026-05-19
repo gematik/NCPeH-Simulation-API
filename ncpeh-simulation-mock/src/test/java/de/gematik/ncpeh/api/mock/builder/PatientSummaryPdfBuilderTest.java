@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
@@ -30,12 +31,13 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
 
-class PDFBuilderTest {
+class PatientSummaryPdfBuilderTest {
 
   @Test
   void build_createsPDFWithCorrectContent() {
     // Arrange
-    final PDFBuilder builder = PDFBuilder.builder().name("Max Patientmann").birthdate("20.02.1975");
+    final PatientSummaryPdfBuilder builder =
+        PatientSummaryPdfBuilder.newInstance().name("Max Patientmann").birthdate("20.02.1975");
 
     // Act
     final var testee = assertDoesNotThrow(() -> extractText(builder.build()));
@@ -49,8 +51,8 @@ class PDFBuilderTest {
   @Test
   void build_createsPDFWithSpecialCharacterContent() {
     // Arrange
-    final PDFBuilder builder =
-        PDFBuilder.builder()
+    final PatientSummaryPdfBuilder builder =
+        PatientSummaryPdfBuilder.newInstance()
             .name("Gräfin Maude Adelheid Lilo Johanna Gõdofský")
             .birthdate("20.02.1975");
 
@@ -67,7 +69,7 @@ class PDFBuilderTest {
   @Test
   void build_handlesEmptyFieldsGracefully() {
     // Arrange
-    final PDFBuilder builder = PDFBuilder.builder();
+    final PatientSummaryPdfBuilder builder = PatientSummaryPdfBuilder.newInstance();
 
     // Act
     final var testee = assertDoesNotThrow(() -> extractText(builder.build()));

@@ -20,11 +20,10 @@
   "formatCode": "urn:epSOS:ep:dis:2010",
   "typeCode": "60593-1",
   "classCode": "60593-1",
-  "prescriptionProfileList": [
+  "dispensations": [
     {
-      "profileName": "defaultPrescriptionProfile",
-      "prescriptionId": "160.000.000.000.123.76^eP.XML",
-      "substitution": false
+      "prescriptionId": "1.2.276.0.76.4.299^160.000.000.000.123.76|eP.XML",
+      "isSubstituted": false
     }
   ]
 }

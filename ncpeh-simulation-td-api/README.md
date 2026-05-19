@@ -8,7 +8,7 @@ An OpenAPI Description in YAML format is generated from these sources. Both the 
 and the compiled Java library (including JavaDoc and source files) are available
 on [Maven Central](https://repo1.maven.org/maven2/de/gematik/api/ncpeh-simulation-td-api/).
 
-To integrate the Java library in your Maven project simply add it as a dependency:
+To integrate the Java library in your Maven project, add it as a dependency:
 
     <dependency>
       <groupId>de.gematik.api</groupId>

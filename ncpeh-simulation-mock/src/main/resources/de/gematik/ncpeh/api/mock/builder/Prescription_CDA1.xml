@@ -1,0 +1,161 @@
+<!--
+  ~ Copyright (Change Date see Readme), gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ *******
+  ~
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
+  -->
+
+<ClinicalDocument xmlns="urn:hl7-org:v3">
+  <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+  <templateId root="1.3.6.1.4.1.12559.11.10.1.3.1.1.6"/>
+  <id extension="160.000.000.000.123.76|eP.PDF" root="1.2.276.0.76.4.299"/>
+  <code code="57833-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+    displayName="Prescription for medication Document"/>
+  <title>eHDSI ePrescription</title>
+  <effectiveTime value="20251219095325+0000"/>
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality"
+    codeSystemVersion="2018-08-12" displayName="normal"/>
+  <languageCode code="de-DE"/>
+  <recordTarget contextControlCode="OP" typeCode="RCT">
+    <patientRole classCode="PAT">
+      <id assigningAuthorityName="VST KVNR" extension="X110571344|ABC123"
+        root="1.2.276.0.76.3.1.580.147"/>
+      <addr use="HP">
+        <streetAddressLine>Patientstr. 1</streetAddressLine>
+        <city>Patientstadt</city>
+        <postalCode>12345</postalCode>
+        <country>DE</country>
+      </addr>
+      <telecom nullFlavor="NI"/>
+      <patient classCode="PSN" determinerCode="INSTANCE">
+        <name>
+          <prefix>Gräfin</prefix>
+          <given>Maude Adelheid Lilo Johanna</given>
+          <family>GõdofskýTEST-ONLY</family>
+        </name>
+        <administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1"
+          codeSystemName="AdministrativeGender" codeSystemVersion="913-20091020"
+          displayName="Female">
+          <translation code="F" codeSystem="2.16.840.1.113883.5.1"
+            codeSystemName="AdministrativeGender" displayName="weiblich"/>
+        </administrativeGenderCode>
+        <birthTime value="19670630"/>
+        <languageCommunication>
+          <languageCode code="de-DE"/>
+        </languageCommunication>
+      </patient>
+    </patientRole>
+  </recordTarget>
+  <author contextControlCode="OP" typeCode="AUT">
+    <functionCode code="221" codeSystem="2.16.840.1.113883.2.9.6.2.7" codeSystemName="ISCO"
+      codeSystemVersion="2008" displayName="Medical doctors"/>
+    <time value="20251127134609+0000"/>
+    <assignedAuthor classCode="ASSIGNED">
+      <id assigningAuthorityName="KBV" extension="123456789"
+        root="1.2.276.0.76.4.16"/>
+      <addr>
+        <streetAddressLine>Scharnhorststraße 13</streetAddressLine>
+        <city>Berlin</city>
+        <postalCode>10115</postalCode>
+        <state>Berlin</state>
+        <country>DE</country>
+      </addr>
+      <telecom use="WP" value="tel:+4930123456789"/>
+      <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+        <name>
+          <family>Lapp</family>
+          <given>Manfred</given>
+          <prefix>Dr. med.</prefix>
+          <suffix nullFlavor="NI"/>
+        </name>
+      </assignedPerson>
+      <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+        <id root="1.2.276.0.76.3.1.670"/>
+        <name>Bundeswehrkrankenhaus Berlin</name>
+        <telecom nullFlavor="NI"/>
+        <addr>
+          <streetAddressLine>Scharnhorststraße 13</streetAddressLine>
+          <city>Berlin</city>
+          <postalCode>10115</postalCode>
+          <state>Berlin</state>
+          <country>DE</country>
+        </addr>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <custodian typeCode="CST">
+    <assignedCustodian classCode="ASSIGNED">
+      <representedCustodianOrganization classCode="ORG" determinerCode="INSTANCE">
+        <id root="2.16.620.1.101.10"/>
+        <name>ACME inc.</name>
+        <telecom use="WP" value="tel:+351211545600"/>
+        <addr>
+          <streetAddressLine nullFlavor="NI"/>
+          <city nullFlavor="NI"/>
+          <postalCode nullFlavor="NI"/>
+          <state nullFlavor="NI"/>
+          <country>DE</country>
+        </addr>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <legalAuthenticator>
+    <time value="20251127134609+0000"/>
+    <signatureCode code="S"/>
+    <assignedEntity classCode="ASSIGNED">
+      <id root="2.16.620.1.101.10.5.2"/>
+      <addr>
+        <streetAddressLine nullFlavor="NI"/>
+        <city nullFlavor="NI"/>
+        <postalCode nullFlavor="NI"/>
+        <state nullFlavor="NI"/>
+        <country>DE</country>
+      </addr>
+      <telecom use="WP" value="tel:+49123456789"/>
+      <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+        <name>
+          <family>Lapp</family>
+          <given>Manfred</given>
+          <prefix nullFlavor="NI"/>
+          <suffix nullFlavor="NI"/>
+        </name>
+      </assignedPerson>
+      <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+        <id root="2.16.620.1.101.10"/>
+        <name>ACME inc.</name>
+        <telecom use="WP" value="tel:+49123456789"/>
+        <addr>
+          <streetAddressLine nullFlavor="NI"/>
+          <city nullFlavor="NI"/>
+          <postalCode nullFlavor="NI"/>
+          <state nullFlavor="NI"/>
+          <country>DE</country>
+        </addr>
+      </representedOrganization>
+    </assignedEntity>
+  </legalAuthenticator>
+  <relatedDocument typeCode="XFRM">
+    <parentDocument classCode="DOCCLIN" moodCode="EVN">
+      <id extension="1.2.276.0.76.4.299^160.000.000.000.123.76|eP.PDF" root="1.2.276.0.76.4.291"/>
+    </parentDocument>
+  </relatedDocument>
+  <component>
+    <nonXMLBody classCode="DOCBODY" moodCode="EVN">
+      <text mediaType="application/pdf" representation="B64">cGRmIGNvbnRlbnQ=</text>
+    </nonXMLBody>
+  </component>
+</ClinicalDocument>

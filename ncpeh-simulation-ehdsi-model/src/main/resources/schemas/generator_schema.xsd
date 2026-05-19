@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2024-2025 gematik GmbH
+  ~ Copyright (Change Date see Readme), gematik GmbH
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
   ~
   ~ *******
   ~
-  ~ For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
   -->
 
 <xs:schema xmlns="urn:hl7-org:v3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:hl7-org:v3">
@@ -23,6 +24,6 @@
   <!-- Including schemas with the same namespace -->
   <xs:include schemaLocation="HL7V3/NE2008/multicacheschemas/PRPA_IN201305UV02.xsd"/>
   <xs:include schemaLocation="HL7V3/NE2008/multicacheschemas/PRPA_IN201306UV02.xsd"/>
-  <xs:include schemaLocation="cda/CDA.xsd"/>
+  <xs:include schemaLocation="cda/CDA_Pharma.xsd"/>
 
 </xs:schema>

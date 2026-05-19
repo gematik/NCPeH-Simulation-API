@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
-  ~ Copyright 2024-2025 gematik GmbH
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (Change Date see Readme), gematik GmbH
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,10 +16,10 @@
   ~
   ~ *******
   ~
-  ~ For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
   -->
 
-<!-- $Id: datatypes.xsd,v 1.1 2006/05/23 23:03:14 wbeeler Exp $ -->
 <!-- gematik revision="\main\rel_ors2\1" -->
 <!--
     This schema is generated from a Generic Schema Definition (GSD)

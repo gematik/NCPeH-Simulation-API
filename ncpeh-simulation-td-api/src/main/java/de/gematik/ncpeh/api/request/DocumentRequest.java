@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.request;
@@ -49,6 +50,9 @@ public record DocumentRequest(
             description =
                 "Der angegebene Wert wird im RetrieveDocumentSetRequest dem Element "
                     + "'RetrieveDocumentSetRequest/DocumentRequest/DocumentUniqueId' zugewiesen. "
-                    + "Der Parameter wird vollständig konstruiert übergeben (also UniqueId + '^' + Formattyp).",
-            example = "2.16.17.710.813.1000.990.1.1^PS.XML")
+                    + "Der Parameter wird vollständig konstruiert übergeben und setzt sich "
+                    + "folgendermaßen zusammen:<br>"
+                    + "Für PS-A: UniqueId + '^' + Formattyp<br>"
+                    + "Für ePeD-A: RepositoryUniqueId + '^' + UniqueId + '|' + Formattyp",
+            example = "1.2.276.0.76.4.299^160.000.000.000.123.76|eP.XML")
         String documentUniqueId) {}

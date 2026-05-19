@@ -2,75 +2,120 @@
 
 # NCPeH-Simulation-Mock
 
-This module provides a simple mock implementation of the NCPeH-Simulation-API to offer
+This module provides a simple mock implementation of the NCPeH-Simulation-API, offering
 developers a test environment for their API clients.
 
-The mock does not verify or validate requests and the responses it returns are technically correct,
-but they are created from templates and do not reflect the data submitted in the request.
+The mock does not verify or validate requests. The responses it returns are technically correct
+but are generated from templates and do not reflect the data submitted in the request.
 
 > [!IMPORTANT]
 > The SOAP messages returned by the mock currently do not include the headers required for the
 > individual transactions.
 
-As it is a Spring Boot application, it can simply be started using the command:
+Since this is a Spring Boot application, it can be started with:
 
     java -jar ncpeh-simulation-mock-<version>.jar
 
-or maven plugin:
+or via the Maven plugin:
 
     mvn spring-boot:run
 
-The URL to call the API operations defaults to:
+The default URL for calling API operations is:
 `http://<hostname or IP>:8082/rest/triggerInterface/<operation name>`
 
-The OpenApi-UI is available on `http://<hostname or IP>:8082/rest/api-docs?url=/rest/openapi.json`
+The OpenAPI UI is available at `http://<hostname or IP>:8082/rest/api-docs?url=/rest/openapi.json`
 
-The built versions can also be found
+Pre-built artifacts are also available
 on [Maven Central](https://repo1.maven.org/maven2/de/gematik/api/ncpeh-simulation-mock/).
 
-# Control NCPeH-Simulation-Mock responses
+## Controlling Mock Behaviour via HTTP Headers
 
-Use **HTTP** request header `X-NCPeHMock-Response` to control the HTTP response **content** of the
-identifyPatient(IdentifyPatientRequest request).
+The NCPeH-Simulation-Mock supports custom HTTP headers to control response behaviour for testing
+different scenarios.
 
-Per default response body has exactly one patient record matching the criteria sent in the query
-parameters.
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_4` to return response body with no patients
-anywhere close to matching the criteria sent in the query parameters.
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_41` to return response body with no patients
-while the found patient identity information in Germany is defective.
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_42` to return response body with no patients
-while the found patient's health record data ist not complete, the date of birth is missing.
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_43` to return response body with no patients
-while the patient identity information in Germany is incomplete or defective. (Request for account
-with ePKA document only with DPE Composition)
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_44` to return response body with no patients
-anywhere close to matching the criteria sent in the query parameters (KVNR is unknown).
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_45` to return response body with no patients
-because wrong AccessCode in the query parameters.
-Set header `X-NCPeHMock-Response` to `PRPA_IN201306UV02_5` to return response body with application
-error.
+### Use Cases and Headers
 
-Use **HTTP** request header `X-NCPeHMock-Response` to control the HTTP response **content** of the
-findDocuments(final FindDocumentsRequest request).
+[Controlling Response Content](#controlling-response-content)
 
-Per default response body has AdhocQueryResponse with ResponseStatusType:Success.
-Set header `X-NCPeHMock-Response` to `AdhocQueryResponse_010` to return response body with
-AdhocQueryResponse with ResponseStatusType:Failure. (The account contains a valid ePKA document that
-only contains one DPE composition)
-Set header `X-NCPeHMock-Response` to `AdhocQueryResponse_031` to return response body with
-AdhocQueryResponse with ResponseStatusType:Failure. (Authorization for EU member state is missing)
+- `X-NCPeHMock-Response`
 
-Use **HTTP** request header `X-NCPeHMock-Response` to control the HTTP response **content** of the
-retrieveDocument(final RetrieveDocumentRequest request).
+[Providing Data for Dynamic Document Generation](#providing-data-for-dynamic-document-generation)
 
-Set header `X-NCPeHMock-Response` to `RetrieveDocumentSetResponse_020` to return response body with
-RegistryResponse_020 with ResponseStatusType:Failure. (The account contains a valid ePKA document
-with new DocumentUniqueId)
-Set header `X-NCPeHMock-Response` to `RetrieveDocumentSetResponse_032` to return response body with
-RegistryResponse_032 with ResponseStatusType:Failure. (Authorization for EU member state is missing)
+- `X-NCPeHMock-Patient`
+- `X-NCPeHMock-Medication`
 
-Use **HTTP** request header `X-NCPeHMock-Patient` to provide patient data which is to be used when
-generating the Patient Summary document as CDA level 1 for the retrieveDocument operation.  
-The header value must be a base64-encoded JSON serialization of
-a [Patient](src/main/java/de/gematik/ncpeh/api/mock/data/Patient.java) object.
+### Controlling Response Content
+
+#### `X-NCPeHMock-Response`
+
+**Type:** String (predefined values)  
+**Purpose:** Controls the HTTP response content returned by endpoints
+
+**Supported Values by Endpoint:**
+
+**/identifyPatient**
+
+- Default: Returns one patient matching query criteria
+- `PRPA_IN201306UV02_4`: No patients matching criteria
+- `PRPA_IN201306UV02_41`: No patients, defective identity information in Germany
+- `PRPA_IN201306UV02_42`: No patients, incomplete health record (missing date of birth)
+- `PRPA_IN201306UV02_43`: No patients, incomplete/defective identity information (ePKA document with
+  DPE Composition only)
+- `PRPA_IN201306UV02_44`: No patients, unknown KVNR
+- `PRPA_IN201306UV02_45`: No patients, wrong AccessCode
+- `PRPA_IN201306UV02_5`: Application error
+
+**/findDocuments**
+
+- Default: AdhocQueryResponse with `ResponseStatusType: Success`
+- `AdhocQueryResponse_010`: Failure response (valid ePKA with single DPE composition)
+- `AdhocQueryResponse_031`: Failure response (missing EU member state authorisation)
+
+**/retrieveDocument**
+
+- `RetrieveDocumentSetResponse_020`: Failure response (valid ePKA with new DocumentUniqueId)
+- `RetrieveDocumentSetResponse_032`: Failure response (missing EU member state authorisation)
+
+### Providing Data for Dynamic Document Generation
+
+The following headers are used to provide data to be included in the generated documents returned
+by the **/retrieveDocument** and **/retrieveSetOfDocuments** endpoints.
+
+#### `X-NCPeHMock-Patient`
+
+**Supported by Endpoints:** `/identifyPatient`, `/retrieveDocument` and `/retrieveSetOfDocuments`
+**Type:** Base64-encoded JSON representation of
+a [Patient](src/main/java/de/gematik/ncpeh/api/mock/data/Patient.java)  
+**Purpose:** Provides patient data for inclusion in the following dynamically generated documents:
+
+- Patient Summary (CDA 1)
+- eHDSI ePrescription (CDA 1)
+- eHDSI ePrescription (CDA 3)
+
+If the JSON also contains an `accessCode`, the mock uses it in the successful
+`/identifyPatient` response instead of the default template value.
+
+#### `X-NCPeHMock-Medication`
+
+**Supported by Endpoints:** `/retrieveSetOfDocuments`, `/findDocuments`
+**Type:** Base64-encoded JSON mapping of prescription IDs
+to [Medication](src/main/java/de/gematik/ncpeh/api/mock/data/Medication.java) data  
+**Purpose:** Provides medication data for inclusion in eHDSI ePrescription documents and controls which prescription
+  document entries are generated in the **/findDocuments** response.
+
+For each provided prescription ID, the mock generates **two document entries**:
+
+- one CDA 1 document (`eP.PDF`)
+- one CDA 3 document (`eP.XML`)
+
+Each generated document entry has an ID in the format:
+
+```
+<OID_ASSIGNING_AUTHORITY_EPED>^<prescriptionId>|eP.XML
+<OID_ASSIGNING_AUTHORITY_EPED>^<prescriptionId>|eP.PDF
+```
+
+The template document entries contained in the response are replaced by the
+newly generated entries.
+
+If the header is omitted, the default template response is returned unchanged.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.common;
@@ -26,27 +27,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
     description =
         "Daten zu Verordnungen, die der NCPeH-Simulator zur Generierung von DispenseDocuments benötigt.")
-public record PrescriptionProfile(
-    @JsonProperty(required = true)
-        @Schema(
-            description =
-                "Der prescriptionProfileName benennt ein Datenprofil (Template), "
-                    + "das im NCPeH Simulator verfügbar sein muss. "
-                    + "Über dieses Profil werden verschiedene benötigte Daten referenziert, "
-                    + "die der NCPeH-Simulator bei der Generierung der DispenseDocuments nutzen soll.",
-            example = "defaultPrescriptionProfile",
-            maxLength = 30)
-        String profileName,
+public record PrescriptionDispenseData(
     @JsonProperty(required = true)
         @Schema(
             description =
                 "Referenziert die Verordnung, für die Dispensierdaten übermittelt werden sollen.",
-            example = "160.000.000.000.123.76^eP.XML",
-            maxLength = 30)
+            example = "1.2.276.0.76.4.299^160.000.000.000.123.76|eP.XML")
         String prescriptionId,
     @JsonProperty(required = true)
         @Schema(
             description =
-                "Gibt an, ob eine Substitution des verordneten Arzneimittels erlaubt ist.",
+                "Gibt an, ob in den zu sendenden Dispensierinformationen angegeben werden soll, "
+                    + "dass eine Substitution des verordneten Arzneimittels vorgenommen wurde.",
             example = "false")
-        Boolean substitution) {}
+        Boolean isSubstituted) {}

@@ -2,14 +2,42 @@
 
 # Release Notes NCPeH-Simulation-API
 
+## Release 2.1.0.1 (2026-05-19)
+
+The NCPeH-Simulation-API Release 2.1.0.1 is intended for use with NCPeH product versions based on
+the German NCPeH specification in
+version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/),
+[2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/) or
+[2.1.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.1.0/).
+
+### changed
+
+- **Breaking:** The **/provideAndRegisterSetOfDocuments** endpoint now requires the mandatory
+  property `dispensations` to be included in the request.  
+  The previously used `prescriptionProfileList` is now deprecated.
+- The **/retrieveDocument** endpoint is deprecated. Use **/retrieveSetOfDocuments** for all new
+  integrations.
+- The `patientId` attribute in `TrcAssertionProfile` is deprecated. Use `subjectId` instead.
+- Removed `urn:oasis:names:tc:xacml:2.0:subject:role` from the list of supported attributes in the
+  `attributeStatements` of `IdaAssertionProfile` as it is already covered by the `structuralRole`
+  attribute.
+
+### added
+
+- Added the optional `subjectId` attribute to `TrcAssertionProfile`.
+- Added support for the custom header `X-NCPeHMock-Medications` in the mock implementation. 
+  This header can be used with requests to the **/findDocuments** and **/retrieveSetOfDocuments** endpoints 
+  to provide medication data for the dynamic generation of prescription documents.
+
 ## Release 2.1.0.0 (2025-10-09)
 
 **Note:** Starting with release 2.1.0.0, the versioning scheme has changed. The first three digits
 now correspond to the referenced specification version, and the fourth digit reflects additional
 updates or changes to the API itself.
 
-The NCPeH-Simulation-API Release 2.0.3 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/),
+The NCPeH-Simulation-API Release 2.1.0.0 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/),
 [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/) or
 [2.1.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.1.0/).
 
@@ -17,17 +45,22 @@ specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec
 
 - **Breaking:** The `EuCountryCode` enum now strictly conforms to the ISO-3166 Alpha-2 standard for
   country codes, replacing the previous Eurostat-based list.
-- Updated README.md in context of specification release gemSpec_NCPeH_FD v2.1.0: moved parts of interface description from
-  [gemSpec_NCPeH_FD](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/latest/) into the file README.md
-- Updated ReleaseNotes.md to map each Simulation API release to the referenced German NCPeH specification version
+- Updated README.md in context of specification release gemSpec_NCPeH_FD v2.1.0: moved parts of
+  interface description from
+  [gemSpec_NCPeH_FD](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/latest/) into the file
+  README.md
+- Updated ReleaseNotes.md to map each Simulation API release to the referenced German NCPeH
+  specification version
 
 ### fixed
 
 - several vulnerability fixes and small improvements
 
 ## Release 2.0.2 (2025-07-16)
-The NCPeH-Simulation-API Release 2.0.2 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
+
+The NCPeH-Simulation-API Release 2.0.2 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
 or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/).
 
 ### added
@@ -35,8 +68,10 @@ or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPe
 - Included additional POM metadata to meet Maven Central requirements
 
 ## Release 2.0.1 (2025-07-15)
-The NCPeH-Simulation-API Release 2.0.1 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
+
+The NCPeH-Simulation-API Release 2.0.1 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/)
 or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.1/).
 
 ### changed
@@ -51,8 +86,10 @@ or [2.0.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPe
 - several fixes and small improvements
 
 ## Release 2.0.0 (2025-02-27)
-The NCPeH-Simulation-API Release 2.0.0 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/).
+
+The NCPeH-Simulation-API Release 2.0.0 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/).
 
 ### added
 
@@ -65,8 +102,10 @@ specification in version [2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec
 - several vulnerability fixes and small improvements
 
 ## Release 1.6.3 (2025-01-08)
-The NCPeH-Simulation-API Release 1.6.3 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
+
+The NCPeH-Simulation-API Release 1.6.3 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
 or [1.6.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.1/).
 
 ### changed
@@ -81,15 +120,16 @@ or [1.6.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPe
 - several vulnerability issues have been fixed
 
 ## Release 1.6.0 (2024-08-06)
-The NCPeH-Simulation-API Release 1.6.0 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
+
+The NCPeH-Simulation-API Release 1.6.0 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.6.0/)
 
 ### changed
 
 - Attribute urn:oasis:names:tc:xspa:1.0:subject:functional-role removed
 - Patient Identifier urn:oasis:names:tc:xacml:1.0:resource:resource-id renamed to urn:oasis:names:
-  tc:
-  xspa:1.0:subject:subject-id
+  tc:xspa:1.0:subject:subject-id
 - Attribute urn:oasis:names:tc:xacml:1.0:subject:subject-id rename to urn:oasis:names:tc:xspa:1.0:
   subject:subject-id
 
@@ -98,8 +138,10 @@ specification in version [1.6.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec
 - several vulnerability issues have been fixed
 
 ## Release 1.5.2 (2024-01-30)
-The NCPeH-Simulation-API Release 1.5.2 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
+
+The NCPeH-Simulation-API Release 1.5.2 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
 
 ### changed
 
@@ -124,8 +166,10 @@ spring-web-6.0.11.jar: CVE-2023-34053(7.5)
 We will fix this problem in the next version.
 
 ## Release 1.5.0
-The NCPeH-Simulation-API Release 1.5.0 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
+
+The NCPeH-Simulation-API Release 1.5.0 shall be used with a NCPeH product version based on the
+German NCPeH specification in
+version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V1.5.0/)
 
 ### added
 
@@ -141,8 +185,9 @@ specification in version [1.5.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec
   versions shipped with Spring-Boot
 
 ## Release 1.0.3
-The NCPeH-Simulation-API Release 1.0.3 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version 1.0.0
+
+The NCPeH-Simulation-API Release 1.0.3 shall be used with a NCPeH product version based on the
+German NCPeH specification in version 1.0.0
 
 ### added
 
@@ -157,8 +202,9 @@ specification in version 1.0.0
   uses the data, which where provided in the request
 
 ## Release 1.0.2
-The NCPeH-Simulation-API Release 1.0.2 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version 1.0.0
+
+The NCPeH-Simulation-API Release 1.0.2 shall be used with a NCPeH product version based on the
+German NCPeH specification in version 1.0.0
 
 ### fixed
 
@@ -177,8 +223,9 @@ specification in version 1.0.0
   which are of correct type, containing plausible data for each operation
 
 ## Release 1.0.1
-The NCPeH-Simulation-API Release 1.0.1 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version 1.0.0
+
+The NCPeH-Simulation-API Release 1.0.1 shall be used with a NCPeH product version based on the
+German NCPeH specification in version 1.0.0
 
 ### fixed
 
@@ -186,8 +233,9 @@ specification in version 1.0.0
   Central
 
 ## Release 1.0.0
-The NCPeH-Simulation-API Release 1.0.0 shall be used with a NCPeH product version based on the German NCPeH 
-specification in version 1.0.0
+
+The NCPeH-Simulation-API Release 1.0.0 shall be used with a NCPeH product version based on the
+German NCPeH specification in version 1.0.0
 
 ### added
 

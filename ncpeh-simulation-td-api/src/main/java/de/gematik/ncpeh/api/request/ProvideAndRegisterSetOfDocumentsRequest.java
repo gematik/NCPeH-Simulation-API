@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,15 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.gematik.ncpeh.api.common.PatientId;
-import de.gematik.ncpeh.api.common.PrescriptionProfile;
+import de.gematik.ncpeh.api.common.PrescriptionDispenseData;
 import de.gematik.ncpeh.api.common.TrcAssertionProfile;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -82,4 +83,4 @@ public record ProvideAndRegisterSetOfDocumentsRequest(
                 @Schema(
                     description =
                         "Verordnungen, für die DispenseDocuments generiert werden sollen."))
-        List<PrescriptionProfile> prescriptionProfileList) {}
+        List<PrescriptionDispenseData> dispensations) {}

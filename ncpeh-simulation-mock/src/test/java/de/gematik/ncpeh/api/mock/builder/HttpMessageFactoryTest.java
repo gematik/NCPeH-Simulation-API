@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
@@ -24,18 +25,30 @@ import static de.gematik.ncpeh.api.mock.TestUtils.loadFromJsonResource;
 import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
 import static de.gematik.ncpeh.api.mock.builder.HttpMessageFactory.PSEUDO_URI;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.gematik.ncpeh.api.mock.data.Medication;
+import de.gematik.ncpeh.api.mock.util.IheUtils;
+import de.gematik.ncpeh.api.mock.util.XmlUtils;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
+import jakarta.xml.bind.JAXBElement;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -47,6 +60,10 @@ import org.xmlunit.matchers.CompareMatcher;
 
 @Slf4j
 class HttpMessageFactoryTest {
+
+  private static final String EVENT_CODE_CLASSIFICATION_SCHEME =
+      "urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4";
+  private static final String SUBSTITUTION_CODE_SYSTEM_OID = "2.16.840.1.113883.5.1070";
 
   /**
    * Read the content of a file at the given path into a String.<br>
@@ -169,7 +186,9 @@ class HttpMessageFactoryTest {
     // Act
     final var httpResponse =
         assertDoesNotThrow(
-            () -> HttpMessageFactory.buildStandardFindDocumentResponseEPED(null),
+            () ->
+                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
+                    null, Collections.emptySet()),
             "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
 
     // Assert
@@ -178,6 +197,97 @@ class HttpMessageFactoryTest {
     assertThat(
         httpResponse.getBody(),
         CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void buildStandardFindDocumentWithOneGivenPrescriptionIdAndCheckIdsAreInResponse() {
+    // Arrange
+    // Act
+    String prescriptionId = "prescribedMedicationId1";
+    final var httpResponse =
+        assertDoesNotThrow(
+            () ->
+                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
+                    "AdhocQueryResponseEPED.xml", Set.of(prescriptionId)),
+            "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
+    // Assert
+    assertResponseProps(httpResponse);
+
+    try {
+      byte[] documentAsBytes = httpResponse.getBody().readAllBytes();
+      byte[] soapBody = XmlUtils.extractSoapBody(documentAsBytes);
+      AdhocQueryResponse adhocQueryResponse =
+          XmlUtils.unmarshal(AdhocQueryResponse.class, soapBody);
+      var documentIds = IheUtils.extractDocumentIdsFromAdhocQueryResponse(adhocQueryResponse);
+      assertThat(documentIds, hasItem(containsString(prescriptionId)));
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Error reading response body or unmarshalling AdhocQueryResponse", e);
+    }
+  }
+
+  @Test
+  void buildStandardFindDocumentWithThreeGivenPrescriptionIdAndCheckEachIdIsInResponseTwice() {
+    // Arrange
+    // Act
+    Set<String> prescriptionIds =
+        Set.of("prescribedMedicationId1", "prescribedMedicationId2", "prescribedMedicationId3");
+    final var httpResponse =
+        assertDoesNotThrow(
+            () ->
+                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
+                    "AdhocQueryResponseEPED.xml", prescriptionIds),
+            "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
+    // Assert
+    assertResponseProps(httpResponse);
+
+    try {
+      byte[] documentAsBytes = httpResponse.getBody().readAllBytes();
+      byte[] soapBody = XmlUtils.extractSoapBody(documentAsBytes);
+      AdhocQueryResponse adhocQueryResponse =
+          XmlUtils.unmarshal(AdhocQueryResponse.class, soapBody);
+      var documentIds = IheUtils.extractDocumentIdsFromAdhocQueryResponse(adhocQueryResponse);
+      for (String prescriptionId : prescriptionIds) {
+        assertThat(
+            "PrescriptionId " + prescriptionId + " should appear exactly twice",
+            documentIds.stream().filter(id -> id != null && id.contains(prescriptionId)).count(),
+            is(2L));
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Error reading response body or unmarshalling AdhocQueryResponse", e);
+    }
+  }
+
+  @Test
+  void buildStandardFindDocumentResponseEPED_shouldContainSubstitutionClassificationIfForbidden() {
+    String prescriptionId = "prescribedMedicationId1";
+    final var medicationsByPrescriptionId =
+        Map.of(prescriptionId, new Medication("TestMed", "11111111", false));
+    final var httpResponse =
+        assertDoesNotThrow(
+            () ->
+                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
+                    "AdhocQueryResponseEPED.xml",
+                    medicationsByPrescriptionId.keySet(),
+                    medicationsByPrescriptionId),
+            "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
+
+    assertResponseProps(httpResponse);
+
+    try {
+      byte[] documentAsBytes = httpResponse.getBody().readAllBytes();
+      byte[] soapBody = XmlUtils.extractSoapBody(documentAsBytes);
+      AdhocQueryResponse adhocQueryResponse =
+          XmlUtils.unmarshal(AdhocQueryResponse.class, soapBody);
+      assertEquals(
+          2L,
+          countForbiddenSubstitutionClassifications(adhocQueryResponse, prescriptionId),
+          "Expected one forbidden-substitution classification per generated document");
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Error reading response body or unmarshalling AdhocQueryResponse", e);
+    }
   }
 
   @Test
@@ -301,7 +411,7 @@ class HttpMessageFactoryTest {
     final var request =
         loadFromJsonResource(
             RetrieveDocumentRequest.class, this.getClass(), "RetrieveDocumentRequest.json");
-    final var builder = RetrieveDocumentMessagesBuilder.buildFromRequest(request);
+    final var builder = RetrieveDocumentMessagesBuilder.fromRequest(request);
 
     // Act
     final var result =
@@ -392,5 +502,35 @@ class HttpMessageFactoryTest {
     assertNotNull(httpResponse.getHeaders(), "No HTTP headers present in response");
     assertFalse(httpResponse.getHeaders().isEmpty(), "No HTTP headers present in response");
     assertNotNull(httpResponse.getBody());
+  }
+
+  private static long countForbiddenSubstitutionClassifications(
+      AdhocQueryResponse adhocQueryResponse, String prescriptionId) {
+    return adhocQueryResponse.getRegistryObjectList().getIdentifiable().stream()
+        .filter(e -> ExtrinsicObjectType.class.equals(e.getDeclaredType()))
+        .map(JAXBElement::getValue)
+        .map(ExtrinsicObjectType.class::cast)
+        .filter(
+            eo ->
+                eo.getExternalIdentifier().stream()
+                    .anyMatch(
+                        ei ->
+                            ei.getValue() != null
+                                && ei.getValue().contains(prescriptionId)
+                                && ei.getValue().startsWith("1.2.276.0.76.4.299^")))
+        .flatMap(eo -> eo.getClassification().stream())
+        .filter(c -> EVENT_CODE_CLASSIFICATION_SCHEME.equals(c.getClassificationScheme()))
+        .filter(c -> "N".equals(c.getNodeRepresentation()))
+        .filter(
+            c ->
+                c.getSlot().stream()
+                    .anyMatch(
+                        slot ->
+                            "codingScheme".equals(slot.getName())
+                                && slot.getValueList() != null
+                                && slot.getValueList()
+                                    .getValue()
+                                    .contains(SUBSTITUTION_CODE_SYSTEM_OID)))
+        .count();
   }
 }
