@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api;
@@ -134,6 +135,7 @@ public interface NcpehSimulatorApi {
   @Consumes({"application/json"})
   @Produces({"application/json"})
   @Operation(
+      deprecated = true,
       summary =
           "Rufe bis zu zwei Dokumente im eHDSI Pivot-Format ab - als CDA Level 3 (XML) oder als CDA Level 1 (PDF)",
       description =

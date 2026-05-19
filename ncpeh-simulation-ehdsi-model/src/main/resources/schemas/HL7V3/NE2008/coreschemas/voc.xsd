@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2024-2025 gematik GmbH
+  ~ Copyright (Change Date see Readme), gematik GmbH
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
   ~
   ~ *******
   ~
-  ~ For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
   -->
 
 <!-- gematik revision="\main\rel_ors2\1" -->
@@ -5180,6 +5181,15 @@ RoseTree XML to Schema: $Id: VocabXMLtoXSD.xsl,v 1.8 2007/03/20 02:48:50 wbeeler
 			<xs:enumeration value="OCCR"/>
 			<xs:enumeration value="OREF"/>
 			<xs:enumeration value="SCH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActRelationshipReplacement">
+		<xs:annotation>
+			<xs:documentation>specDomain: V10338 (C-0-D10317-V10337-V10338-cpt)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="cs">
+			<xs:enumeration value="RPLC"/>
+			<xs:enumeration value="SUCC"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="x_ActRelationshipDocument">

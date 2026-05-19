@@ -5,20 +5,85 @@
 ## About the Project
 
 This project defines the API specification for the test driver interface of an NCPeH simulation.
-The purpose of the NCPeH simulation is to enable testing of the German NCPeH service.
-The purpose of the API is to provide a defined interface for testsuites to trigger actions in the
-simulation and receive the contents of the resulting communication between simulation and NCPeH
-service.
+The NCPeH simulation enables testing of the German NCPeH service within a national test
+environment. The API provides a well-defined interface through which test suites can trigger
+actions in the simulation and inspect the resulting communication between the simulation and
+the NCPeH service.
 
-The API is defined in Java. An OpenAPI Description is generated from these sources and made
-available on Maven Central.
+The API is defined in Java. An OpenAPI description is generated from these sources and published
+on [Maven Central](https://repo1.maven.org/maven2/de/gematik/api/ncpeh-simulation-td-api/).
 
-A more detailed description is given in the chapter [Fachliche Einordnung](#fachliche-einordnung).
-As the intended audience is part of the German eHealth project, it is written in German.
+### Technical context
+
+The **National Contact Point for eHealth (NCPeH)** is the gateway that connects each EU Member
+State's national digital health infrastructure to the cross-border **eHealth Digital Service
+Infrastructure (eHDSI)**. When a patient from one country (the *country of affiliation*,
+"country A") seeks treatment in another country (the *country of treatment*, "country B"),
+the two countries' NCPeH services communicate via IHE-based transactions to exchange the
+required health data.
+
+Germany, acting as **country A**, exposes an EU-facing interface on its NCPeH service. Through
+this interface, an NCPeH country B can request data held in German digital health services.  
+There are currently two eHDSI use cases being implemented:
+
+* **Patient Summary (PS-A):** Retrieves a document containing essential health information
+  about a German patient receiving treatment abroad in another European country.
+* **ePrescription / eDispensation (eP/eD-A):** Retrieves prescriptions for a German patient
+  abroad and sends dispensation information back to the German e-prescription service.
+
+To support these features, the NCPeH needs to interact with the relevant services of the German
+Telematics Infrastructure (TI): Patient Summary data is sourced from the German electronic health
+record (*elektronische Patientenakte*, ePA), whereas prescription and dispensation data is exchanged
+with the German e-prescription service (*E-Rezept-Fachdienst*).
+
+**Why a country B simulator?**
+
+Integration and interoperability testing of the German NCPeH service requires an entity that
+can act as a country B peer on the EU-facing IHE interface. However, the test parties (i.e., gematik
+and the providers of TI services) typically cannot access this interface directly, nor do
+they necessarily have detailed knowledge of the IHE-based protocol.  
+The **NCPeH country B simulator** fills this gap: it communicates directly with the German NCPeH
+service via its IHE interface and exposes a simplified, REST-based **test driver interface** that
+test suites can call instead.
+
+### Functionality of the country B simulator
+
+Calling a REST operation on the test driver interface triggers the transmission of the associated
+IHE transaction to the NCPeH, emulating the actions of the Country B peer. A test case sends a
+request to the simulator containing the information needed to construct the IHE message:
+
+* The IHE operation to perform
+* Data for the SAML assertion identifying the health professional and their organisation
+  in country B
+* Data for the SAML assertion describing the treatment context between the health professional
+  and the patient
+* Patient identifiers and access codes for the relevant German data service
+* Document metadata (for search or transfer operations)
+
+After the simulator constructs and sends the IHE request to the German NCPeH service and
+receives a response, it returns the full exchange to the test case as base64-encoded data:
+
+* **HTTP request** sent to the German NCPeH service
+    * Request method and URL
+    * HTTP headers
+    * HTTP body (SOAP-based IHE operation request)
+* **HTTP response** received from the German NCPeH service
+    * Status line (status code and reason phrase)
+    * HTTP headers
+    * HTTP body (SOAP-based IHE operation response)
+
+Access to the test interface of the Country B simulator is to be provided via the internet and
+secured using TLS. A separate simulation instance must be provided for each of the German test
+environments RU and TU (see
+[gemKpt_Test, chapter 6 "Systemumgebungen"](https://gemspec.gematik.de/docs/gemKPT/gemKPT_Test/latest/#6)).
+
+A description of the test data used by the test driver interface can be found in
+[test-data-description.md](./doc/test-data-description.md).
 
 ### Versioning Scheme
 
 Starting with version 2.1.0.0, the NCPeH-Simulation-API uses a four-digit version number:
+
 - The first three digits mirror the referenced German NCPeH specification version.
 - The fourth digit reflects additional updates or changes to the API itself.
 
@@ -42,8 +107,8 @@ The NCPeH Simulation API project consists of three modules:
 
 ## Getting Started
 
-Clone the project if you want to, but this is probably not necessary if you just want to integrate
-the API in your project.
+If you want to use this API in your own project, the standard approach is to add it as a Maven
+dependency. In that case, cloning this repository is usually not necessary.
 
 ### Using the API in Your Project
 
@@ -61,18 +126,18 @@ For Gradle, it is:
 
 ### Cloning This Project
 
-In case you want to clone the project, you need:
+If you do want to clone the project, you will need:
 
 * Git
 * Java JDK 21 or newer (Tested on OpenJDK)
 * Maven 3.8.0 or newer
 
-For non-Java projects, code can be generated from the OpenAPI description available on Maven
+For non-Java projects, you can generate code from the OpenAPI description available on Maven
 Central.
 
 ## License
 
-Copyright 2022-2025 gematik GmbH
+Copyright 2022-2026 gematik GmbH
 
 Apache License, Version 2.0
 
@@ -98,123 +163,19 @@ the License
        liable in any manner whatsoever for any damages or other claims arising from, out of or in
        connection with the software or the use or other dealings with the software, whether in an
        action of contract, tort, or otherwise.
-   3. The software is the result of research and development activities, therefore not necessarily
-      quality assured and without the character of a liable product. For this reason, gematik does
-      not provide any support or other user assistance (unless otherwise stated in individual cases
-      and without justification of a legal obligation). Furthermore, there is no claim to further
-      development and adaptation of the results to a more current state of the art.
+    3. The software is the result of research and development activities, therefore not necessarily
+       quality assured and without the character of a liable product. For this reason, gematik does
+       not provide any support or other user assistance (unless otherwise stated in individual cases
+       and without justification of a legal obligation). Furthermore, there is no claim to further
+       development and adaptation of the results to a more current state of the art.
 3. Gematik may remove published results temporarily or permanently from the place of publication at
    any time without prior notice or justification.
-4. Please note: Parts of this code may have been generated using AI-supported technology. Please
-   take this into account, especially when troubleshooting, for security analyses and possible
-   adjustments.
+4. Parts of this software and - in isolated cases - content such as text or images may have been
+   developed using the support of AI tools. They are subject to the same reviews, tests, and
+   security checks as any other contribution. The functionality of the software itself is not based
+   on AI decisions.
 
 ## Contributing
 
-Right now this is not a collaborative project, so input can only be given through the
-[issue management system](https://github.com/gematik/NCPeH-Simulation-API/issues).
-
-## Fachliche Einordnung
-
-Die Szenarien des europäischen Datentransfers, wie z. B. das in Deutschland zuerst umzusetzende
-"Patient Summary Country A" erfordert neben dem NCPeH-Fachdienst die Beteiligung verschiedener
-Produkte der TI (Produktkette), wie z. B. ePA Aktensysteme, Konnektoren etc.
-Um sowohl Herstellern von Produkten der TI als auch der gematik eine eigenständige und
-automatisierte Durchführung von
-integrativen Tests in den Umgebungen RU und TU zu ermöglichen, wird diese NCPeH Simulation API zum
-Auslösen von
-Anwendungsfällen in beiden Umgebungen bereitgestellt (NCPeH-Testinterface).  
-Über das NCPeH-Testinterface sollen von Testszenarien eHDSI-Anwendungsfälle angestoßen werden.
-Dabei sollen IHE-Nachrichten von einem NCPeH-Simulator generiert, an den NCPeH-FD gesendet und die
-Antwort vom NCPeH-FD entgegengenommen werden. Der generierte Request und die vom NCPeH empfangene
-Antwort
-werden über das NCPeH-Testinterface an den aufrufenden Testfall zurückgegeben.
-Also das jeweilige IHE-Request- und IHE-Response-Paar, das mit dem NCPeH-Fachdienst ausgetauscht
-wurde. Beide werden aufgeteilt in
-
-* die Kopfzeile des HTTP Requests, mit der HTTP Methode und der Zieladresse  
-  bzw.
-* die Statuszeile der HTTP Antwort, mit dem Status Code und der Status Zusammenfassung
-* den http-Header und
-* den http-Body,
-
-jeweils Base64-kodiert. Damit soll dem aufrufenden Testfall die
-Möglichkeit gegeben werden, die Reaktion des NCPeH-Fachdienstes direkt zu prüfen und zu bewerten.
-Der Zugang zum NCPeH-Testinterface soll mittels Gateway über das Internet ermöglicht und per TLS
-abgesichert werden.
-
-### Daten für das NCPeH-Testinterface
-
-Das NCPeH-Testinterface nutzt für einige Eingabeparameter Objekte, die an zu definierende
-Datenprofile gekoppelt sind (
-EuCountryCode, IdAAssertionProfile/ProfileName, TRCAssertionProfile/ProfileName).
-
-Ein Datenprofil fungiert einerseits wie ein Template, in dem die Daten hinterlegt sind, die für die
-Kommunikation über
-die eHDSI Schnittstelle verwendet werden sollen, sodass diese nicht alle über die
-Triggerschnittstelle bereitgestellt
-werden müssen. Damit soll auch die Komplexität der Schnittstelle reduziert werden. Andererseits
-definiert es auch Daten,
-die in der Kommunikation mit dem NCPeH-FD eingehen. Am Wichtigsten ist hier die Referenz auf
-Zertifikate, die zu nutzen
-sind.
-
-Datenprofile, die von der gematik oder Herstellern beteiligter TI-Produkte benötigt werden, müssen
-im Rahmen der
-Bereitstellung der Schnittstelle zwischen dem Betreiber des NCPeH-Testinterface und der gematik
-abgestimmt werden. Die gemeinsam definierten Datenprofile sind dementsprechend mit dem NCPeH-Testinterface zur Nutzung
-bereitzustellen.
-
-Das Objekt 'EuCountryCode' referenziert folgendes Datenprofil:
-
-* Das TLS-Zertifikat, das für die Kommunikation mit dem NCPeH-FD genutzt werden soll
-* Die HomeCommunityId, die in dem Profil per Default für den NCPeH Land B genutzt werden soll
-
-Das Objekt 'IdAAssertionProfile' referenziert folgendes Datenprofil:
-
-* Das Signatur-Zertifikat, das zum Signieren der IdA-Assertion zum Einsatz kommen soll
-* Der Wert, der im SAML-Element Assertion/Subject/NameID einzutragen ist (Identifier des LE-EU) als
-  auch das Format des Wertes (Attribut @Format)
-* Die Werte, die in dem Profil per Default in den Attributen der Struktur AttributeStatement
-  einzutragen oder wegzulassen sind:
-    - urn:oasis:names:tc:xspa:1.0:subject:subject-id
-    - urn:oasis:names:tc:xacml:2.0:subject:role
-    - urn:ehdsi:names:subject:clinical-speciality
-    - urn:ehdsi:names:subject:on-behalf-of
-    - urn:oasis:names:tc:xspa:1.0:subject:organization
-    - urn:oasis:names:tc:xspa:1.0:subject:organization-id
-    - urn:ehdsi:names:subject:healthcare-facility-type
-    - urn:oasis:names:tc:xspa:1.0:environment:locality
-    - urn:oasis:names:tc:xspa:1.0:subject:hl7:permission
-
-Das Objekt 'TRCAssertionProfile' referenziert folgendes Datenprofil:
-
-* Das Signatur-Zertifikat, das zum Signieren der TRC-Assertion zum Einsatz kommen soll
-* Den Wert, der im SAML-Element Assertion/Subject/NameID einzutragen ist (Identifier des LE-EU) als
-  auch das Format des Wertes (Attribut @Format)
-
-Das Objekt DispenseProfile wird definiert, da für den Test der Dispensierung ein oder mehrere Dokumente im eHDSI 
-CDA-Pivotformat generiert werden müssen, die aus einem Land-B stammen. Diese Dokumente MUSS der Land-B Simulator auf 
-Grundlage des angegebenen DispenseProfile sowie ggf. weiterer übergebener Parameter erstellen.
-
-Das Objekt DispenseProfile definiert benötigte Datenanteile für ein Dispense-Dokument nach [eHDSI_CDA_Format]:
-- Medicinal Product Identifier,
-- Medicinal Product Brand Name,
-- Medicinal Product Classification,
-- Medicinal Product Package Data,
-- Active Ingredients Data,
-- Marketing Authorization Holder,
-- Falls nötig und in gemeinsamer Abstimmung: weitere benötigte medizinische Daten zur Dispensierung.
-
-Mit der KVNR wird für die Generierung von Dispensier-Dokumenten zukünftig auch ein PatientProfile referenziert. Neben 
-der KVNR selbst werden dafür folgende weitere Daten benötigt:
-- Insurance Number,
-- Given Name,
-- Family Name,
-- Gender.
-
-Das NCPeH-Testinterface gibt als Response auf die REST-Requests die Inhalte der Nachrichten von der eHDSI-Schnittstelle 
-zurück. Also den jeweiligen IHE-Request und die IHE-Responses, die mit dem NCPeH-FD ausgetauscht wurden. Beides wird 
-jeweils aufgeteilt in die HTTP-Request bzw. HTTP-Response-Zeile, den http-Header und den http-Body, jeweils 
-Base64-kodiert. Damit soll dem aufrufenden Testfall die Möglichkeit gegeben werden, die Reaktion des NCPeH-FD direkt zu 
-prüfen und zu bewerten.
+Right now this is not a collaborative project, so feedback can only be provided through the
+[issue tracker](https://github.com/gematik/NCPeH-Simulation-API/issues).

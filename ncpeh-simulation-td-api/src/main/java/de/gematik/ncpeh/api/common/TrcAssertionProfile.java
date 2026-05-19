@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.common;
@@ -28,6 +29,14 @@ public record TrcAssertionProfile(
     @JsonProperty
         @Schema(
             description =
+                "Dieses Attribut sollte nicht mehr genutzt werden. Stattdessen ist das Attribut 'subjectId' zu verwenden.",
+            maxLength = 70,
+            example = "Walter H.Brattain IV",
+            deprecated = true)
+        String patientId,
+    @JsonProperty
+        @Schema(
+            description =
                 "Wenn hier ein Wert gesetzt ist, bestimmt dieser den vollständigen Inhalt im "
                     + "Assertion-Element 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
                     + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:subject-id\"' gilt. "
@@ -36,4 +45,4 @@ public record TrcAssertionProfile(
                     + "eine gültige URN für das SOAP-Element zu berechnen.",
             maxLength = 70,
             example = "Walter H.Brattain IV")
-        String patientId) {}
+        String subjectId) {}

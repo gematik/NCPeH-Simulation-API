@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,45 +15,81 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.builder;
 
 import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
+import static de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo.EP_LEVEL_1;
+import static de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo.EP_LEVEL_3;
+import static de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo.PS_LEVEL_1;
+import static de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo.PS_LEVEL_3;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.gematik.ncpeh.api.mock.builder.RetrieveDocumentMessagesBuilder.CDALevelInfo;
+import de.gematik.ncpeh.api.mock.data.Medication;
 import de.gematik.ncpeh.api.mock.data.Patient;
 import de.gematik.ncpeh.api.mock.data.PatientImpl;
 import de.gematik.ncpeh.api.mock.data.PersonName;
+import de.gematik.ncpeh.api.mock.util.PrescriptionCda3Utils;
+import de.gematik.ncpeh.api.mock.util.XmlUtils;
 import de.gematik.ncpeh.api.request.DocumentRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
+import de.gematik.ncpeh.ehdsi.valuesets.EhdsiSubstitutionCode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import lombok.SneakyThrows;
+import org.hl7.v3.ClinicalDocument;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xmlunit.matchers.CompareMatcher;
 
 class RetrieveDocumentMessagesBuilderTest {
 
   private final RetrieveDocumentRequest testdata =
-      new RetrieveDocumentRequest(null, null, null, null, "A", "B^PS.PDF", "B^PS.XML", "D");
+      new RetrieveDocumentRequest(
+          null,
+          null,
+          null,
+          null,
+          "A",
+          "B" + PS_LEVEL_1.idMarker(),
+          "B" + PS_LEVEL_3.idMarker(),
+          "D");
 
   private final RetrieveSetOfDocumentsRequest testdata2 =
       new RetrieveSetOfDocumentsRequest(
           null, null, null, null, Set.of(new DocumentRequest("DD", "AA", "ID")));
+
+  private final RetrieveSetOfDocumentsRequest prescriptionRequest =
+      new RetrieveSetOfDocumentsRequest(
+          null,
+          null,
+          null,
+          null,
+          Set.of(new DocumentRequest("hcid", "repoUid", "x^pid" + EP_LEVEL_3.idMarker())));
 
   private static final Patient PATIENT =
       new PatientImpl(
@@ -61,13 +97,14 @@ class RetrieveDocumentMessagesBuilderTest {
               .titles("Gräfin")
               .lastnames("GõdofskýTEST-ONLY")
               .givennames("Maude Adelheid Lilo Johanna"),
-          LocalDate.of(1967, 6, 30));
+          LocalDate.of(1967, 6, 30),
+          "testKvnr");
 
   @Test
   void buildFromRequestTest() {
     // Arrange & Act
     final var tstObj =
-        assertDoesNotThrow(() -> RetrieveDocumentMessagesBuilder.buildFromRequest(testdata));
+        assertDoesNotThrow(() -> RetrieveDocumentMessagesBuilder.fromRequest(testdata));
 
     // Assert
     assertEquals(2, tstObj.documentationInfos().size());
@@ -88,7 +125,7 @@ class RetrieveDocumentMessagesBuilderTest {
     final var tstObj =
         assertDoesNotThrow(
             () ->
-                RetrieveDocumentMessagesBuilder.buildFromRequest(
+                RetrieveDocumentMessagesBuilder.fromRequest(
                     new RetrieveDocumentRequest(
                         null, null, null, null, "A", null, "B^PS.XML", "D")));
 
@@ -122,11 +159,11 @@ class RetrieveDocumentMessagesBuilderTest {
   }
 
   @Test
-  void buildFromRequestAndPatientWithPatientTest2() {
+  void buildFromRequestWithPatientTest2() {
     // Arrange & Act
     final var tstObj =
         assertDoesNotThrow(
-            () -> RetrieveDocumentMessagesBuilder.buildFromRequestAndPatient(testdata2, PATIENT));
+            () -> RetrieveDocumentMessagesBuilder.fromRequest(testdata2).patient(PATIENT));
     final var docExpected = testdata2.documentRequestSet().stream().findFirst().orElseThrow();
 
     // Assert
@@ -141,7 +178,7 @@ class RetrieveDocumentMessagesBuilderTest {
   @Test
   void buildRequestTest() {
     // Arrange
-    final var tstObj = RetrieveDocumentMessagesBuilder.buildFromRequest(testdata);
+    final var tstObj = RetrieveDocumentMessagesBuilder.fromRequest(testdata);
 
     // Act
     final var result = assertDoesNotThrow(tstObj::buildRequest);
@@ -228,5 +265,73 @@ class RetrieveDocumentMessagesBuilderTest {
                     .toURI()));
 
     assertArrayEquals(expectedPdf, testeePdf, "The pdfs are not equal.");
+  }
+
+  @Test
+  void buildResponse_shouldCreatePrescriptionIfRequested() {
+    // Arrange
+    var docRequest = prescriptionRequest.documentRequestSet().iterator().next();
+    var meds = Map.of("pid", new Medication("dummyMed", "11111111", true));
+    var tstObj =
+        RetrieveDocumentMessagesBuilder.fromRequest(prescriptionRequest)
+            .patient(PATIENT)
+            .medicationByPrescriptionId(meds);
+    var result = tstObj.buildResponse();
+
+    assertNotNull(result);
+    assertEquals(1, result.getDocumentResponse().size());
+
+    var docResponse = result.getDocumentResponse().getFirst();
+    assertEquals(docRequest.documentUniqueId(), docResponse.getDocumentUniqueId());
+    assertEquals(docRequest.homeCommunityId(), docResponse.getHomeCommunityId());
+    assertEquals(docRequest.repositoryUniqueId(), docResponse.getRepositoryUniqueId());
+    assertNotNull(docResponse.getDocument());
+  }
+
+  @SneakyThrows
+  @Test
+  void epLevel1Creation_shouldThrowRuntimeExceptionWhenFileCannotBeRead() {
+    assertThrows(RuntimeException.class, () -> EP_LEVEL_1.readOrCreateDocument(null, null, null));
+  }
+
+  @Test
+  void epLevel1Creation_shouldCallPdfCreatorWithExpectedContent() {
+    // Arrange
+    var medication = new Medication("TestMed", "1", false);
+    var pdfBuilderMock = Mockito.mock(PrescriptionPdfBuilder.class, Mockito.RETURNS_SELF);
+    var dummyContent = "dummyPdfContent".getBytes(StandardCharsets.UTF_8);
+    when(pdfBuilderMock.build()).thenReturn(dummyContent);
+
+    try (var staticPdfBuilderMock = Mockito.mockStatic(PrescriptionPdfBuilder.class)) {
+      when(PrescriptionPdfBuilder.newInstance()).thenReturn(pdfBuilderMock);
+
+      // Act
+      var documentBytes =
+          EP_LEVEL_1.readOrCreateDocument(PATIENT, "abc^pid" + EP_LEVEL_1.idMarker(), medication);
+
+      // Assert
+      var document = XmlUtils.unmarshal(ClinicalDocument.class, documentBytes);
+      var payload =
+          document.getComponent().getNonXMLBody().getText().getContent().getFirst().trim();
+      assertEquals(Base64.getEncoder().encodeToString(dummyContent), payload);
+      verify(pdfBuilderMock).name(PATIENT.name().toString());
+      verify(pdfBuilderMock)
+          .birthdate(PATIENT.birthdate().format(DateTimeFormatter.ofPattern("dd.MM.uuuu")));
+      verify(pdfBuilderMock).kvnr(PATIENT.kvnr());
+      verify(pdfBuilderMock).medications(List.of(medication));
+    }
+  }
+
+  @Test
+  void epLevel3Creation_shouldSetSubstitutionCodeWhenDisallowed() {
+    // Arrange
+    var medication = new Medication("TestMed", "1", false);
+    try (var utilsMock = Mockito.mockStatic(PrescriptionCda3Utils.class)) {
+      EP_LEVEL_3.readOrCreateDocument(PATIENT, "abc^pid" + EP_LEVEL_3.idMarker(), medication);
+      utilsMock.verify(
+          () ->
+              PrescriptionCda3Utils.setSubstitutionValue(
+                  isA(ClinicalDocument.class), same(EhdsiSubstitutionCode.NONE)));
+    }
   }
 }

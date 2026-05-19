@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.mock.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -30,6 +32,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode
 @Accessors(fluent = true)
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class PersonName {
 
   @JsonProperty private String givennames;

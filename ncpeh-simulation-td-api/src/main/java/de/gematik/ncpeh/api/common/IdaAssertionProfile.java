@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.common;
@@ -38,12 +39,14 @@ public record IdaAssertionProfile(
     @JsonProperty
         @Schema(
             description =
-                "Wenn die StringListe fehlt oder leer ist, dann MÜSSEN die mit dem angegebenen AssertionProfil "
+                "Wenn die Liste fehlt oder null ist, dann MÜSSEN die mit dem angegebenen AssertionProfil "
                     + "definierten permissions-Einträge genutzt werden."
                     + "Andernfalls ersetzen die hier übergebenen Werte vollständig die Liste der "
                     + "Assertion-Elemente 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
                     + "für die im Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission\"' gilt. "
-                    + "Für jeden Wert aus der StringListe ist in ein eigenes Element 'AttributeValue' in der Assertion zu erstellen.",
+                    + "Für jeden Wert aus der StringListe ist in ein eigenes Element 'AttributeValue' in der Assertion zu erstellen. "
+                    + "Eine leere Liste bedeutet, dass die Identity Assertion ohne das optionale Attribut "
+                    + "'urn:oasis:names:tc:xspa:1.0:subject:hl7:permission' erstellt und genutzt werden MUSS.",
             example =
                 "[\"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission:PRD-004\", \"urn:oasis:names:tc:xspa:1.0:subject:hl7:permission:PRD-010\"]")
         Set<String> permissions,

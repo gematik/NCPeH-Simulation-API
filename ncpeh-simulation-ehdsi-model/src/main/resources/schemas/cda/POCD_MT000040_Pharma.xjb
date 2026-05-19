@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2024-2025 gematik GmbH
+  ~ Copyright 2024-2026 gematik GmbH
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,8 +19,17 @@
   ~ For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
   -->
 
-<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Bob Dolin (HL7 CDA TC) -->
-<xs:schema targetNamespace="urn:hl7-org:v3" xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<xs:include schemaLocation="POCD_MT000040.xsd"/>
-	<xs:element name="ClinicalDocument" type="POCD_MT000040.ClinicalDocument"/>
-</xs:schema>
+<jaxb:bindings version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  schemaLocation="POCD_MT000040_Pharma.xsd" node="/xs:schema">
+
+  <!-- experimental attribute 'multiple' used to allow targeting several nodes at once, see https://stackoverflow.com/a/77919166 -->
+  <jaxb:bindings node='//xs:element[@name="id"]' multiple="true">
+    <jaxb:property name="elementId"/>
+  </jaxb:bindings>
+
+  <jaxb:bindings node="//xs:complexType[@name='POCD_MT000040.ClinicalDocument']">
+    <jaxb:class name="ClinicalDocument"/>
+  </jaxb:bindings>
+
+</jaxb:bindings>

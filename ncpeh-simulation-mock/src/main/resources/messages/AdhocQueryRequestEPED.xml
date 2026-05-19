@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2024-2025 gematik GmbH
+  ~ Copyright (Change Date see Readme), gematik GmbH
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
   ~
   ~ *******
   ~
-  ~ For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
   -->
 
-<ns3:AdhocQueryRequest xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+<ns3:AdhocQueryRequest xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
   <ns3:ResponseOption returnComposedObjects="true" returnType="LeafClass"/>
   <AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d">
     <Slot name="$XDSDocumentEntryPatientId">

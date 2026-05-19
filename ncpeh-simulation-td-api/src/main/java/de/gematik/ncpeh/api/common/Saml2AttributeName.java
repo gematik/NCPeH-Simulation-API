@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 gematik GmbH
+ * Copyright (Change Date see Readme), gematik GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  *
  * ******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes
+ * by gematik, find details in the "Readme" file.
  */
 
 package de.gematik.ncpeh.api.common;
@@ -29,7 +30,6 @@ import lombok.NonNull;
 @Schema(enumAsRef = true, example = "urn:oasis:names:tc:xspa:1.0:subject:organization")
 public enum Saml2AttributeName {
   SUBJECT_ID("urn:oasis:names:tc:xspa:1.0:subject:subject-id"),
-  SUBJECT_ROLE("urn:oasis:names:tc:xacml:2.0:subject:role"),
   SUBJECT_ORGANIZATION("urn:oasis:names:tc:xspa:1.0:subject:organization"),
   SUBJECT_ORGANIZATION_ID("urn:oasis:names:tc:xspa:1.0:subject:organization-id"),
   SUBJECT_ON_BEHALF_OF("urn:ehdsi:names:subject:on-behalf-of"),
