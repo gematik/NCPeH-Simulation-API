@@ -303,7 +303,7 @@ class RetrieveDocumentMessagesBuilderTest {
     when(pdfBuilderMock.build()).thenReturn(dummyContent);
 
     try (var staticPdfBuilderMock = Mockito.mockStatic(PrescriptionPdfBuilder.class)) {
-      when(PrescriptionPdfBuilder.newInstance()).thenReturn(pdfBuilderMock);
+      staticPdfBuilderMock.when(PrescriptionPdfBuilder::newInstance).thenReturn(pdfBuilderMock);
 
       // Act
       var documentBytes =

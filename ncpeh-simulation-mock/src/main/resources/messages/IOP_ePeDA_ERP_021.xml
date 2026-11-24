@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (Change Date see Readme), gematik GmbH
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ *******
+  ~
+  ~ For additional notes and disclaimer from gematik and in case of changes
+  ~ by gematik, find details in the "Readme" file.
+  -->
+
+<!--
+  Expected FindDocuments (TUC_NCPeH_036) error response for the scenario
+  NCP2_IOP_ePeDA_ERP_021 "Erneuern einer Berechtigung vor Auflisten der Rezepte".
+  The eRP-FD answered with HTTP status code 403 (A_27062 / A_27942,
+  TAB_NCPeH_Allgemeine_Fehlerfälle_Auflistung_von_einlösbaren_E-Rezepten).
+  The codeContext and location strings must match
+  de.gematik.test.ncp.data.error.search.EpedaSearchMissingErpAccessRights.
+  -->
+<ns3:AdhocQueryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure" xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+  xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0"
+  xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0">
+  <rs:RegistryErrorList
+    highestSeverity="urn:oasis:names:tc:ebxml-regrep:ErrorSeverityType:Error">
+    <rs:RegistryError
+      errorCode="ERROR_NO_CONSENT"
+      codeContext="There is no valid access authorisation for the requesting country in the german ePrescription service. Please ask the patient for access authorisation."
+      location="The ePrescription service did respond with HTTP status code 403."
+      severity="urn:oasis:names:tc:ebxml-regrep:ErrorSeverityType:Error"/>
+  </rs:RegistryErrorList>
+  <RegistryObjectList/>
+</ns3:AdhocQueryResponse>

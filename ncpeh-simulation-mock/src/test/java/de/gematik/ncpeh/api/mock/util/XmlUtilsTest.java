@@ -44,9 +44,9 @@ import de.gematik.ncpeh.api.mock.data.Medication;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.ehdsi.valuesets.EhdsiSubstitutionCode;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
+import jakarta.xml.bind.JAXBElement;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.SneakyThrows;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
@@ -136,11 +136,11 @@ class XmlUtilsTest {
   void shouldExtendRegistryObjectListWithGeneratedEntries() {
 
     // Arrange
-    var response = new oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse();
-    var list = new oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType();
+    var response = new AdhocQueryResponse();
+    var list = new RegistryObjectListType();
     response.setRegistryObjectList(list);
 
-    var factory = new oasis.names.tc.ebxml_regrep.xsd.rim._3.ObjectFactory();
+    var factory = new ObjectFactory();
 
     ExtrinsicObjectType xmlTemplate = new ExtrinsicObjectType();
     xmlTemplate
@@ -150,7 +150,7 @@ class XmlUtilsTest {
                 .withIdentificationScheme(ExternalIdentifierScheme.DOCUMENT_ENTRY_UNIQUE.getId())
                 .withId("template-xml"));
 
-    ExtrinsicObjectType pdfTemplate = new ExtrinsicObjectType();
+    var pdfTemplate = new ExtrinsicObjectType();
     pdfTemplate
         .getExternalIdentifier()
         .add(
@@ -161,10 +161,14 @@ class XmlUtilsTest {
     list.getIdentifiable().add(factory.createExtrinsicObject(xmlTemplate));
     list.getIdentifiable().add(factory.createExtrinsicObject(pdfTemplate));
 
-    Set<String> prescriptionIds = Set.of("111", "222", "333");
+    Map<String, Medication> medicationMap =
+        Map.of(
+            "111", new Medication("Medication 111", "11111111", false),
+            "222", new Medication("Medication 222", "22222222", true),
+            "333", new Medication("Medication 333", "33333333", false));
 
     // Act
-    XmlUtils.extendRegistryObjectList(response, prescriptionIds);
+    XmlUtils.extendRegistryObjectList(response, medicationMap);
 
     // Assert
     // 2 entries per prescription
@@ -172,9 +176,9 @@ class XmlUtilsTest {
 
     var ids =
         list.getIdentifiable().stream()
-            .map(e -> e.getValue())
+            .map(JAXBElement::getValue)
             .map(ExtrinsicObjectType.class::cast)
-            .map(e -> e.getExternalIdentifier())
+            .map(RegistryObjectType::getExternalIdentifier)
             .flatMap(List::stream)
             .filter(
                 e ->
@@ -209,7 +213,8 @@ class XmlUtilsTest {
     list.getIdentifiable().add(factory.createExtrinsicObject(template1));
     list.getIdentifiable().add(factory.createExtrinsicObject(template2));
 
-    XmlUtils.extendRegistryObjectList(response, Set.of("777"));
+    XmlUtils.extendRegistryObjectList(
+        response, Map.of("777", new Medication("Medication 777", "77777777", true)));
 
     var objects =
         list.getIdentifiable().stream().map(e -> (ExtrinsicObjectType) e.getValue()).toList();
@@ -248,7 +253,7 @@ class XmlUtilsTest {
 
     String invalidSoap =
         """
-            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+            <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope">
               <SOAP-ENV:Header/>
             </SOAP-ENV:Envelope>
             """;
@@ -293,7 +298,6 @@ class XmlUtilsTest {
 
     XmlUtils.extendRegistryObjectList(
         response,
-        Set.of("777"),
         Map.of("777", new Medication("Medication name", "12345678", substitutionAllowed)));
 
     var extrinsicObjects =

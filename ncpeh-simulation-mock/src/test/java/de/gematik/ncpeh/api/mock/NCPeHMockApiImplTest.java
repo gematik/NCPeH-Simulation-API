@@ -23,9 +23,11 @@ package de.gematik.ncpeh.api.mock;
 
 import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_NCPEH_MOCK_PATIENT;
 import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_NCPEH_MOCK_RESPONSE;
+import static de.gematik.ncpeh.api.mock.NCPeHMockApiImpl.HEADER_X_OFFICE_NAME;
 import static de.gematik.ncpeh.api.mock.TestUtils.loadFromJsonResource;
 import static de.gematik.ncpeh.api.mock.TestUtils.readResourceFile;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,6 +42,7 @@ import de.gematik.ncpeh.api.request.ProvideAndRegisterSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.request.RetrieveDocumentRequest;
 import de.gematik.ncpeh.api.request.RetrieveSetOfDocumentsRequest;
 import de.gematik.ncpeh.api.response.SimulatorCommunicationData;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -117,7 +120,32 @@ class NCPeHMockApiImplTest {
   }
 
   @Test
-  void identifyPatientUsesAccessCodeFromPatientHeader() {
+  void identifyPatientAnswersASoapFaultWithAClientErrorStatus() {
+    // Arrange
+    ((Client) api).header(HEADER_X_NCPEH_MOCK_RESPONSE, "IOP_ePeDA_NCP_060");
+    final var request =
+        loadFromJsonResource(
+            IdentifyPatientRequest.class, this.getClass(), "IdentifyPatientRequest.json");
+
+    // Act
+    final var response =
+        assertDoesNotThrow(
+            () -> api.identifyPatient(request),
+            "Method NCPeHMockApiImpl.identifyPatient threw an exception");
+
+    // Assert
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    // the fault is reported by the simulated NCPeH, the call to the simulator itself succeeded
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    assertThat(
+        simulatorComData.responseReceived().statusLine(),
+        containsString(String.valueOf(HttpStatus.BAD_REQUEST.value())));
+  }
+
+  @Test
+  void identifyPatientAnswersWithTheInsurantFromThePatientHeader() {
     // Arrange
     final var accessCode = "R7A1B2";
     ((Client) api).header(HEADER_X_NCPEH_MOCK_PATIENT, buildPatientHeader(accessCode));
@@ -141,7 +169,40 @@ class NCPeHMockApiImplTest {
             simulatorComData.responseReceived().messageContent().httpBody(),
             StandardCharsets.UTF_8);
     final var expectedData =
-        readResourceFile(this.getClass(), "PRPA_IN201306UV02.xml").replace("ABC123", accessCode);
+        readResourceFile(this.getClass(), "PRPA_IN201306UV02.xml")
+            .replace("X110571344", "X123456789")
+            .replace("ABC123", accessCode)
+            // the insurant of the header has no titles
+            .replace("<ns6:prefix>Gräfin</ns6:prefix>", "")
+            .replace("GõdofskýTEST-ONLY", "Patientmann")
+            .replace("Maude Adelheid Lilo Johanna", "Max")
+            .replace("19670630", "19800101");
+
+    assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void identifyPatientAnswersWithTheDefaultInsurantWithoutPatientHeader() {
+    // Arrange
+    final var request =
+        loadFromJsonResource(
+            IdentifyPatientRequest.class, this.getClass(), "IdentifyPatientRequest.json");
+
+    // Act
+    final var response =
+        assertDoesNotThrow(
+            () -> api.identifyPatient(request),
+            "Method NCPeHMockApiImpl.identifyPatient threw an exception");
+
+    // Assert
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+    final var expectedData = readResourceFile(this.getClass(), "PRPA_IN201306UV02.xml");
 
     assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
   }
@@ -245,6 +306,34 @@ class NCPeHMockApiImplTest {
     expectedData = readResourceFile(this.getClass(), expected);
 
     assertThat(body, CompareMatcher.isSimilarTo(expectedData).ignoreWhitespace().ignoreComments());
+  }
+
+  @Test
+  void findDocumentsTest2_shouldApplyOfficeNameHeader() {
+    // Arrange
+    String testOffice = "ÆƦᴢте ØĤnē Codierungsprobleme";
+    ((Client) api)
+        .header(HEADER_X_OFFICE_NAME, URLEncoder.encode(testOffice, StandardCharsets.UTF_8));
+    final var request =
+        loadFromJsonResource(
+            FindDocumentsRequest.class, this.getClass(), "FindDocumentsRequestEPED.json");
+
+    // Act
+    final var response =
+        assertDoesNotThrow(
+            () -> api.findDocuments(request),
+            "Method NCPeHMockApiImpl.findDocuments threw an exception");
+
+    // Assert
+    assertTrue(HttpStatus.valueOf(response.getStatus()).is2xxSuccessful());
+    final var simulatorComData = response.readEntity(SimulatorCommunicationData.class);
+    assertNotNull(simulatorComData);
+
+    final var body =
+        new String(
+            simulatorComData.responseReceived().messageContent().httpBody(),
+            StandardCharsets.UTF_8);
+    assertTrue(body.contains(testOffice));
   }
 
   @ParameterizedTest

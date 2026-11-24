@@ -14,19 +14,19 @@ cxf:
 
 management:
   endpoints:
-    enabled-by-default: false
+    access.default: none
     web:
       exposure:
         include: "health, info, mappings, metrics"
   endpoint:
     health:
-      enabled: true
+      access: read-only
     mappings:
-      enabled: true
+      access: read-only
     info:
-      enabled: true
+      access: read-only
     metrics:
-      enabled: true
+      access: read-only
   info:
     env:
       enabled: true

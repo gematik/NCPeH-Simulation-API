@@ -33,6 +33,8 @@ import jakarta.ws.rs.core.MediaType;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import lombok.SneakyThrows;
@@ -183,10 +185,14 @@ class NCPeHMockApplicationTest {
   }
 
   private void setMessageProperties(final Message msg, final HttpMessage httpMessage) {
+    final Map<String, List<String>> protocolHeaders = new LinkedHashMap<>();
+    httpMessage
+        .getHeaders()
+        .forEach((key, value) -> protocolHeaders.put(key, java.util.List.copyOf(value)));
     msg.putIfAbsent(ENABLE_LOGGING_KEY, Boolean.TRUE);
     msg.putIfAbsent(Message.ENCODING, StandardCharsets.UTF_8.name());
     msg.putIfAbsent(Message.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.toString());
-    msg.putIfAbsent(Message.PROTOCOL_HEADERS, httpMessage.getHeaders());
+    msg.putIfAbsent(Message.PROTOCOL_HEADERS, protocolHeaders);
   }
 
   @SneakyThrows

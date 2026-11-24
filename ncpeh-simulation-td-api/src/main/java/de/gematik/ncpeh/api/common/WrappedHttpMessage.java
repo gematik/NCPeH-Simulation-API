@@ -44,7 +44,7 @@ public record WrappedHttpMessage(
             type = "string",
             example =
                 """
-                <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+                <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope">
                     <SOAP-ENV:Header/>
                     <SOAP-ENV:Body>
                      <-- Payload -->

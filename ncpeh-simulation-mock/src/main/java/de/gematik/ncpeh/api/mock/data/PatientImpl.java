@@ -54,7 +54,7 @@ public class PatientImpl implements Patient {
 
   @Override
   public String toString() {
-    return String.format(
-        "Name: %s; KVNR: %s; Access Code: %s; Birth Date: %s", name, kvnr, accessCode, birthdate);
+    return "Name: %s; KVNR: %s; Access Code: %s; Birth Date: %s"
+        .formatted(name, kvnr, accessCode, birthdate);
   }
 }

@@ -2,6 +2,24 @@
 
 # Release Notes NCPeH-Simulation-API
 
+## Release 2.1.0.2 (2026-11-24)
+
+The NCPeH-Simulation-API Release 2.1.0.2 is intended for use with NCPeH product versions based on
+the German NCPeH specification in versions 
+[2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/) - 
+[2.1.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.1.1/).
+
+### changed
+
+- Due to the decision that dispensation data shall be generated from a static dispensation template,
+  the need for a PatientProfile and the caching of ePrescriptions is now obsolete.  
+  The description in [test-data-description.md](./doc/test-data-description.md) has been updated
+  accordingly.
+
+### fixed
+
+- OpenAPI Description improvements
+
 ## Release 2.1.0.1 (2026-05-19)
 
 The NCPeH-Simulation-API Release 2.1.0.1 is intended for use with NCPeH product versions based on

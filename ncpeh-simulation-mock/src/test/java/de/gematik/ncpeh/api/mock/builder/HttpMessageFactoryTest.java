@@ -42,9 +42,7 @@ import jakarta.xml.bind.JAXBElement;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
@@ -186,9 +184,7 @@ class HttpMessageFactoryTest {
     // Act
     final var httpResponse =
         assertDoesNotThrow(
-            () ->
-                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
-                    null, Collections.emptySet()),
+            () -> HttpMessageFactory.buildStandardFindDocumentResponseEPED(null, Map.of()),
             "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
 
     // Assert
@@ -208,7 +204,7 @@ class HttpMessageFactoryTest {
         assertDoesNotThrow(
             () ->
                 HttpMessageFactory.buildStandardFindDocumentResponseEPED(
-                    "AdhocQueryResponseEPED.xml", Set.of(prescriptionId)),
+                    null, Map.of(prescriptionId, new Medication("TestMed", "11111111", true))),
             "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
     // Assert
     assertResponseProps(httpResponse);
@@ -230,13 +226,17 @@ class HttpMessageFactoryTest {
   void buildStandardFindDocumentWithThreeGivenPrescriptionIdAndCheckEachIdIsInResponseTwice() {
     // Arrange
     // Act
-    Set<String> prescriptionIds =
-        Set.of("prescribedMedicationId1", "prescribedMedicationId2", "prescribedMedicationId3");
+    Map<String, Medication> medicationMap =
+        Map.of(
+            "prescribedMedicationId1",
+            new Medication("foo", "11111111", true),
+            "prescribedMedicationId2",
+            new Medication("bar", "22222222", false),
+            "prescribedMedicationId3",
+            new Medication("baz", "33333333", true));
     final var httpResponse =
         assertDoesNotThrow(
-            () ->
-                HttpMessageFactory.buildStandardFindDocumentResponseEPED(
-                    "AdhocQueryResponseEPED.xml", prescriptionIds),
+            () -> HttpMessageFactory.buildStandardFindDocumentResponseEPED(null, medicationMap),
             "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
     // Assert
     assertResponseProps(httpResponse);
@@ -247,7 +247,7 @@ class HttpMessageFactoryTest {
       AdhocQueryResponse adhocQueryResponse =
           XmlUtils.unmarshal(AdhocQueryResponse.class, soapBody);
       var documentIds = IheUtils.extractDocumentIdsFromAdhocQueryResponse(adhocQueryResponse);
-      for (String prescriptionId : prescriptionIds) {
+      for (String prescriptionId : medicationMap.keySet()) {
         assertThat(
             "PrescriptionId " + prescriptionId + " should appear exactly twice",
             documentIds.stream().filter(id -> id != null && id.contains(prescriptionId)).count(),
@@ -268,9 +268,7 @@ class HttpMessageFactoryTest {
         assertDoesNotThrow(
             () ->
                 HttpMessageFactory.buildStandardFindDocumentResponseEPED(
-                    "AdhocQueryResponseEPED.xml",
-                    medicationsByPrescriptionId.keySet(),
-                    medicationsByPrescriptionId),
+                    null, medicationsByPrescriptionId),
             "Method HttpMessageFactory.buildStandardFindDocumentResponseEPED threw exception");
 
     assertResponseProps(httpResponse);

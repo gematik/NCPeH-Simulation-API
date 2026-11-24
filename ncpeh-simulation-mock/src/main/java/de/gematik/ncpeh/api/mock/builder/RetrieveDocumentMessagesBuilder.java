@@ -164,7 +164,7 @@ public final class RetrieveDocumentMessagesBuilder {
 
     documentResponse.setMimeType(lvlInfo.mimeType());
     documentResponse.setDocument(
-        lvlInfo.readOrCreateDocument(patient, info.documentUniqueId, medication));
+        lvlInfo.readOrCreateDocument(patient, info.documentUniqueId(), medication));
 
     return documentResponse;
   }
@@ -202,6 +202,11 @@ public final class RetrieveDocumentMessagesBuilder {
         (pat, documentUid, medication) -> {
           var clinicalDocument =
               XmlUtils.unmarshal(ClinicalDocument.class, prescriptionCda1Template());
+
+          PrescriptionCda3Utils.setPatientTitles(clinicalDocument, pat.name().titles());
+          PrescriptionCda3Utils.setPatientFirstName(clinicalDocument, pat.name().givennames());
+          PrescriptionCda3Utils.setPatientLastName(clinicalDocument, pat.name().lastnames());
+          PrescriptionCda3Utils.setPatientDateOfBirth(clinicalDocument, pat.birthdate());
 
           var pdf =
               PrescriptionPdfBuilder.newInstance()
@@ -243,6 +248,7 @@ public final class RetrieveDocumentMessagesBuilder {
           }
 
           if (pat != null) {
+            PrescriptionCda3Utils.setPatientTitles(clinicalDocument, pat.name().titles());
             PrescriptionCda3Utils.setPatientFirstName(clinicalDocument, pat.name().givennames());
             PrescriptionCda3Utils.setPatientLastName(clinicalDocument, pat.name().lastnames());
             PrescriptionCda3Utils.setPatientDateOfBirth(clinicalDocument, pat.birthdate());

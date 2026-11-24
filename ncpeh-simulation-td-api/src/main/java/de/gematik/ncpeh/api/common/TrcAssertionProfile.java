@@ -37,12 +37,19 @@ public record TrcAssertionProfile(
     @JsonProperty
         @Schema(
             description =
-                "Wenn hier ein Wert gesetzt ist, bestimmt dieser den vollständigen Inhalt im "
-                    + "Assertion-Element 'Security/Assertion/AttributeStatement/Attribute/AttributeValue' "
-                    + "in dem für das Element 'Attribute' 'Name=\"urn:oasis:names:tc:xspa:1.0:subject:subject-id\"' gilt. "
-                    + "Falls die Angabe fehlt, so sind mit der KVNR und die OID der Assigning Authority zum AccessCode aus dem fachlichen Kontext "
-                    + "des Trigger-Requests (Element patientId aus diesem Request) "
-                    + "eine gültige URN für das SOAP-Element zu berechnen.",
+                """
+                Wenn hier ein Wert gesetzt ist, bestimmt dieser den vollständigen Inhalt im \
+                Assertion-Element `Security/Assertion/AttributeStatement/Attribute/AttributeValue` \
+                in dem für das Element `Attribute` gilt: \
+                `Name="urn:oasis:names:tc:xspa:1.0:subject:subject-id"`.\\
+                Falls die Angabe fehlt, so sind mit der KVNR und der OID der Assigning Authority \
+                zum accessCode aus dem fachlichen Kontext des Trigger-Requests (Element `patientId` \
+                aus diesem Request) eine gültige URN für das SOAP-Element zu berechnen.
+
+                **Achtung:** Um Tests von Fehlerfällen zu ermöglichen, darf für diesen Parameter \
+                keine Validierung erfolgen. Insbesondere dürfen Requests mit ungültigen Werten für \
+                KVNR oder accessCode nicht abgelehnt werden.
+                """,
             maxLength = 70,
-            example = "Walter H.Brattain IV")
+            example = "B123456789|A2C4E6^^^&1.2.276.0.76.3.1.580.147&ISO")
         String subjectId) {}

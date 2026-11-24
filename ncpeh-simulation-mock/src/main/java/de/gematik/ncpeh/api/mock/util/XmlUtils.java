@@ -35,8 +35,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -162,7 +160,8 @@ public class XmlUtils {
 
   /**
    * Extends the {@link RegistryObjectListType} inside the given {@link AdhocQueryResponse} by
-   * creating two {@link ExtrinsicObjectType} entries for each provided prescription ID.
+   * creating two {@link ExtrinsicObjectType} entries for each provided prescription ID and adding
+   * metadata classifications if needed.
    *
    * <p>The method assumes that the existing {@code RegistryObjectList} already contains exactly two
    * {@code ExtrinsicObjectType} elements which serve as templates (typically one representing a PDF
@@ -182,32 +181,13 @@ public class XmlUtils {
    *
    * @param adhocQueryResponse the {@link AdhocQueryResponse} containing the {@link
    *     RegistryObjectListType} to extend
-   * @param prescriptionIds set of prescription identifiers for which document entries shall be
-   *     generated; must not be {@code null}
+   * @param medicationByPrescriptionId optional map of medication metadata by prescription ID
    * @throws IllegalStateException if the registry object list does not contain exactly two {@code
    *     ExtrinsicObjectType} template elements
    * @throws RuntimeException if cloning of an {@code ExtrinsicObjectType} fails
    */
   public static void extendRegistryObjectList(
-      AdhocQueryResponse adhocQueryResponse, Set<String> prescriptionIds) {
-    extendRegistryObjectList(adhocQueryResponse, prescriptionIds, Map.of());
-  }
-
-  /**
-   * Extends the {@link RegistryObjectListType} inside the given {@link AdhocQueryResponse} by
-   * creating two {@link ExtrinsicObjectType} entries for each provided prescription ID and adding
-   * metadata classifications if needed.
-   *
-   * @param adhocQueryResponse the {@link AdhocQueryResponse} containing the {@link
-   *     RegistryObjectListType} to extend
-   * @param prescriptionIds set of prescription identifiers for which document entries shall be
-   *     generated; must not be {@code null}
-   * @param medicationByPrescriptionId optional map of medication metadata by prescription ID
-   */
-  public static void extendRegistryObjectList(
-      AdhocQueryResponse adhocQueryResponse,
-      Set<String> prescriptionIds,
-      Map<String, Medication> medicationByPrescriptionId) {
+      AdhocQueryResponse adhocQueryResponse, Map<String, Medication> medicationByPrescriptionId) {
     RegistryObjectListType registryObjectList = adhocQueryResponse.getRegistryObjectList();
 
     // Extract existing ExtrinsicObjects, Assume there are exactly two
@@ -228,30 +208,30 @@ public class XmlUtils {
 
     ObjectFactory factory = new ObjectFactory();
 
-    for (String prescriptionId : prescriptionIds) {
-      Medication medication =
-          Optional.of(medicationByPrescriptionId).map(map -> map.get(prescriptionId)).orElse(null);
-      boolean isFirst = true;
-      for (ExtrinsicObjectType template : templates) {
-        ExtrinsicObjectType clone = deepCloneJaxbElement(template, ExtrinsicObjectType.class);
-        addForbiddenSubstitutionClassificationIfNeeded(clone, medication);
-        String newId =
-            NCPeHMockApiImpl.OID_ASSIGNING_AUTHORITY_EPED
-                + "^"
-                + prescriptionId
-                + "|"
-                + (isFirst ? "eP.XML" : "eP.PDF");
-        clone.getExternalIdentifier().stream()
-            .filter(
-                e ->
-                    e.getIdentificationScheme() != null
-                        && e.getIdentificationScheme()
-                            .equals(ExternalIdentifierScheme.DOCUMENT_ENTRY_UNIQUE.getId()))
-            .forEach(ei -> ei.setValue(newId));
-        registryObjectList.getIdentifiable().add(factory.createExtrinsicObject(clone));
-        isFirst = false;
-      }
-    }
+    medicationByPrescriptionId.forEach(
+        (id, medication) -> {
+          boolean isFirst = true;
+
+          for (ExtrinsicObjectType template : templates) {
+            ExtrinsicObjectType clone = deepCloneJaxbElement(template, ExtrinsicObjectType.class);
+            addForbiddenSubstitutionClassificationIfNeeded(clone, medication);
+            String newId =
+                NCPeHMockApiImpl.OID_ASSIGNING_AUTHORITY_EPED
+                    + "^"
+                    + id
+                    + "|"
+                    + (isFirst ? "eP.XML" : "eP.PDF");
+            clone.getExternalIdentifier().stream()
+                .filter(
+                    e ->
+                        e.getIdentificationScheme() != null
+                            && e.getIdentificationScheme()
+                                .equals(ExternalIdentifierScheme.DOCUMENT_ENTRY_UNIQUE.getId()))
+                .forEach(ei -> ei.setValue(newId));
+            registryObjectList.getIdentifiable().add(factory.createExtrinsicObject(clone));
+            isFirst = false;
+          }
+        });
   }
 
   private static void addForbiddenSubstitutionClassificationIfNeeded(

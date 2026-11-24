@@ -20,7 +20,7 @@
   ~ by gematik, find details in the "Readme" file.
   -->
 
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope">
   <SOAP-ENV:Header/>
   <!-- Note: The SOAP messages returned by the mock currently do not include the headers
      required for the individual transactions.-->
