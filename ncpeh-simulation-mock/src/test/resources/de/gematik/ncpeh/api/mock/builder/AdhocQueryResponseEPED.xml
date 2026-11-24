@@ -18,7 +18,7 @@
   ~ For additional notes and disclaimer from gematik and in case of changes
   ~ by gematik, find details in the "Readme" file.
   -->
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope">
   <SOAP-ENV:Header/>
   <!-- Note: The SOAP messages returned by the mock currently do not include the headers
      required for the individual transactions.-->
@@ -35,7 +35,7 @@
           status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
           <Slot name="sourcePatientId">
             <ValueList>
-              <Value>'X110571344|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO'</Value>
+              <Value>X110571344|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
             </ValueList>
           </Slot>
           <Slot name="repositoryUniqueId">
@@ -189,7 +189,7 @@
           status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
           <Slot name="sourcePatientId">
             <ValueList>
-              <Value>'X110571344|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO'</Value>
+              <Value>X110571344|ABC123^^^&amp;1.2.276.0.76.3.1.580.147&amp;ISO</Value>
             </ValueList>
           </Slot>
           <Slot name="repositoryUniqueId">

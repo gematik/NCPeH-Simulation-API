@@ -21,7 +21,7 @@
 
 package de.gematik.ncpeh.api.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import lombok.SneakyThrows;
@@ -29,7 +29,7 @@ import lombok.SneakyThrows;
 /** Utility class for loading JSON resources. */
 public class TestUtils {
 
-  private static final ObjectMapper mapper = new ObjectMapper();
+  private static final JsonMapper mapper = new JsonMapper();
 
   /**
    * Loads an object from a JSON resource file.

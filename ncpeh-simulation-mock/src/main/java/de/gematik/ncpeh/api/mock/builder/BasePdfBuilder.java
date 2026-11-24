@@ -66,6 +66,14 @@ public abstract class BasePdfBuilder<T extends BasePdfBuilder<T>> {
     contentStream.newLineAtOffset(100, 700);
   }
 
+  private void setCustomId(final PDDocument document) {
+    var trailer = document.getDocument().getTrailer();
+    var idArray = new COSArray();
+    idArray.add(new COSString("custom-id-part-1"));
+    idArray.add(new COSString("custom-id-part-2"));
+    trailer.setItem(COSName.ID, idArray);
+  }
+
   @SuppressWarnings("unchecked")
   protected T self() {
     return (T) this;
@@ -115,14 +123,6 @@ public abstract class BasePdfBuilder<T extends BasePdfBuilder<T>> {
     }
 
     return byteArrayOutputStream.toByteArray();
-  }
-
-  private void setCustomId(final PDDocument document) {
-    var trailer = document.getDocument().getTrailer();
-    var idArray = new COSArray();
-    idArray.add(new COSString("custom-id-part-1"));
-    idArray.add(new COSString("custom-id-part-2"));
-    trailer.setItem(COSName.ID, idArray);
   }
 
   protected abstract void writeContent(PDPageContentStream contentStream) throws IOException;

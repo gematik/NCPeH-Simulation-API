@@ -24,6 +24,9 @@ package de.gematik.ncpeh.api.mock.builder;
 import static de.gematik.ncpeh.api.mock.builder.SoapMessageFactory.createSoapMessage;
 
 import de.gematik.ncpeh.api.mock.data.Medication;
+import de.gematik.ncpeh.api.mock.data.Patient;
+import de.gematik.ncpeh.api.mock.data.PatientImpl;
+import de.gematik.ncpeh.api.mock.data.PersonName;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpRequest;
 import de.gematik.ncpeh.api.mock.http.PseudoHttpResponse;
 import de.gematik.ncpeh.api.mock.util.XmlUtils;
@@ -39,10 +42,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilderFactory;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -50,6 +56,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -58,8 +65,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 /** Static methods used to create test data, to be returned by API operations */
-@UtilityClass
 @Slf4j
+@UtilityClass
 @Accessors(fluent = true)
 public final class HttpMessageFactory {
 
@@ -72,6 +79,28 @@ public final class HttpMessageFactory {
       "PRPA_IN201305UV02_299.xml";
 
   public static final String PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME = "PRPA_IN201306UV02.xml";
+
+  private static final String SOAP_FAULT_ELEMENT_NAME = "Fault";
+
+  /**
+   * The insurant described by the standard response template. Their data is replaced by the
+   * insurant the caller announces in the request header, see {@link
+   * #buildStandardIdentifyPatientResponse(String, Patient)}.
+   */
+  private static final Patient TEMPLATE_PATIENT =
+      new PatientImpl(
+          new PersonName()
+              .titles("Gräfin")
+              .givennames("Maude Adelheid Lilo Johanna")
+              .lastnames("GõdofskýTEST-ONLY"),
+          LocalDate.of(1967, 6, 30),
+          "X110571344",
+          "ABC123");
+
+  private static final DateTimeFormatter BIRTH_TIME_FORMAT =
+      DateTimeFormatter.ofPattern("yyyyMMdd");
+
+  private static final String PREFIX_ELEMENT_FORMAT = "<ns6:prefix>%s</ns6:prefix>";
 
   public static final String FIND_DOCUMENT_EPED_REQUEST_FILE_NAME = "AdhocQueryRequestEPED.xml";
 
@@ -161,22 +190,63 @@ public final class HttpMessageFactory {
    * {@link de.gematik.ncpeh.api.NcpehSimulatorApi#identifyPatient(IdentifyPatientRequest)}
    * response.
    *
+   * <p>The standard response template carries placeholders for the identified insurant. They are
+   * filled with the patient the caller announced in the request header, so that scenarios can use
+   * any insurant. Without that header the default insurant is returned.
+   *
    * @param fileName optional response template name
-   * @param accessCode optional access code to inject into the successful identifyPatient response
+   * @param patient optional patient to inject into the successful identifyPatient response
    * @return {@link PseudoHttpResponse}
    */
   @SneakyThrows
   public static PseudoHttpResponse buildStandardIdentifyPatientResponse(
-      final String fileName, final String accessCode) {
-    var body =
-        readMessageFileSafely(fileName, PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME).readAllBytes();
-    if (accessCode != null) {
-      body =
-          new String(body, StandardCharsets.UTF_8)
-              .replace("ABC123", accessCode)
-              .getBytes(StandardCharsets.UTF_8);
-    }
-    return buildHttpResponse(new ByteArrayInputStream(body));
+      final String fileName, final Patient patient) {
+    final var template =
+        new String(
+            readMessageFileSafely(fileName, PATIENT_IDENTIFICATION_RESPONSE_FILE_NAME)
+                .readAllBytes(),
+            StandardCharsets.UTF_8);
+    final var body = null == patient ? template : replaceTemplatePatient(template, patient);
+    return buildHttpResponse(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+  }
+
+  /**
+   * Replaces the data of the insurant described by the standard response template with the data of
+   * the given insurant. Response templates of error scenarios describe their own insurant and are
+   * left untouched.
+   *
+   * @param template contents of the response template
+   * @param patient the insurant to answer with
+   * @return the response body for that insurant
+   */
+  private static String replaceTemplatePatient(final String template, final Patient patient) {
+    final var templateName = TEMPLATE_PATIENT.name();
+    final var name = Optional.ofNullable(patient.name()).orElseGet(PersonName::new);
+    return template
+        .replace(TEMPLATE_PATIENT.kvnr(), orTemplateValue(patient.kvnr(), TEMPLATE_PATIENT.kvnr()))
+        .replace(
+            TEMPLATE_PATIENT.accessCode(),
+            orTemplateValue(patient.accessCode(), TEMPLATE_PATIENT.accessCode()))
+        // an insurant without titles must not be answered with an empty prefix element
+        .replace(
+            PREFIX_ELEMENT_FORMAT.formatted(templateName.titles()),
+            null == name.titles() || name.titles().isBlank()
+                ? ""
+                : PREFIX_ELEMENT_FORMAT.formatted(name.titles()))
+        .replace(
+            templateName.lastnames(), orTemplateValue(name.lastnames(), templateName.lastnames()))
+        .replace(
+            templateName.givennames(),
+            orTemplateValue(name.givennames(), templateName.givennames()))
+        .replace(
+            BIRTH_TIME_FORMAT.format(TEMPLATE_PATIENT.birthdate()),
+            Optional.ofNullable(patient.birthdate())
+                .map(BIRTH_TIME_FORMAT::format)
+                .orElseGet(() -> BIRTH_TIME_FORMAT.format(TEMPLATE_PATIENT.birthdate())));
+  }
+
+  private static String orTemplateValue(final String value, final String templateValue) {
+    return null == value || value.isBlank() ? templateValue : value;
   }
 
   /**
@@ -188,7 +258,16 @@ public final class HttpMessageFactory {
    * @return {@link PseudoHttpResponse}
    */
   public static PseudoHttpResponse buildStandardFindDocumentResponsePSA(final String fileName) {
-    return buildHttpResponse(readMessageFileSafely(fileName, FIND_DOCUMENT_PSA_RESPONSE_FILE_NAME));
+    return buildStandardFindDocumentResponsePSA(fileName, null);
+  }
+
+  public static PseudoHttpResponse buildStandardFindDocumentResponsePSA(
+      final String fileName, final String officeName) {
+    return buildHttpResponse(
+        applyOfficeName(
+            readMessageFileSafely(fileName, FIND_DOCUMENT_PSA_RESPONSE_FILE_NAME),
+            officeName,
+            "Nemocnice Havlíčkův Brod, příspěvková organizace"));
   }
 
   /**
@@ -200,17 +279,18 @@ public final class HttpMessageFactory {
    * @return {@link PseudoHttpResponse}
    */
   public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(
-      final String fileName, Set<String> prescriptionIds) {
-    return buildStandardFindDocumentResponseEPED(fileName, prescriptionIds, Map.of());
+      String fileName, Map<String, Medication> medicationByPrescriptionId) {
+    return buildStandardFindDocumentResponseEPED(fileName, medicationByPrescriptionId, null);
   }
 
   public static PseudoHttpResponse buildStandardFindDocumentResponseEPED(
-      final String fileName,
-      Set<String> prescriptionIds,
-      Map<String, Medication> medicationByPrescriptionId) {
+      String fileName, Map<String, Medication> medicationByPrescriptionId, String officeName) {
     var inputStream = readMessageFileSafely(fileName, FIND_DOCUMENT_EPED_RESPONSE_FILE_NAME);
-    if (prescriptionIds.isEmpty()) {
-      return buildHttpResponse(inputStream);
+    if (!StringUtils.isBlank(fileName)
+        || medicationByPrescriptionId == null
+        || medicationByPrescriptionId.isEmpty()) {
+      return buildHttpResponse(
+          applyOfficeName(inputStream, officeName, "Praxis Münchhausen-BohlenTEST-ONLY"));
     }
 
     try {
@@ -218,17 +298,16 @@ public final class HttpMessageFactory {
       AdhocQueryResponse adhocQueryResponse =
           XmlUtils.unmarshal(AdhocQueryResponse.class, documentAsBytes);
 
-      XmlUtils.extendRegistryObjectList(
-          adhocQueryResponse,
-          prescriptionIds,
-          Optional.ofNullable(medicationByPrescriptionId).orElse(Map.of()));
+      XmlUtils.extendRegistryObjectList(adhocQueryResponse, medicationByPrescriptionId);
 
-      return buildHttpResponse(new ByteArrayInputStream(XmlUtils.marshal(adhocQueryResponse)));
+      return buildHttpResponse(
+          applyOfficeName(
+              new ByteArrayInputStream(XmlUtils.marshal(adhocQueryResponse)),
+              officeName,
+              "Praxis Münchhausen-BohlenTEST-ONLY"));
 
     } catch (IOException e) {
-      log.error("Error reading AdhocQueryResponse", e);
-
-      return new PseudoHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new RuntimeException("Error reading AdhocQueryResponse", e);
     }
   }
 
@@ -305,7 +384,7 @@ public final class HttpMessageFactory {
         .orElseThrow(
             () ->
                 new FileNotFoundException(
-                    String.format("Message files not found: %s & %s", filePath, defaultFilePath)));
+                    "Message files not found: %s & %s".formatted(filePath, defaultFilePath)));
   }
 
   @SneakyThrows
@@ -354,9 +433,13 @@ public final class HttpMessageFactory {
 
   @SneakyThrows
   private static PseudoHttpResponse buildHttpResponse(@NonNull final InputStream bodyData) {
-    try (final var httpResponse = new PseudoHttpResponse(HttpStatus.OK)) {
+    final var body = bodyData.readAllBytes();
 
-      httpResponse.setBody(new ByteArrayInputStream(createSoapMessage(bodyData).toByteArray()));
+    try (final var httpResponse = new PseudoHttpResponse(statusOf(body))) {
+
+      httpResponse.setBody(
+          new ByteArrayInputStream(
+              createSoapMessage(new ByteArrayInputStream(body)).toByteArray()));
 
       final var headers = new HttpHeaders();
       headers.setContentType(APPLICATION_SOAP_XML);
@@ -364,6 +447,38 @@ public final class HttpMessageFactory {
       headers.setContentLength(httpResponse.getBody().available());
 
       return httpResponse.setHeaders(headers);
+    }
+  }
+
+  private static HttpStatus statusOf(final byte[] body) {
+    return isSoapFault(body) ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+  }
+
+  private static boolean isSoapFault(final byte[] body) {
+    try {
+      final var factory = DocumentBuilderFactory.newInstance();
+      factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+      factory.setNamespaceAware(true);
+
+      final var document = factory.newDocumentBuilder().parse(new ByteArrayInputStream(body));
+      return SOAP_FAULT_ELEMENT_NAME.equals(document.getDocumentElement().getLocalName());
+    } catch (final Exception e) {
+      log.debug("Response body is no parsable XML document: {}", e.getMessage());
+      return false;
+    }
+  }
+
+  @SneakyThrows
+  private static InputStream applyOfficeName(
+      final InputStream bodyData, final String officeName, final String defaultOfficeName) {
+    if (StringUtils.isBlank(officeName)) {
+      return bodyData;
+    }
+
+    try (bodyData) {
+      final var content = new String(bodyData.readAllBytes(), StandardCharsets.UTF_8);
+      return new ByteArrayInputStream(
+          content.replace(defaultOfficeName, officeName).getBytes(StandardCharsets.UTF_8));
     }
   }
   // endregion private

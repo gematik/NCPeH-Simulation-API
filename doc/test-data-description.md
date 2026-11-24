@@ -7,7 +7,6 @@ profiles described later in this document:
 * Identity Assertion profile, referenced by
   `baseParameter.idaAssertionProfile.assertionProperties.profileName`,
 * TRC Assertion profile, referenced by `trcAssertionProfile.assertionProperties.profileName`,
-* Patient profile, referenced by `patientId.kvnr`
 
 A data profile acts as a template, providing pre-configured defaults for communication with the
 German NCPeH service. This helps keep test interface requests concise, as callers only need to
@@ -37,8 +36,9 @@ The following countries are currently used by gematik:
 | Country name   | Assigned eHDSI scenario |
 |----------------|-------------------------|
 | Belgium (BE)   | ePeD-A                  |
-| Latvia (LV)    | ePeD-A, PS-A            |
 | Bulgaria (BG)  | PS-A                    |
+| France (FR)    | ePeD-A                  |
+| Latvia (LV)    | ePeD-A, PS-A            |
 | Lithuania (LT) | ePeD-A                  |
 
 A test instance of the German NCPeH service needs to be configured for each country.
@@ -133,17 +133,20 @@ A specific profile is addressed by its `idaProfileName`.
 
 The following `idaAssertionProfile` entries are currently defined for gematik test cases:
 
-| idaProfileName | Name of the health professional    | Professional role | Assigned country |
-|----------------|------------------------------------|-------------------|------------------|
-| idaPauwels     | Dr. Elisabeth Pauwels              | pharmacist        | Belgium (BE)     |
-| idaLiepins     | Jānis Liepiņš                      | pharmacist        | Latvia (LV)      |
-|                | UTF8: J\uc481nis Liepi\uc586\uc5a1 |                   |                  |
-| idaMichailow   | Asparuhk Michailow                 | pharmacist        | Bulgaria (BG)    |
-| idaZilute      | Urte Žiliūtė                       | pharmacist        | Lithuania (LT)   |
-|                | UTF8: Urte \uc5bdili\uc6abt\uc497  |                   |                  |
+| idaProfileName          | Name of the health professional                      | Professional role | Assigned country |
+|-------------------------|------------------------------------------------------|-------------------|------------------|
+| idaPauwels              | Dr. Elisabeth Pauwels                                | pharmacist        | Belgium (BE)     |
+| idaPauwelsCountryFrance | **Dr. Elisabeth Pauwels**                            | pharmacist        | **France (FR)**  |
+| idaLiepins              | Jānis Liepiņš<br/>UTF8: J\uc481nis Liepi\uc586\uc5a1 | pharmacist        | Latvia (LV)      |
+| idaMichailow            | Asparuhk Michailow                                   | pharmacist        | Bulgaria (BG)    |
+| idaZilute               | Urte Žiliūtė<br/>UTF8: Urte \uc5bdili\uc6abt\uc497   | pharmacist        | Lithuania (LT)   |
 
 IdAs generated from a profile must be signed with a certificate matching the assigned
 country.
+
+> [!NOTE]
+> The idaProfile `idaPauwelsCountryFrance` shall exactly contain all data as defined for `idaPauwels` 
+> with the exception, that the certificate used to sign the assertion, must be for the country France.
 
 The test instance of the German NCPeH service must be configured to trust the IdA signer
 certificates associated with all countries emulated by the Country B simulation.
@@ -199,64 +202,32 @@ from the template. A specific profile is addressed by its `trcProfileName`.
 
 The following `trcAssertionProfile` entries are currently defined for gematik test cases:
 
-| trcProfileName | Related idaAssertionProfile | NameId                                     | Assigned country |
-|----------------|-----------------------------|--------------------------------------------|------------------|
-| trcPauwels     | idaPauwels                  | same as in the related idaAssertionProfile | Belgium (BE)     |
-| trcLiepins     | idaLiepins                  | same as in the related idaAssertionProfile | Latvia (LV)      |
-| trcMichailow   | idaMichailow                | same as in the related idaAssertionProfile | Bulgaria (BG)    |
-| trcZilute      | idaZilute                   | same as in the related idaAssertionProfile | Lithuania (LT)   |
+| trcProfileName                 | Related idaAssertionProfile | NameId                                                                         | Assigned country |
+|--------------------------------|-----------------------------|--------------------------------------------------------------------------------|------------------|
+| trcPauwels                     | idaPauwels                  | same as in the related idaAssertionProfile                                     | Belgium (BE)     |
+| trcPauwelsNameIdMismatch       | idaPauwels                  | **value string is not equal to NameId of idaAssertionProfile**                 | Belgium (BE)     |
+| trcPauwelsNameIdFormatMismatch | idaPauwels                  | **format string is valid, but not equal to NameId<br/>of idaAssertionProfile** | Belgium (BE)     |
+| trcPauwelsCountryFrance        | **idaPauwelsCountryFrance** | same as in the related idaAssertionProfile                                     | **France (FR)**  |
+| trcLiepins                     | idaLiepins                  | same as in the related idaAssertionProfile                                     | Latvia (LV)      |
+| trcMichailow                   | idaMichailow                | same as in the related idaAssertionProfile                                     | Bulgaria (BG)    |
+| trcZilute                      | idaZilute                   | same as in the related idaAssertionProfile                                     | Lithuania (LT)   |
 
 TRC assertions generated from profiles must be signed with a certificate matching the
 assigned country. The TRC signer certificate may be the same as in the related
 `idaAssertionProfile`.
+
+> [!NOTE]
+> The trcProfile `trcPauwelsCountryFrance` shall exactly contain all data as defined for `trcPauwels`
+> with the exception, that the certificate used to sign the assertion, must be for the country France.
 
 The test instance of the German NCPeH service must be configured to trust the TRC signer
 certificates associated with all countries emulated by the Country B simulation.
 
 ## Dispensation document construction (ePeD-A only)
 
-Dispensation data must be prepared based on previously retrieved prescriptions. For this reason,
-dispensation data cannot be covered by static profiles. Only the `prescriptionId` is provided
-as a reference to a prescription (`dispensations[x].prescriptionId`), and the dispensation data
-is constructed from that information. Additionally, the request must indicate whether the
-dispensation document contains information about medication substitution
-(`dispensation[x].isSubstituted`); see
-[CDA entry template 'eHDSI supply'](https://art-decor.ehdsi.eu/publication/epsos-html-20240422T073854/tmp-1.3.6.1.4.1.12559.11.10.1.3.1.3.3-2023-04-20T134250.html),
-section 'hl7:entryRelationship' for Substitution.
+Each dispensation document must be prepared based on a single document template, using a dummy medication information.
+To complete the template document, the `prescriptionId` is provided (`dispensations[x].prescriptionId`).
 
-The dispensation document must contain information about the medication dispensed to the patient.
-Since analysing the medications of all EU countries is not feasible, the dispensed medication
-information provided by the simulator can be simplified as follows:
-
-1. Use the same (German) medication information as given in the prescription, or
-2. Use a fixed dummy medication for all dispensations
-
-All other required dispensation data must be populated dynamically based on the referenced
-prescription. The simulator must therefore cache the retrieved prescription data for some time
-(approximately 2–4 hours) so that it is available when the dispensation is created later.
-
-If a prescription was retrieved in PDF format only, the simulator must cache the associated
-metadata — unless the simulator implements PDF data extraction.
-For this scenario, a **patientProfile** is defined to supply patient data for the dispensation
-document.
-
-### Object `patientProfile`
-
-The `patientProfile` object references the following data:
-
-* `patientId` (KVNR), used to look up the patient profile
-* `name`, containing:
-    * titles
-    * given name
-    * family name
-* `birthDate`
-* `gender`
-
-### Defined patient profiles
-
-The following patient profiles are currently defined for gematik test cases:
-
-| kvnr       | name.titles       | name.givenNames             | name.lastNames                    | birthDate  | gender |
-|------------|-------------------|-----------------------------|-----------------------------------|------------|--------|
-| X110571344 | Gräfin            | Maude Adelheid Lilo Johanna | GõdofskýTEST-ONLY                 | 1967-06-30 | female |
-|            | UTF8: Gr\uc3a4fin |                             | UTF8: G\uc3b5dofsk\uc3bdTEST-ONLY |            |        |
+Additionally, depending on the intended test data content, the dispensation document shall indicate, whether it contains 
+information about medication substitution or not (`dispensation[x].isSubstituted`); 
+see [CDA entry template 'eHDSI supply'](https://art-decor.ehdsi.eu/publication/epsos-html-20240422T073854/tmp-1.3.6.1.4.1.12559.11.10.1.3.1.3.3-2023-04-20T134250.html), section 'hl7:entryRelationship' for Substitution.

@@ -23,6 +23,7 @@ package de.gematik.ncpeh.api.mock.builder;
 
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPConstants;
 import jakarta.xml.soap.SOAPMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class SoapMessageFactory {
 
   @SneakyThrows
   private static void init() {
-    messageFactory = MessageFactory.newInstance();
+    messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
     final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     builder = factory.newDocumentBuilder();

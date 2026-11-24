@@ -38,6 +38,7 @@ import org.hl7.v3.EN;
 import org.hl7.v3.ENXP;
 import org.hl7.v3.EnFamily;
 import org.hl7.v3.EnGiven;
+import org.hl7.v3.EnPrefix;
 import org.hl7.v3.PN;
 import org.hl7.v3.POCDMT000040Material;
 import org.hl7.v3.POCDMT000040Patient;
@@ -119,6 +120,27 @@ public class PrescriptionCda3Utils {
             EnGiven.class,
             new EnGiven().withContent(firstName));
     setPatientNameByType(clinicalDocument, EnGiven.class, content);
+  }
+
+  /**
+   * Sets the patient's titles in the ClinicalDocument. An insurant without titles gets no prefix
+   * element at all.
+   *
+   * @param clinicalDocument the ClinicalDocument
+   * @param titles the patient's titles, may be {@code null}
+   */
+  public static void setPatientTitles(
+      final ClinicalDocument clinicalDocument, final String titles) {
+    if (null == titles || titles.isBlank()) {
+      removePatientNamePartByType(clinicalDocument, EnPrefix.class);
+      return;
+    }
+    JAXBElement<EnPrefix> content =
+        new JAXBElement<>(
+            new QName(HL7V3_NAMESPACE_URN, "prefix", XMLConstants.DEFAULT_NS_PREFIX),
+            EnPrefix.class,
+            new EnPrefix().withContent(titles));
+    setPatientNameByType(clinicalDocument, EnPrefix.class, content);
   }
 
   /**
@@ -344,13 +366,15 @@ public class PrescriptionCda3Utils {
       final ClinicalDocument clinicalDocument,
       final Class<? extends ENXP> namePartType,
       final JAXBElement<? extends ENXP> contentElement) {
-    var nameElement = getNameElement(clinicalDocument);
-    nameElement
+    removePatientNamePartByType(clinicalDocument, namePartType);
+    getNameElement(clinicalDocument).withContent(contentElement);
+  }
+
+  private static void removePatientNamePartByType(
+      final ClinicalDocument clinicalDocument, final Class<? extends ENXP> namePartType) {
+    getNameElement(clinicalDocument)
         .getContent()
         .removeIf(
-            x ->
-                x instanceof JAXBElement<?>
-                    && namePartType.isInstance(((JAXBElement<?>) x).getValue()));
-    nameElement.withContent(contentElement);
+            x -> x instanceof JAXBElement<?> jaxbe && namePartType.isInstance(jaxbe.getValue()));
   }
 }

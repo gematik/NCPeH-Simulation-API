@@ -32,7 +32,7 @@
     <module>ncpeh-simulation-mock</module>
   </modules>
   <groupId>de.gematik.api</groupId>
-  <version>2.1.0.1</version>
+  <version>2.1.0.2</version>
   <name>NCPeH Simulation API Parent</name>
   <description>Parent project of the NCPeH Simulation API containing the API definition, eHDSI
     models, and a mock implementation
@@ -68,79 +68,78 @@
 
     <!-- dependency versions -->
 
-    <apache.cxf.version>4.1.5</apache.cxf.version>
-    <apache.cxf.xjc.version>4.1.2</apache.cxf.xjc.version>
+    <apache.cxf.version>4.2.4</apache.cxf.version>
+    <apache.cxf.xjc.version>4.2.0</apache.cxf.xjc.version>
     <commons-lang3.version>3.20.0</commons-lang3.version>
-    <jackson.version>2.21.2</jackson.version>
-    <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+    <jackson.version>2.22.4</jackson.version>
+    <jakarta.ws.rs-api.version>4.0.0</jakarta.ws.rs-api.version>
     <jakarta.xml.soap-api.version>3.0.2</jakarta.xml.soap-api.version>
     <jaxb-api.version>4.0.5</jaxb-api.version>
     <jaxb-impl.version>4.0.7</jaxb-impl.version>
     <jaxb-plugins.version>4.0.12</jaxb-plugins.version>
-    <junit-jupiter.version>5.14.4</junit-jupiter.version>
-    <lib-ihe-xds.version>3.0.3</lib-ihe-xds.version>
+    <jspecify.version>1.0.0</jspecify.version>
+    <junit-jupiter.version>6.0.3</junit-jupiter.version>
+    <lib-ihe-xds.version>3.1.0</lib-ihe-xds.version>
     <lombok.version>1.18.46</lombok.version>
     <pdfbox.version>3.0.7</pdfbox.version>
     <saaj-impl.version>3.0.4</saaj-impl.version>
-    <spring.boot.version>3.5.14</spring.boot.version>
-    <spring-framework.version>6.2.18</spring-framework.version>
-    <swagger-ui.version>5.32.5</swagger-ui.version>
-    <swagger.version>2.2.49</swagger.version>
+    <spring.boot.version>4.2.0</spring.boot.version>
+    <swagger-ui.version>5.32.15</swagger-ui.version>
+    <swagger.version>2.2.55</swagger.version>
     <xmlunit.version>2.11.0</xmlunit.version>
-
-    <!-- OWASP -->
-
-    <!-- CVE-2026-41284, spring-boot-starter-web 3.5.14 -->
-    <tomcat-embed.version>10.1.55</tomcat-embed.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-framework-bom</artifactId>
-        <version>${spring-framework.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- OWASP -->
 
-      <!-- CVE-2026-41284, spring-boot-starter-web 3.5.14 -->
+      <!-- CVE-2026-116830 via spring-boot-starter-webmvc:4.2.0 -->
       <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-core</artifactId>
-        <version>${tomcat-embed.version}</version>
+        <version>11.0.29</version>
       </dependency>
       <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-el</artifactId>
-        <version>${tomcat-embed.version}</version>
+        <version>11.0.29</version>
       </dependency>
       <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-websocket</artifactId>
-        <version>${tomcat-embed.version}</version>
+        <version>11.0.29</version>
       </dependency>
 
-
-      <!-- CVE-2026-24734, :maven/org.apache.logging.log4j/log4j-api@2.24.3, cpe:2.3:a:apache:log4j:2.24.3-->
+      <!-- CVE-2026-93879 spring-boot-starter-jaxrs:4.2.4 -->
       <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-to-slf4j</artifactId>
-        <version>2.25.4</version>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>9.1.6.Final</version>
       </dependency>
 
       <!-- common dependencies -->
 
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
         <version>${junit-jupiter.version}</version>
         <scope>test</scope>
       </dependency>
-
-      <!-- ncpeh-simulation-ehdsi-model -->
-
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
@@ -151,128 +150,22 @@
         <artifactId>cxf-xjc-runtime</artifactId>
         <version>${apache.cxf.xjc.version}</version>
       </dependency>
-
-      <!-- ncpeh-simulation-td-api -->
-
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-integration-jakarta</artifactId>
+        <version>${swagger.version}</version>
+      </dependency>
       <dependency>
         <groupId>jakarta.ws.rs</groupId>
         <artifactId>jakarta.ws.rs-api</artifactId>
         <version>${jakarta.ws.rs-api.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-annotations-jakarta</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-models-jakarta</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-integration-jakarta</artifactId>
-        <version>${swagger.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-        <scope>provided</scope>
-      </dependency>
 
       <!-- ncpeh-simulation-mock -->
-
-      <dependency>
-        <groupId>com.fasterxml.jackson</groupId>
-        <artifactId>jackson-bom</artifactId>
-        <version>${jackson.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.sun.xml.messaging.saaj</groupId>
-        <artifactId>saaj-impl</artifactId>
-        <version>${saaj-impl.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.gematik.api</groupId>
-        <artifactId>ncpeh-simulation-ehdsi-model</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.gematik.api</groupId>
-        <artifactId>ncpeh-simulation-td-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.gematik.epa</groupId>
-        <artifactId>lib-ihe-xds</artifactId>
-        <version>${lib-ihe-xds.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.xml.soap</groupId>
-        <artifactId>jakarta.xml.soap-api</artifactId>
-        <version>${jakarta.xml.soap-api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-features-logging</artifactId>
-        <version>${apache.cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-rs-client</artifactId>
-        <version>${apache.cxf.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-rs-service-description-openapi-v3</artifactId>
-        <version>${apache.cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
-        <version>${apache.cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-actuator</artifactId>
-        <version>${spring.boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-        <version>${spring.boot.version}</version>
-      </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
         <version>${spring.boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>swagger-ui</artifactId>
-        <version>${swagger-ui.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.pdfbox</groupId>
-        <artifactId>pdfbox</artifactId>
-        <version>${pdfbox.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.pdfbox</groupId>
-        <artifactId>fontbox</artifactId>
-        <version>${pdfbox.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.xmlunit</groupId>
-        <artifactId>xmlunit-matchers</artifactId>
-        <version>${xmlunit.version}</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

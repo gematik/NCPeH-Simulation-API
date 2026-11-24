@@ -40,12 +40,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -60,6 +61,7 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
   public static final String HEADER_X_NCPEH_MOCK_RESPONSE = "X-NCPeHMock-Response";
   public static final String HEADER_X_NCPEH_MOCK_PATIENT = "X-NCPeHMock-Patient";
   public static final String HEADER_X_NCPEH_MOCK_MEDICATION = "X-NCPeHMock-Medication";
+  public static final String HEADER_X_OFFICE_NAME = "X-NCPeHMock-OfficeName";
   public static final String OID_ASSIGNING_AUTHORITY_EPED = "1.2.276.0.76.4.299";
   public static final String XDS_DOCUMENT_ENTRY_CLASS_CODE_EPED =
       "('57833-6^^2.16.840.1.113883.6.1')";
@@ -75,7 +77,7 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
   @Override
   public Response identifyPatient(final IdentifyPatientRequest request) {
     final var fileName = getFileNameFromRequestHeader();
-    final var accessCode = getAccessCodeFromRequestHeader();
+    final var patient = getPatientFromRequestHeader();
 
     if (request.accessCodeAssigningAuthority() != null
         && request.accessCodeAssigningAuthority().equals(OID_ASSIGNING_AUTHORITY_EPED)) {
@@ -84,7 +86,7 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
               SimulatorCommunicationDataBuilder.newInstance()
                   .requestMessage(HttpMessageFactory.buildEPEDIdentifyPatientRequest())
                   .responseMessage(
-                      HttpMessageFactory.buildStandardIdentifyPatientResponse(fileName, accessCode))
+                      HttpMessageFactory.buildStandardIdentifyPatientResponse(fileName, patient))
                   .build())
           .build();
     } else {
@@ -93,7 +95,7 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
               SimulatorCommunicationDataBuilder.newInstance()
                   .requestMessage(HttpMessageFactory.buildPSAIdentifyPatientRequest())
                   .responseMessage(
-                      HttpMessageFactory.buildStandardIdentifyPatientResponse(fileName, accessCode))
+                      HttpMessageFactory.buildStandardIdentifyPatientResponse(fileName, patient))
                   .build())
           .build();
     }
@@ -101,24 +103,24 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
 
   @Override
   public Response findDocuments(final FindDocumentsRequest request) {
-    final var fileName = getFileNameFromRequestHeader();
-    final var builder = SimulatorCommunicationDataBuilder.newInstance();
-    final var medicationByPrescriptionId = getPrescribedMedicationsFromRequestHeader();
-    final var prescriptionIds =
-        medicationByPrescriptionId != null
-            ? medicationByPrescriptionId.keySet()
-            : Collections.<String>emptySet();
+    String fileName = getFileNameFromRequestHeader();
+    final var officeName = getOfficeNameFromRequestHeader();
+    var builder = SimulatorCommunicationDataBuilder.newInstance();
 
     if (XDS_DOCUMENT_ENTRY_CLASS_CODE_EPED.equals(request.xdsDocumentEntryClassCode())) {
+      Map<String, Medication> medicationByPrescriptionId =
+          getPrescribedMedicationsFromRequestHeader();
+
       builder
           .requestMessage(HttpMessageFactory.buildEPEDFindDocumentRequest())
           .responseMessage(
               HttpMessageFactory.buildStandardFindDocumentResponseEPED(
-                  fileName, prescriptionIds, medicationByPrescriptionId));
+                  fileName, medicationByPrescriptionId, officeName));
     } else {
       builder
           .requestMessage(HttpMessageFactory.buildPSAFindDocumentRequest())
-          .responseMessage(HttpMessageFactory.buildStandardFindDocumentResponsePSA(fileName));
+          .responseMessage(
+              HttpMessageFactory.buildStandardFindDocumentResponsePSA(fileName, officeName));
     }
 
     return okResponseBuilder().entity(builder.build()).build();
@@ -205,16 +207,6 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
   }
 
   /**
-   * Retrieves the access code from the patient request header.
-   *
-   * @return the access code, or null if the patient header is not present or deserialization fails
-   */
-  private String getAccessCodeFromRequestHeader() {
-    Patient patientFromHeader = getPatientFromRequestHeader();
-    return patientFromHeader != null ? patientFromHeader.accessCode() : null;
-  }
-
-  /**
    * Retrieves a map of prescribed medications from the request header.
    *
    * @return a map where the key is the prescription ID and the value is the corresponding
@@ -222,6 +214,13 @@ public class NCPeHMockApiImpl implements NcpehSimulatorApi {
    */
   private Map<String, Medication> getPrescribedMedicationsFromRequestHeader() {
     return readObjectFromHeader(HEADER_X_NCPEH_MOCK_MEDICATION, new TypeReference<>() {});
+  }
+
+  private String getOfficeNameFromRequestHeader() {
+    String urlEncodedValue = headers.getHeaderString(HEADER_X_OFFICE_NAME);
+    return urlEncodedValue == null
+        ? null
+        : URLDecoder.decode(urlEncodedValue, StandardCharsets.UTF_8);
   }
 
   /**

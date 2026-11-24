@@ -43,6 +43,7 @@ different scenarios.
 
 - `X-NCPeHMock-Patient`
 - `X-NCPeHMock-Medication`
+- `X-NCPeHMock-OfficeName`
 
 ### Controlling Response Content
 
@@ -100,8 +101,9 @@ If the JSON also contains an `accessCode`, the mock uses it in the successful
 **Supported by Endpoints:** `/retrieveSetOfDocuments`, `/findDocuments`
 **Type:** Base64-encoded JSON mapping of prescription IDs
 to [Medication](src/main/java/de/gematik/ncpeh/api/mock/data/Medication.java) data  
-**Purpose:** Provides medication data for inclusion in eHDSI ePrescription documents and controls which prescription
-  document entries are generated in the **/findDocuments** response.
+**Purpose:** Provides medication data for inclusion in eHDSI ePrescription documents and controls
+which prescription
+document entries are generated in the **/findDocuments** response.
 
 For each provided prescription ID, the mock generates **two document entries**:
 
@@ -119,3 +121,10 @@ The template document entries contained in the response are replaced by the
 newly generated entries.
 
 If the header is omitted, the default template response is returned unchanged.
+
+#### `X-NCPeHMock-OfficeName`
+
+**Supported by Endpoints:** `/findDocuments`  
+**Type:** URL-encoded string  
+**Purpose:** Provides the value for the `authorInstitution` attribute in the `AdhocQueryResponse`
+returned for the ePrescription use case.

@@ -18,7 +18,7 @@
   ~ For additional notes and disclaimer from gematik and in case of changes
   ~ by gematik, find details in the "Readme" file.
   -->
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope">
   <SOAP-ENV:Header/>
   <SOAP-ENV:Body>
     <ns3:RetrieveDocumentSetResponse xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns2="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"
