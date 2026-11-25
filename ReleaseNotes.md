@@ -2,6 +2,17 @@
 
 # Release Notes NCPeH-Simulation-API
 
+## Release 2.1.0.3 (2026-11-25)
+
+The NCPeH-Simulation-API Release 2.1.0.3 is intended for use with NCPeH product versions based on
+the German NCPeH specification in versions 
+[2.0.0](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.0.0/) - 
+[2.1.1](https://gemspec.gematik.de/docs/gemSpec/gemSpec_NCPeH_FD/gemSpec_NCPeH_FD_V2.1.1/).
+
+### fixed
+
+- Fixed maven plugin configuration which prevented a release to Maven Central
+
 ## Release 2.1.0.2 (2026-11-24)
 
 The NCPeH-Simulation-API Release 2.1.0.2 is intended for use with NCPeH product versions based on
